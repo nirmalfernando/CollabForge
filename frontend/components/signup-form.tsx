@@ -75,8 +75,8 @@ export default function SignUpForm() {
       console.log("Form submitted with data:", formData)
 
       // Simulate successful signup and redirect
-      console.log("Signup successful! Redirecting to dashboard...")
-      router.push("/") // Redirect to the landing page (which will show dashboard if authenticated)
+      console.log("Signup successful! Redirecting to home page...")
+      router.push("/home") // Redirect to the authenticated home page
     } catch (err) {
       setError("Signup failed. Please try again.")
       console.error("Signup error:", err)

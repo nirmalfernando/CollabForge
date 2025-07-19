@@ -82,8 +82,8 @@ export default function LoginForm() {
       console.log("Login submitted with data:", formData)
 
       // Simulate successful login and redirect
-      console.log("Login successful! Redirecting to dashboard...")
-      router.push("/") // Redirect to the landing page (which will show dashboard if authenticated)
+      console.log("Login successful! Redirecting to home page...")
+      router.push("/home") // Redirect to the authenticated home page
     } catch (error) {
       setFormState((prev) => ({
         ...prev,

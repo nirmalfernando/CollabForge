@@ -29,7 +29,10 @@ export default function Header({
       </Link>
       <nav className="flex items-center space-x-6">
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="/home" className="text-sm font-medium text-white hover:text-collab-primary transition-colors">
+          <Link
+            href={isAuthenticated ? "/home" : "/"}
+            className="text-sm font-medium text-white hover:text-collab-primary transition-colors"
+          >
             Home
           </Link>
           <Link href="/about" className="text-sm font-medium text-white hover:text-collab-primary transition-colors">
