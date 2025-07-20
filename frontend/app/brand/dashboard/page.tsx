@@ -1,13 +1,20 @@
+"use client"
+
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Header from "@/components/header"
 import PersonCard from "@/components/person-card"
 import Footer from "@/components/footer"
-import { BoltIcon as Bat, Gem, Feather, Zap, Leaf } from "lucide-react" // Using generic icons for placeholders
+import { BoltIcon as Bat, Gem, Feather, Zap, Leaf } from "lucide-react"
+import { useState } from "react"
 import Link from "next/link"
 
-export default function LandingPage() {
+export default function BrandDashboardPage() {
+  // Simulate user login state and role
+  const [isLoggedIn, setIsLoggedIn] = useState(true) // Set to true for demonstration
+  const [userRole, setUserRole] = useState<"influencer" | "brand-manager">("brand-manager") // Default role
+
   const people = [
     {
       name: "Jamie L.",
@@ -37,37 +44,34 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
+      <Header isLoggedIn={isLoggedIn} userRole={userRole} />
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section (adapted for brand dashboard) */}
         <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-background">
           <div className="container px-4 md:px-6 grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
             <div className="flex flex-col justify-center space-y-4">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                Find <span className="text-primary">Your People</span>
+                Welcome, <span className="text-primary">Brand Manager!</span>
               </h1>
               <p className="max-w-[700px] text-lg md:text-xl text-muted-foreground">
-                We&apos;re the app where creators and brands <span className="text-primary">connect naturally</span>,
-                build authentic partnerships, and create <span className="text-primary">content that matters</span>. No
-                more awkward DMs or endless emails—just the right matches that{" "}
-                <span className="text-primary">help everyone grow</span>.
+                Manage your campaigns, discover new creators, and track your collaborations.
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="/signup" prefetch={false}>
+                <Link href="/brand/dashboard/create-campaign" prefetch={false}>
                   <Button
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
-                    Sign-Up
+                    Create New Campaign
                   </Button>
                 </Link>
-                <Link href="/login" prefetch={false}>
+                <Link href="/brand/dashboard/my-campaigns" prefetch={false}>
                   <Button
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
-                    Log-In
+                    View My Campaigns
                   </Button>
                 </Link>
               </div>
@@ -78,7 +82,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Partner Logos Section */}
+        {/* Partner Logos Section (can be reused or replaced with brand-specific content) */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6 flex flex-wrap justify-center items-center gap-8 md:gap-12">
             <Bat className="h-12 w-12 text-foreground" />
@@ -89,11 +93,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Our People Section */}
+        {/* Featured Creators Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-              <span className="text-primary">Our</span> People
+              <span className="text-primary">Featured</span> Creators
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {people.map((person, index) => (
