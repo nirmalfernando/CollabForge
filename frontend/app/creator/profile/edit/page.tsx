@@ -1,8 +1,10 @@
 "use client"
 
+import type React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react" // Import useEffect for cleanup
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
@@ -42,8 +44,17 @@ export default function CreatorEditProfilePage() {
   // State for managing forms
   const [isAddingDetail, setIsAddingDetail] = useState(false)
   const [isAddingPlatform, setIsAddingPlatform] = useState(false)
+  const [isEditingBanner, setIsEditingBanner] = useState(false)
+  const [isEditingProfilePic, setIsEditingProfilePic] = useState(false)
+
   const [newDetail, setNewDetail] = useState({ icon: "Monitor", text: "" })
   const [newPlatform, setNewPlatform] = useState({ icon: "Monitor", name: "", handle: "", link: "" })
+
+  // States for image uploads
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null)
+  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null)
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null)
 
   // Dummy data for the creator profile (pre-filled for editing)
   const [creatorData, setCreatorData] = useState({
@@ -86,7 +97,17 @@ export default function CreatorEditProfilePage() {
       "EduHub App (yes, learning can be fun)",
       "BrainFood Energy (which I consume right before regrettable experiments)",
     ],
+    bannerImageUrl: "/placeholder.svg?height=400&width=1200", // Default banner image
+    profilePicUrl: "/placeholder.svg?height=200&width=200", // Default profile picture
   })
+
+  // Cleanup object URLs when component unmounts or image changes
+  useEffect(() => {
+    return () => {
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl)
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl)
+    }
+  }, [bannerPreviewUrl, profilePicPreviewUrl])
 
   const iconMap = {
     Monitor,
@@ -168,6 +189,92 @@ export default function CreatorEditProfilePage() {
     })
   }
 
+  const handleBannerFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please select an image file (e.g., JPG, PNG, GIF).",
+          variant: "destructive",
+        })
+        setSelectedBannerFile(null)
+        setBannerPreviewUrl(null)
+        return
+      }
+      setSelectedBannerFile(file)
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl) // Clean up previous preview
+      setBannerPreviewUrl(URL.createObjectURL(file))
+    } else {
+      setSelectedBannerFile(null)
+      setBannerPreviewUrl(null)
+    }
+  }
+
+  const handleSaveBannerImage = () => {
+    if (selectedBannerFile && bannerPreviewUrl) {
+      // In a real app, you would upload `selectedBannerFile` to a server
+      // and get a permanent URL. For this demo, we use the local preview URL.
+      setCreatorData((prev) => ({ ...prev, bannerImageUrl: bannerPreviewUrl }))
+      setIsEditingBanner(false)
+      setSelectedBannerFile(null)
+      setBannerPreviewUrl(null) // Clear preview after saving
+      toast({
+        title: "Banner Updated",
+        description: "Your profile banner has been updated.",
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Please select an image file for the banner.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleProfilePicFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please select an image file (e.g., JPG, PNG, GIF).",
+          variant: "destructive",
+        })
+        setSelectedProfilePicFile(null)
+        setProfilePicPreviewUrl(null)
+        return
+      }
+      setSelectedProfilePicFile(file)
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl) // Clean up previous preview
+      setProfilePicPreviewUrl(URL.createObjectURL(file))
+    } else {
+      setSelectedProfilePicFile(null)
+      setProfilePicPreviewUrl(null)
+    }
+  }
+
+  const handleSaveProfilePic = () => {
+    if (selectedProfilePicFile && profilePicPreviewUrl) {
+      // In a real app, you would upload `selectedProfilePicFile` to a server
+      // and get a permanent URL. For this demo, we use the local preview URL.
+      setCreatorData((prev) => ({ ...prev, profilePicUrl: profilePicPreviewUrl }))
+      setIsEditingProfilePic(false)
+      setSelectedProfilePicFile(null)
+      setProfilePicPreviewUrl(null) // Clear preview after saving
+      toast({
+        title: "Profile Picture Updated",
+        description: "Your profile picture has been updated.",
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Please select an image file for the profile picture.",
+        variant: "destructive",
+      })
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="influencer" />
@@ -176,20 +283,57 @@ export default function CreatorEditProfilePage() {
         {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src="/placeholder.svg?height=400&width=1200"
+            src={creatorData.bannerImageUrl || "/placeholder.svg"}
             alt="Profile banner"
             layout="fill"
             objectFit="cover"
             className="z-0"
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-4 right-4 bg-primary rounded-full p-2 z-10 hover:bg-primary/80"
-          >
-            <Pencil className="h-6 w-6 text-white" />
-            <span className="sr-only">Edit banner</span>
-          </Button>
+          <Dialog open={isEditingBanner} onOpenChange={setIsEditingBanner}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4 bg-primary rounded-full p-2 z-10 hover:bg-primary/80"
+              >
+                <Pencil className="h-6 w-6 text-white" />
+                <span className="sr-only">Edit banner</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
+              <DialogHeader>
+                <DialogTitle>Edit Banner Image</DialogTitle>
+                <DialogDescription>Upload a new image for your banner.</DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <Label htmlFor="banner-image-upload" className="text-right">
+                  Upload Image
+                </Label>
+                <Input id="banner-image-upload" type="file" accept="image/*" onChange={handleBannerFileChange} />
+                {bannerPreviewUrl && (
+                  <div className="mt-4">
+                    <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                    <Image
+                      src={bannerPreviewUrl || "/placeholder.svg"}
+                      alt="Banner preview"
+                      width={400}
+                      height={150}
+                      objectFit="cover"
+                      className="rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={() => setIsEditingBanner(false)}>
+                  Cancel
+                </Button>
+                <Button type="button" onClick={handleSaveBannerImage} disabled={!selectedBannerFile}>
+                  Save Changes
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </section>
 
         {/* Main content area with dark background */}
@@ -198,15 +342,62 @@ export default function CreatorEditProfilePage() {
             <div className="flex flex-col md:flex-row items-start gap-6">
               {/* Profile Picture Container - positioned to overlap */}
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
-                <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg">
-                  <AvatarImage
-                    src="/placeholder.svg?height=200&width=200"
-                    alt={`${creatorData.name} profile picture`}
-                  />
-                  <AvatarFallback className="bg-primary text-white flex items-center justify-center">
-                    <Plus className="h-24 w-24" />
-                  </AvatarFallback>
-                </Avatar>
+                <Dialog open={isEditingProfilePic} onOpenChange={setIsEditingProfilePic}>
+                  <DialogTrigger asChild>
+                    <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg cursor-pointer group relative overflow-hidden">
+                      <AvatarImage
+                        src={creatorData.profilePicUrl || "/placeholder.svg"}
+                        alt={`${creatorData.name} profile picture`}
+                      />
+                      <AvatarFallback className="bg-primary text-white flex items-center justify-center text-4xl font-bold">
+                        {creatorData.name[0]}
+                        {creatorData.lastName[0]}
+                      </AvatarFallback>
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Plus className="h-12 w-12 text-white" />
+                        <span className="sr-only">Change profile picture</span>
+                      </div>
+                    </Avatar>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
+                    <DialogHeader>
+                      <DialogTitle>Edit Profile Picture</DialogTitle>
+                      <DialogDescription>Upload a new image for your profile picture.</DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <Label htmlFor="profile-pic-upload" className="text-right">
+                        Upload Image
+                      </Label>
+                      <Input
+                        id="profile-pic-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleProfilePicFileChange}
+                      />
+                      {profilePicPreviewUrl && (
+                        <div className="mt-4">
+                          <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                          <Image
+                            src={profilePicPreviewUrl || "/placeholder.svg"}
+                            alt="Profile picture preview"
+                            width={150}
+                            height={150}
+                            objectFit="cover"
+                            className="rounded-full mx-auto"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <DialogFooter>
+                      <Button type="button" variant="outline" onClick={() => setIsEditingProfilePic(false)}>
+                        Cancel
+                      </Button>
+                      <Button type="button" onClick={handleSaveProfilePic} disabled={!selectedProfilePicFile}>
+                        Save Changes
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
               <div className="flex-1 w-full pt-4 md:pt-0">
                 {/* Editable follower count and Save Settings button */}

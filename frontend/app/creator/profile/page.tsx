@@ -115,7 +115,7 @@ export default function CreatorProfilePage() {
                   <p className="text-2xl font-semibold text-muted-foreground">
                     {creatorData.followers} Followers ({creatorData.platform})
                   </p>
-                  <Link href="/profile/creator/edit" prefetch={false}>
+                  <Link href="/creator/profile/edit" prefetch={false}>
                     <Button
                       variant="outline"
                       className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"

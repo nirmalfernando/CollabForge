@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CollabForge',
+  title: 'CollabForge App',
   description: 'Created with CollabForge',
-  generator: 'CollabForge',
+  generator: 'CollabForge.dev',
 }
 
 export default function RootLayout({

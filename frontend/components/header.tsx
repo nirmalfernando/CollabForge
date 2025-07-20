@@ -24,20 +24,32 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
         CollabForge
       </Link>
       <div className="flex items-center space-x-6">
-        {" "}
-        {/* Grouping nav and action element */}
         <nav className="hidden md:flex items-center space-x-6">
           {isLoggedIn ? (
             <>
               <Link href="/home" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 Home
               </Link>
-              <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
-                Creators
-              </Link>
-              <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
-                Campaigns
-              </Link>
+              {userRole === "influencer" && (
+                <>
+                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                    Campaigns
+                  </Link>
+                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                    Brands
+                  </Link>
+                </>
+              )}
+              {userRole === "brand-manager" && (
+                <>
+                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                    Creators
+                  </Link>
+                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                    My Campaigns
+                  </Link>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -77,7 +89,11 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-muted" />
               <DropdownMenuItem className="cursor-pointer hover:bg-primary/20">
-                <Link href="/profile/creator" className="w-full" prefetch={false}>
+                <Link
+                  href={userRole === "influencer" ? "/creator/profile" : "/brand/profile"}
+                  className="w-full"
+                  prefetch={false}
+                >
                   Profile
                 </Link>
               </DropdownMenuItem>
@@ -96,13 +112,11 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
           </DropdownMenu>
         ) : (
           <Link href="/login" prefetch={false}>
-            {" "}
-            {/* Changed to /login */}
             <Button
               variant="outline"
               className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
             >
-              Login {/* Changed text to Login */}
+              Login
             </Button>
           </Link>
         )}
