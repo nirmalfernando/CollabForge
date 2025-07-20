@@ -23,10 +23,10 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#121212", // Main background
+        foreground: "#ffffff", // Main text color
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#2196f3", // Accent blue
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -38,7 +38,7 @@ const config = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT: "#1e1e1e", // Slightly lighter dark for cards/inputs
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
@@ -50,19 +50,9 @@ const config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
+          DEFAULT: "#1e1e1e", // Card background
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom CollabForge colors
-        "collab-primary": "#2196F3",
-        "collab-secondary": "#A1E3F6",
-        "collab-dark": "#212121",
-        "collab-dark-light": "#333333",
-        "collab-dark-lighter": "#424242",
-        "collab-dark-border": "#404040",
-        "collab-text-muted": "#9E9E9E",
-        "collab-blue-dark": "#1976D2",
-        "collab-blue-darker": "#0D47A1",
       },
       borderRadius: {
         lg: "var(--radius)",
