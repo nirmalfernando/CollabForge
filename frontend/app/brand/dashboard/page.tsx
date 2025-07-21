@@ -58,7 +58,7 @@ export default function BrandDashboardPage() {
                 Manage your campaigns, discover new creators, and track your collaborations.
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="/brand/dashboard/create-campaign" prefetch={false}>
+                <Link href="/brand/campaigns/create" prefetch={false}>
                   <Button
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
@@ -66,7 +66,7 @@ export default function BrandDashboardPage() {
                     Create New Campaign
                   </Button>
                 </Link>
-                <Link href="/brand/dashboard/my-campaigns" prefetch={false}>
+                <Link href="/brand/campaigns" prefetch={false}>
                   <Button
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"

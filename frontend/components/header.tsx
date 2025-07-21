@@ -18,35 +18,72 @@ interface HeaderProps {
 }
 
 export default function Header({ isLoggedIn, userRole }: HeaderProps) {
+  // Determine the dashboard path based on user role
+  const dashboardPath = userRole === "influencer" ? "/creator/dashboard" : "/brand/dashboard"
+
   return (
     <header className="flex items-center justify-between px-4 py-6 md:px-6 bg-background text-foreground">
-      <Link href="/" className="text-2xl font-bold" prefetch={false}>
+      <Link href={isLoggedIn ? dashboardPath : "/"} className="text-2xl font-bold" prefetch={false}>
         CollabForge
       </Link>
       <div className="flex items-center space-x-6">
         <nav className="hidden md:flex items-center space-x-6">
           {isLoggedIn ? (
             <>
-              <Link href="/home" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+              <Link
+                href={dashboardPath}
+                className="text-lg font-medium hover:text-primary transition-colors"
+                prefetch={false}
+              >
                 Home
               </Link>
               {userRole === "influencer" && (
                 <>
-                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                  <Link
+                    href="/creator/campaigns"
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
                     Campaigns
                   </Link>
-                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
-                    Brands
+                  <Link
+                    href="/creator/creators" // Removed the trailing backslash
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
+                    Creators
+                  </Link>
+                  <Link
+                    href="/creator/applications"
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
+                    Applications
                   </Link>
                 </>
               )}
               {userRole === "brand-manager" && (
                 <>
-                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                  <Link
+                    href="/brand/creators"
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
                     Creators
                   </Link>
-                  <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
-                    My Campaigns
+                  <Link
+                    href="/brand/campaigns"
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
+                    Campaigns
+                  </Link>
+                  <Link
+                    href="/brand/contracts"
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    prefetch={false}
+                  >
+                    Contracts
                   </Link>
                 </>
               )}
