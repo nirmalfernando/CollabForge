@@ -110,9 +110,9 @@ export default function BrandProfilePage() {
                       Edit Profile
                     </Button>
                   </Link>
-                  <Link href="#" prefetch={false}>
+                  <Link href="/brand/campaigns/create" prefetch={false}>
                     {" "}
-                    {/* Assuming this links to a new campaign creation page */}
+                    {/* Updated link */}
                     <Button
                       variant="outline"
                       className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 bg-transparent"

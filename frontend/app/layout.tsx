@@ -3,8 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'CollabForge App',
-  description: 'Created with CollabForge',
-  generator: 'CollabForge.dev',
+  description: 'Created by CollabForge Team',
 }
 
 export default function RootLayout({
