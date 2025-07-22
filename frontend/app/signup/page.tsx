@@ -94,22 +94,6 @@ export default function SignUpPage() {
                 required
               />
 
-              {/* Conditional Fields based on Role */}
-              {role === "influencer" && (
-                <Input
-                  type="text"
-                  placeholder="Social Media Links (e.g., Instagram, TikTok)"
-                  className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3"
-                />
-              )}
-              {role === "brand-manager" && (
-                <Input
-                  type="text"
-                  placeholder="Company Name"
-                  className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3"
-                />
-              )}
-
               <Button
                 type="submit"
                 variant="outline"
