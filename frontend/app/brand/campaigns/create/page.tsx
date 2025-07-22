@@ -27,9 +27,33 @@ export default function CreateCampaignPage() {
     status: "",
     requirements: "",
     description: "",
+    category: "", // Added category state
   })
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const router = useRouter()
+
+  const categoryOptions = [
+    "Technology",
+    "Beauty",
+    "Fashion",
+    "Fitness",
+    "Gaming",
+    "Education",
+    "Food & Drink",
+    "Travel",
+    "Lifestyle",
+    "Arts & Culture",
+    "Music",
+    "Sports",
+    "Finance",
+    "Health & Wellness",
+    "Parenting",
+    "DIY & Crafts",
+    "Pets",
+    "Automotive",
+    "Science",
+    "Comedy",
+  ]
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -87,6 +111,22 @@ export default function CreateCampaignPage() {
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="paused">Paused</SelectItem>
                     <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+                {/* New Category Dropdown */}
+                <Select
+                  value={campaignData.category}
+                  onValueChange={(value) => setCampaignData({ ...campaignData, category: value })}
+                >
+                  <SelectTrigger className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
+                    <SelectValue placeholder="Select Category/Niche" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
+                    {categoryOptions.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Input

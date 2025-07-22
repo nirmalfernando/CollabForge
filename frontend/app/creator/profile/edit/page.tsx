@@ -56,6 +56,32 @@ export default function CreatorEditProfilePage() {
   const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null)
   const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null)
 
+  const [selectedCategory, setSelectedCategory] = useState("")
+
+  // Category options - in the future this will come from a GET request to category table
+  const categoryOptions = [
+    { id: "1", name: "Technology" },
+    { id: "2", name: "Beauty & Skincare" },
+    { id: "3", name: "Fashion & Style" },
+    { id: "4", name: "Fitness & Health" },
+    { id: "5", name: "Food & Cooking" },
+    { id: "6", name: "Travel & Adventure" },
+    { id: "7", name: "Gaming" },
+    { id: "8", name: "Education & Science" },
+    { id: "9", name: "Music & Entertainment" },
+    { id: "10", name: "Lifestyle & Vlogs" },
+    { id: "11", name: "Art & Design" },
+    { id: "12", name: "Business & Finance" },
+    { id: "13", name: "Home & DIY" },
+    { id: "14", name: "Parenting & Family" },
+    { id: "15", name: "Sports" },
+    { id: "16", name: "Comedy & Humor" },
+    { id: "17", name: "Photography" },
+    { id: "18", name: "Automotive" },
+    { id: "19", name: "Pets & Animals" },
+    { id: "20", name: "Other" },
+  ]
+
   // Dummy data for the creator profile (pre-filled for editing)
   const [creatorData, setCreatorData] = useState({
     name: "Madeline",
@@ -161,9 +187,14 @@ export default function CreatorEditProfilePage() {
   }
 
   const handleSaveSettings = () => {
+    // In a real app, you would send all form data including selectedCategory to your backend
+    console.log("Selected Category ID:", selectedCategory)
+    const selectedCategoryName = categoryOptions.find((cat) => cat.id === selectedCategory)?.name || "None"
+    console.log("Selected Category Name:", selectedCategoryName)
+
     toast({
       title: "Settings Saved",
-      description: "Your profile has been updated successfully.",
+      description: `Your profile has been updated successfully. Category: ${selectedCategoryName}`,
     })
   }
 
@@ -477,6 +508,25 @@ export default function CreatorEditProfilePage() {
                     onChange={(e) => setCreatorData((prev) => ({ ...prev, bio: e.target.value }))}
                     className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
                   />
+                </div>
+
+                {/* Category/Niche Selection */}
+                <div>
+                  <Label htmlFor="category" className="text-lg font-semibold mb-2 block">
+                    Category/Niche
+                  </Label>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
+                      <SelectValue placeholder="Select your category/niche" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
+                      {categoryOptions.map((category) => (
+                        <SelectItem key={category.id} value={category.id} className="hover:bg-primary/20">
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Toggles */}
