@@ -36,7 +36,7 @@ const initializeDatabase = async () => {
 initializeDatabase();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT;
 
 // Middleware to log errors
 app.use((err, req, res, next) => {
@@ -63,7 +63,7 @@ app.use(helmet());
 // Middleware to enable CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     credentials: true, // Allow cookies to be sent
   })
 );
@@ -79,5 +79,5 @@ app.use("/api/contracts", contractRoute);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on ${PORT}`);
 });
