@@ -9,6 +9,7 @@ import bodyParser from "body-parser";
 import globalRateLimiter from "./middlewares/rateLimit.js";
 import "./models/Associations.js";
 import userRoute from "./routes/userRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
 
 dotenv.config();
 
@@ -64,6 +65,7 @@ app.use(
 
 // Setup the routes
 app.use("/api/users", userRoute);
+app.use("/api/categories", categoryRoute);
 
 // Start the server
 app.listen(PORT, () => {
