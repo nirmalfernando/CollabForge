@@ -93,6 +93,22 @@ const Contract = sequelize.define(
         },
       },
     },
+    contractStatus: {
+      type: DataTypes.ENUM("Pending", "Active", "Awaiting Payment", "Completed", "Cancelled"),
+      allowNull: false,
+      defaultValue: "Pending",
+      validate: {
+        isIn: {
+          args: [["Pending", "Active", "Awaiting Payment", "Completed", "Cancelled"]],
+          msg: "Contract status must be one of 'Pending', 'Active', 'Awaiting Payment', 'Completed', or 'Cancelled'",
+        },
+      },
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     timestamps: true,
