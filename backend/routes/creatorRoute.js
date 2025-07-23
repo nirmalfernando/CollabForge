@@ -1,37 +1,53 @@
 import express from "express";
 import {
+  creatorCreateValidation,
+  creatorUpdateValidation,
+  creatorQueryValidation,
   createCreator,
-  getCreatorById,
   updateCreator,
-  deleteCreator,
+  getCreatorById,
+  getCreatorByUserId,
   getAllCreators,
   getCreatorsByCategory,
   getCreatorsByType,
-  creatorCreateValidation,
+  deleteCreator,
 } from "../controllers/creatorController.js";
 import { verifyToken } from "../middlewares/authRole.js";
 
 const router = express.Router();
 
 // Create a new creator
-router.post("/", verifyToken, creatorCreateValidation, createCreator);
+router.post("/", creatorCreateValidation, verifyToken, createCreator);
 
-// Get creator by ID
+// Get a creator by ID
 router.get("/:id", verifyToken, getCreatorById);
 
-// Update creator by ID
-router.put("/:id", verifyToken, creatorCreateValidation, updateCreator);
+// Update a creator by ID
+router.put("/:id", creatorUpdateValidation, verifyToken, updateCreator);
 
-// Delete creator by ID
+// Delete a creator by ID (soft delete)
 router.delete("/:id", verifyToken, deleteCreator);
 
 // Get all creators
 router.get("/", verifyToken, getAllCreators);
 
-// Get creators by category
-router.get("/category/:categoryId", verifyToken, getCreatorsByCategory);
+// Get creators by category ID
+router.get(
+  "/by-category",
+  creatorQueryValidation,
+  verifyToken,
+  getCreatorsByCategory
+);
 
 // Get creators by type
-router.get("/type/:type", verifyToken, getCreatorsByType);
+router.get("/by-type", creatorQueryValidation, verifyToken, getCreatorsByType);
+
+// Get creator by user ID
+router.get(
+  "/by-user/:userId",
+  creatorQueryValidation,
+  verifyToken,
+  getCreatorByUserId
+);
 
 export default router;

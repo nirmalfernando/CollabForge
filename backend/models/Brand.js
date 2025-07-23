@@ -10,7 +10,6 @@ const Brand = sequelize.define(
       allowNull: false,
       primaryKey: true,
       unique: true,
-      defaultValue: DataTypes.UUIDV4,
       validate: {
         isUUID: {
           args: 4,
@@ -50,11 +49,6 @@ const Brand = sequelize.define(
           msg: "Description must be a valid JSON object",
         },
       },
-      // isValid: function(value) {
-      //   if (value && typeof value !== 'object') {
-      //     throw new Error("Description must be a valid JSON object");
-      //   }
-      // }
     },
     whatWeLookFor: {
       type: DataTypes.JSON,
@@ -91,16 +85,22 @@ const Brand = sequelize.define(
         isJSON: {
           msg: "Popular campaigns must be a valid JSON object",
         },
-        // isValidCampaigns(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("Popular campaigns must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each campaign must be an object");
-        //     }
-        //   });
-        // },
+        isValidCampaigns(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("Popular campaigns must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (
+              typeof item !== "object" ||
+              Array.isArray(item) ||
+              !item.campaignId
+            ) {
+              throw new Error(
+                "Each campaign must be an object with a campaignId"
+              );
+            }
+          });
+        },
       },
     },
     status: {

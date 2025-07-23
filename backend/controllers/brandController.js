@@ -1,8 +1,8 @@
 import Brand from "../models/Brand.js";
 import User from "../models/User.js";
-import { body, validationResult } from "express-validator";
+import Campaign from "../models/Campaign.js";
+import { body, param, validationResult } from "express-validator";
 import { Op } from "sequelize";
-import { v4 as uuidv4 } from "uuid";
 import logger from "../middlewares/logger.js";
 
 // Validation rules for brand creation
@@ -12,12 +12,17 @@ const brandCreateValidation = [
     .withMessage("User ID is required")
     .isUUID(4)
     .withMessage("User ID must be a valid UUID")
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       const user = await User.findOne({
         where: { userId: value, status: true },
       });
       if (!user) {
         throw new Error("Associated user does not exist or is inactive");
+      }
+      if (req.user.role !== "brand" || req.user.userId !== value) {
+        throw new Error(
+          "Only the authenticated user can create their brand profile"
+        );
       }
       const existingBrand = await Brand.findOne({ where: { brandId: value } });
       if (existingBrand) {
@@ -63,13 +68,9 @@ const brandCreateValidation = [
     .optional()
     .isURL()
     .withMessage("Background image URL must be a valid URL"),
-];
-
-// Validation rules for updating popular campaigns
-const updatePopularCampaignsValidation = [
   body("popularCampaigns")
     .optional()
-    .custom((value) => {
+    .custom(async (value) => {
       if (value === undefined || value === null) return true;
       try {
         const parsed = JSON.parse(
@@ -79,17 +80,119 @@ const updatePopularCampaignsValidation = [
           throw new Error("Popular campaigns must be an array of objects");
         }
         parsed.forEach((item) => {
-          if (typeof item !== "object" || Array.isArray(item)) {
-            throw new Error("Each campaign must be an object");
+          if (
+            typeof item !== "object" ||
+            Array.isArray(item) ||
+            !item.campaignId
+          ) {
+            throw new Error(
+              "Each campaign must be an object with a campaignId"
+            );
           }
         });
+        const campaignIds = parsed.map((item) => item.campaignId);
+        const campaigns = await Campaign.findAll({
+          where: { campaignId: { [Op.in]: campaignIds }, status: true },
+        });
+        if (campaigns.length !== campaignIds.length) {
+          throw new Error("One or more campaign IDs are invalid or inactive");
+        }
         return true;
       } catch (error) {
         throw new Error(
-          "Popular campaigns must be a valid JSON array of objects"
+          "Popular campaigns must be a valid JSON array of objects: " +
+            error.message
         );
       }
     }),
+];
+
+// Validation rules for brand update
+const brandUpdateValidation = [
+  body("companyName")
+    .optional()
+    .isLength({ min: 1, max: 100 })
+    .withMessage("Company name must be between 1 and 100 characters long"),
+  body("bio")
+    .optional()
+    .isLength({ max: 500 })
+    .withMessage("Bio must be up to 500 characters long"),
+  body("description")
+    .optional()
+    .custom((value) => {
+      if (value === undefined || value === null) return true;
+      try {
+        JSON.parse(typeof value === "string" ? value : JSON.stringify(value));
+        return true;
+      } catch (error) {
+        throw new Error("Description must be a valid JSON object");
+      }
+    }),
+  body("whatWeLookFor")
+    .optional()
+    .custom((value) => {
+      if (value === undefined || value === null) return true;
+      try {
+        JSON.parse(typeof value === "string" ? value : JSON.stringify(value));
+        return true;
+      } catch (error) {
+        throw new Error("What we look for must be a valid JSON object");
+      }
+    }),
+  body("profilePicUrl")
+    .optional()
+    .isURL()
+    .withMessage("Profile picture URL must be a valid URL"),
+  body("backgroundImageUrl")
+    .optional()
+    .isURL()
+    .withMessage("Background image URL must be a valid URL"),
+  body("popularCampaigns")
+    .optional()
+    .custom(async (value) => {
+      if (value === undefined || value === null) return true;
+      try {
+        const parsed = JSON.parse(
+          typeof value === "string" ? value : JSON.stringify(value)
+        );
+        if (!Array.isArray(parsed)) {
+          throw new Error("Popular campaigns must be an array of objects");
+        }
+        parsed.forEach((item) => {
+          if (
+            typeof item !== "object" ||
+            Array.isArray(item) ||
+            !item.campaignId
+          ) {
+            throw new Error(
+              "Each campaign must be an object with a campaignId"
+            );
+          }
+        });
+        const campaignIds = parsed.map((item) => item.campaignId);
+        const campaigns = await Campaign.findAll({
+          where: { campaignId: { [Op.in]: campaignIds }, status: true },
+        });
+        if (campaigns.length !== campaignIds.length) {
+          throw new Error("One or more campaign IDs are invalid or inactive");
+        }
+        return true;
+      } catch (error) {
+        throw new Error(
+          "Popular campaigns must be a valid JSON array of objects: " +
+            error.message
+        );
+      }
+    }),
+];
+
+// Validation rules for user ID parameter
+const userIdValidation = [
+  param("userId")
+    .notEmpty()
+    .withMessage("User ID is required")
+    .isUUID(4)
+    .withMessage("User ID must be a valid UUID"),
 ];
 
 // Create a new brand
@@ -112,6 +215,7 @@ export const createBrand = async (req, res) => {
     whatWeLookFor,
     profilePicUrl,
     backgroundImageUrl,
+    popularCampaigns,
   } = req.body;
 
   try {
@@ -126,6 +230,11 @@ export const createBrand = async (req, res) => {
         ? JSON.parse(whatWeLookFor)
         : whatWeLookFor
       : null;
+    const parsedPopularCampaigns = popularCampaigns
+      ? typeof popularCampaigns === "string"
+        ? JSON.parse(popularCampaigns)
+        : popularCampaigns
+      : [];
 
     // Create a new brand
     const newBrand = await Brand.create({
@@ -136,8 +245,8 @@ export const createBrand = async (req, res) => {
       whatWeLookFor: parsedWhatWeLookFor,
       profilePicUrl,
       backgroundImageUrl,
-      popularCampaigns: [], // Default to empty array as per model
-      status: true, // Default status to true
+      popularCampaigns: parsedPopularCampaigns,
+      status: true,
     });
 
     logger.info("Brand created successfully", {
@@ -182,6 +291,17 @@ export const updateBrand = async (req, res) => {
       return res.status(404).json({ message: "Brand not found" });
     }
 
+    // Ensure authenticated user matches brandId
+    if (req.user.role !== "brand" || req.user.userId !== brandId) {
+      logger.warn("Brand update failed: Unauthorized", {
+        brandId,
+        userId: req.user.userId,
+      });
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to update this brand" });
+    }
+
     // Update fields if provided
     if (companyName) brand.companyName = companyName;
     if (bio !== undefined) brand.bio = bio;
@@ -208,20 +328,6 @@ export const updateBrand = async (req, res) => {
           ? JSON.parse(popularCampaigns)
           : popularCampaigns
         : [];
-      // Validate popularCampaigns
-      const errors = validationResult(
-        req.with({ body: { popularCampaigns: parsedPopularCampaigns } })
-      );
-      if (!errors.isEmpty()) {
-        logger.error(
-          "Validation errors during brand update for popularCampaigns",
-          {
-            errors: errors.array(),
-            brandId,
-          }
-        );
-        return res.status(400).json({ errors: errors.array() });
-      }
       brand.popularCampaigns = parsedPopularCampaigns;
     }
 
@@ -273,6 +379,47 @@ export const getBrandById = async (req, res) => {
   }
 };
 
+// Get brand by user ID
+export const getBrandByUserId = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    logger.error("Validation errors during get brand by user ID", {
+      errors: errors.array(),
+      userId: req.params.userId,
+    });
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { userId } = req.params;
+
+  try {
+    // Find the brand by userId with status true
+    const brand = await Brand.findOne({
+      where: { brandId: userId, status: true },
+    });
+
+    if (!brand) {
+      logger.warn("Get brand failed: Brand not found or inactive", { userId });
+      return res
+        .status(404)
+        .json({ message: "Brand not found or inactive for this user" });
+    }
+
+    logger.info("Brand retrieved successfully for user", { userId });
+    return res.status(200).json(brand);
+  } catch (error) {
+    logger.error("Error during getting brand by user ID", {
+      error: error.message,
+      userId,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting brand by user ID",
+      error: error.message,
+    });
+  }
+};
+
 // Get all brands
 export const getAllBrands = async (req, res) => {
   try {
@@ -312,6 +459,17 @@ export const deleteBrand = async (req, res) => {
       return res.status(404).json({ message: "Brand not found" });
     }
 
+    // Ensure authenticated user matches brandId
+    if (req.user.role !== "brand" || req.user.userId !== brandId) {
+      logger.warn("Brand deletion failed: Unauthorized", {
+        brandId,
+        userId: req.user.userId,
+      });
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this brand" });
+    }
+
     // Soft delete the brand by setting status to false
     brand.status = false;
     await brand.save();
@@ -331,12 +489,13 @@ export const deleteBrand = async (req, res) => {
 };
 
 // Export validation rules and controller functions
-export { brandCreateValidation, updatePopularCampaignsValidation };
+export { brandCreateValidation, brandUpdateValidation, userIdValidation };
 
 export default {
   createBrand,
   updateBrand,
   getBrandById,
+  getBrandByUserId,
   getAllBrands,
   deleteBrand,
 };

@@ -10,7 +10,6 @@ const Creator = sequelize.define(
       allowNull: false,
       primaryKey: true,
       unique: true,
-      defaultValue: DataTypes.UUIDV4,
       validate: {
         isUUID: {
           args: 4,
@@ -70,16 +69,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "Details must be a valid JSON object",
         },
-        // isValidDetails(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("Details must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each detail must be an object");
-        //     }
-        //   });
-        // },
+        isValidDetails(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("Details must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each detail must be an object");
+            }
+          });
+        },
       },
     },
     socialMedia: {
@@ -90,16 +89,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "Social media must be a valid JSON object",
         },
-        // isValidSocialMedia(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("Social media must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each social media entry must be an object");
-        //     }
-        //   });
-        // },
+        isValidSocialMedia(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("Social media must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each social media entry must be an object");
+            }
+          });
+        },
       },
     },
     whatIDo: {
@@ -110,16 +109,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "What I do must be a valid JSON object",
         },
-        // isValidWhatIDo(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("What I do must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each entry in 'What I do' must be an object");
-        //     }
-        //   });
-        // },
+        isValidWhatIDo(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("What I do must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each entry in 'What I do' must be an object");
+            }
+          });
+        },
       },
     },
     myPeople: {
@@ -130,16 +129,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "My people must be a valid JSON object",
         },
-        // isValidMyPeople(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("My people must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each entry in 'My people' must be an object");
-        //     }
-        //   });
-        // },
+        isValidMyPeople(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("My people must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each entry in 'My people' must be an object");
+            }
+          });
+        },
       },
     },
     myContent: {
@@ -150,16 +149,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "My content must be a valid JSON object",
         },
-        // isValidMyContent(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("My content must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each entry in 'My content' must be an object");
-        //     }
-        //   });
-        // },
+        isValidMyContent(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("My content must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each entry in 'My content' must be an object");
+            }
+          });
+        },
       },
     },
     pastCollaborations: {
@@ -170,16 +169,16 @@ const Creator = sequelize.define(
         isJSON: {
           msg: "Past collaborations must be a valid JSON object",
         },
-        // isValidPastCollaborations(value) {
-        //   if (!Array.isArray(value)) {
-        //     throw new Error("Past collaborations must be an array of objects");
-        //   }
-        //   value.forEach((item) => {
-        //     if (typeof item !== "object" || Array.isArray(item)) {
-        //       throw new Error("Each past collaboration must be an object");
-        //     }
-        //   });
-        // },
+        isValidPastCollaborations(value) {
+          if (!Array.isArray(value)) {
+            throw new Error("Past collaborations must be an array of objects");
+          }
+          value.forEach((item) => {
+            if (typeof item !== "object" || Array.isArray(item)) {
+              throw new Error("Each past collaboration must be an object");
+            }
+          });
+        },
       },
     },
     categoryId: {
@@ -187,7 +186,7 @@ const Creator = sequelize.define(
       allowNull: false,
       references: {
         model: "categories", // Reference to the Category model
-        key: "category_id", // Reference to the primary key of the Category model
+        key: "category_id",
       },
     },
     profilePicUrl: {
