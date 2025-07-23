@@ -10,6 +10,7 @@ import globalRateLimiter from "./middlewares/rateLimit.js";
 import "./models/Associations.js";
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
+import creatorRoute from "./routes/creatorRoute.js";
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ app.use(
 // Setup the routes
 app.use("/api/users", userRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/api/creators", creatorRoute);
 
 // Start the server
 app.listen(PORT, () => {
