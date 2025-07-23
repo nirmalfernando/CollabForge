@@ -103,43 +103,83 @@ const Creator = sequelize.define(
       },
     },
     whatIDo: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
       validate: {
-        len: {
-          args: [0, 500],
-          msg: "What I do must be up to 500 characters long",
+        isJSON: {
+          msg: "What I do must be a valid JSON object",
         },
+        // isValidWhatIDo(value) {
+        //   if (!Array.isArray(value)) {
+        //     throw new Error("What I do must be an array of objects");
+        //   }
+        //   value.forEach((item) => {
+        //     if (typeof item !== "object" || Array.isArray(item)) {
+        //       throw new Error("Each entry in 'What I do' must be an object");
+        //     }
+        //   });
+        // },
       },
     },
     myPeople: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
       validate: {
-        len: {
-          args: [0, 500],
-          msg: "My people must be up to 500 characters long",
+        isJSON: {
+          msg: "My people must be a valid JSON object",
         },
+        // isValidMyPeople(value) {
+        //   if (!Array.isArray(value)) {
+        //     throw new Error("My people must be an array of objects");
+        //   }
+        //   value.forEach((item) => {
+        //     if (typeof item !== "object" || Array.isArray(item)) {
+        //       throw new Error("Each entry in 'My people' must be an object");
+        //     }
+        //   });
+        // },
       },
     },
     myContent: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
       validate: {
-        len: {
-          args: [0, 500],
-          msg: "My content must be up to 500 characters long",
+        isJSON: {
+          msg: "My content must be a valid JSON object",
         },
+        // isValidMyContent(value) {
+        //   if (!Array.isArray(value)) {
+        //     throw new Error("My content must be an array of objects");
+        //   }
+        //   value.forEach((item) => {
+        //     if (typeof item !== "object" || Array.isArray(item)) {
+        //       throw new Error("Each entry in 'My content' must be an object");
+        //     }
+        //   });
+        // },
       },
     },
     pastCollaborations: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
       validate: {
-        len: {
-          args: [0, 500],
-          msg: "Past collaborations must be up to 500 characters long",
+        isJSON: {
+          msg: "Past collaborations must be a valid JSON object",
         },
+        // isValidPastCollaborations(value) {
+        //   if (!Array.isArray(value)) {
+        //     throw new Error("Past collaborations must be an array of objects");
+        //   }
+        //   value.forEach((item) => {
+        //     if (typeof item !== "object" || Array.isArray(item)) {
+        //       throw new Error("Each past collaboration must be an object");
+        //     }
+        //   });
+        // },
       },
     },
     categoryId: {
@@ -178,6 +218,17 @@ const Creator = sequelize.define(
         len: {
           args: [1, 50],
           msg: "Account number must be between 1 and 50 characters long",
+        },
+      },
+    },
+    type: {
+      type: DataTypes.ENUM("Content Creator", "Model", "Live Streamer"),
+      allowNull: false,
+      defaultValue: "Content Creator",
+      validate: {
+        isIn: {
+          args: [["Content Creator", "Model", "Live Streamer"]],
+          msg: "Type must be one of 'Content Creator', 'Model', or 'Live Streamer'",
         },
       },
     },
