@@ -42,7 +42,7 @@ const Campaign = sequelize.define(
       },
     },
     campaignStatus: {
-      type: DataTypes.ENUM("draft", "active", "paused", "completed"),
+      type: DataTypes.ENUM("draft", "active", "completed", "cancelled"),
       allowNull: false,
       defaultValue: "draft",
       validate: {
@@ -87,6 +87,11 @@ const Campaign = sequelize.define(
         key: "brand_id",
       },
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    }
   },
   {
     timestamps: true,
