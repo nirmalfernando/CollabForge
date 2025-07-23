@@ -11,6 +11,7 @@ import "./models/Associations.js";
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import creatorRoute from "./routes/creatorRoute.js";
+import brandRoute from "./routes/brandRoute.js";
 
 dotenv.config();
 
@@ -68,6 +69,7 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/creators", creatorRoute);
+app.use("/api/brands", brandRoute);
 
 // Start the server
 app.listen(PORT, () => {
