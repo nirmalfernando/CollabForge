@@ -74,12 +74,12 @@ const User = sequelize.define(
       },
     },
     role: {
-      type: DataTypes.ENUM("influencer", "brand"),
+      type: DataTypes.ENUM("influencer", "brand", "admin", "moderator"),
       allowNull: false,
       validate: {
         isIn: {
-          args: [["influencer", "brand"]],
-          msg: "Role must be either 'influencer' or 'brand'",
+          args: [["influencer", "brand", "admin", "moderator"]],
+          msg: "Role must be either 'influencer', 'brand', 'admin', or 'moderator'",
         },
       },
     },
