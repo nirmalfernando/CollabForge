@@ -14,6 +14,7 @@ import creatorRoute from "./routes/creatorRoute.js";
 import brandRoute from "./routes/brandRoute.js";
 import campaignRoute from "./routes/campaignRoute.js";
 import proposalRoute from "./routes/proposalRoute.js";
+import contractRoute from "./routes/contractRoute.js";
 
 dotenv.config();
 
@@ -74,6 +75,7 @@ app.use("/api/creators", creatorRoute);
 app.use("/api/brands", brandRoute);
 app.use("/api/campaigns", campaignRoute);
 app.use("/api/proposals", proposalRoute);
+app.use("/api/contracts", contractRoute);
 
 // Start the server
 app.listen(PORT, () => {
