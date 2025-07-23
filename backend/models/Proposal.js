@@ -87,6 +87,11 @@ const Proposal = sequelize.define(
         key: "creator_id",
       },
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     timestamps: true,
