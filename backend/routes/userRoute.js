@@ -28,21 +28,21 @@ router.post("/register", userRegistrationValidation, registerUser);
 router.post("/login", userLoginValidation, loginUser);
 
 // User logout route
-router.post("/logout", verifyToken, isOwner, logoutUser);
+router.post("/logout", verifyToken, logoutUser);
 
 // Get user by ID route
-router.get("/:id", verifyToken, isAdminOrOwner, isModerator, getUserById);
+router.get("/:id", verifyToken, getUserById);
 
 // Get all users route
-router.get("/", verifyToken, isAdmin, isModerator, getAllUsers);
+router.get("/", verifyToken, getAllUsers);
 
 // Update user route
-router.put("/:id", verifyToken, isOwner, updateUser);
+router.put("/:id", verifyToken, updateUser);
 
 // Update user password route
-router.put("/:id/password", verifyToken, isOwner, updateUserPassword);
+router.put("/:id/password", verifyToken, updateUserPassword);
 
 // Delete user route
-router.delete("/:id", verifyToken, isOwner, deleteUser);
+router.delete("/:id", verifyToken, deleteUser);
 
 export default router;
