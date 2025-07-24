@@ -86,6 +86,17 @@ Proposal.belongsTo(Campaign, {
   targetKey: "campaignId",
 });
 
+// Contract to Proposal (Many-to-One)
+// A Contract belongs to one Proposal, and a Proposal can have many Contracts
+Proposal.hasMany(Contract, {
+  foreignKey: "proposalId",
+  sourceKey: "proposalId",
+});
+Contract.belongsTo(Proposal, {
+  foreignKey: "proposalId",
+  targetKey: "proposalId",
+});
+
 // Contract to Creator (Many-to-One)
 // A Contract belongs to one Creator, and a Creator can have many Contracts
 Creator.hasMany(Contract, {

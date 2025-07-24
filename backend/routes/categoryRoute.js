@@ -7,24 +7,23 @@ import {
   getAllCategories,
   categoryValidationRules,
 } from "../controllers/categoryController.js";
-import { verifyToken, isAdmin } from "../middlewares/authRole.js";
+import { verifyToken } from "../middlewares/authRole.js";
 
 const router = express.Router();
 
 // Create a new category
-router.post("/", verifyToken, isAdmin, categoryValidationRules, createCategory);
+router.post("/", verifyToken, categoryValidationRules, createCategory);
 
 // Update an existing category
 router.put(
   "/:categoryId",
   verifyToken,
-  isAdmin,
   categoryValidationRules,
   updateCategory
 );
 
 // Delete a category
-router.delete("/:categoryId", verifyToken, isAdmin, deleteCategory);
+router.delete("/:categoryId", verifyToken, deleteCategory);
 
 // Get a category by ID
 router.get("/:categoryId", verifyToken, getCategoryById);

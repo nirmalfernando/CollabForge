@@ -49,11 +49,6 @@ const Proposal = sequelize.define(
     contentPlan: {
       type: DataTypes.JSON,
       allowNull: true,
-      validate: {
-        isJSON: {
-          msg: "Content plan must be a valid JSON object",
-        },
-      },
     },
     startDate: {
       type: DataTypes.DATE,
@@ -85,6 +80,17 @@ const Proposal = sequelize.define(
       references: {
         model: "creators", // Reference to the Creator model
         key: "creator_id",
+      },
+    },
+    proposalStatus: {
+      type: DataTypes.ENUM("pending", "accepted", "rejected"),
+      allowNull: false,
+      defaultValue: "pending",
+      validate: {
+        isIn: {
+          args: [["pending", "accepted", "rejected"]],
+          msg: "Proposal status must be one of 'pending', 'accepted', or 'rejected'",
+        },
       },
     },
     status: {

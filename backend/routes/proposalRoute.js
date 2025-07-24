@@ -4,11 +4,13 @@ import {
   proposalQueryValidation,
   createProposal,
   updateProposal,
+  updateProposalStatus,
   getProposalById,
   getAllProposals,
   getProposalsByCampaign,
   getProposalsByCreator,
   getProposalsByDateRange,
+  getProposalsByStatus,
   deleteProposal,
 } from "../controllers/proposalController.js";
 import { verifyToken } from "../middlewares/authRole.js";
@@ -16,42 +18,53 @@ import { verifyToken } from "../middlewares/authRole.js";
 const router = express.Router();
 
 // Create a new proposal
-router.post("/", proposalCreateValidation, verifyToken, createProposal);
-
-// Get a proposal by ID
-router.get("/:id", verifyToken, getProposalById);
-
-// Update a proposal by ID
-router.put("/:id", proposalCreateValidation, verifyToken, updateProposal);
-
-// Delete a proposal by ID (soft delete)
-router.delete("/:id", verifyToken, deleteProposal);
-
-// Get all proposals
-router.get("/", verifyToken, getAllProposals);
+router.post("/", verifyToken, proposalCreateValidation, createProposal);
 
 // Get proposals by campaign ID
 router.get(
   "/by-campaign",
-  proposalQueryValidation,
   verifyToken,
+  proposalQueryValidation,
   getProposalsByCampaign
 );
 
 // Get proposals by creator ID
 router.get(
   "/by-creator",
-  proposalQueryValidation,
   verifyToken,
+  proposalQueryValidation,
   getProposalsByCreator
+);
+
+// Get proposals by status
+router.get(
+  "/by-status",
+  verifyToken,
+  proposalQueryValidation,
+  getProposalsByStatus
 );
 
 // Get proposals by date range
 router.get(
   "/by-date-range",
-  proposalQueryValidation,
   verifyToken,
+  proposalQueryValidation,
   getProposalsByDateRange
 );
+
+// Get a proposal by ID
+router.get("/:id", verifyToken, getProposalById);
+
+// Update a proposal by ID
+router.put("/:id", verifyToken, proposalCreateValidation, updateProposal);
+
+// Update proposal status by ID
+router.put("/:id/status", verifyToken, updateProposalStatus);
+
+// Delete a proposal by ID (soft delete)
+router.delete("/:id", verifyToken, deleteProposal);
+
+// Get all proposals
+router.get("/", verifyToken, getAllProposals);
 
 export default router;

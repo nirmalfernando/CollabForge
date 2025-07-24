@@ -29,16 +29,10 @@ const Campaign = sequelize.define(
       },
     },
     budget: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DOUBLE,
       allowNull: false,
       validate: {
-        isFloat: {
-          msg: "Budget must be a valid number",
-        },
-        min: {
-          args: 0,
-          msg: "Budget must be a positive number",
-        },
+        min: { args: 0, msg: "Budget must be a positive number" },
       },
     },
     campaignStatus: {
@@ -56,7 +50,7 @@ const Campaign = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: "categories", // Reference to the Category model
+        model: "categories",
         key: "category_id",
       },
     },
@@ -64,8 +58,14 @@ const Campaign = sequelize.define(
       type: DataTypes.JSON,
       allowNull: true,
       validate: {
-        isJSON: {
-          msg: "Requirements must be a valid JSON object",
+        isValidRequirements(value) {
+          if (
+            value !== null &&
+            value !== undefined &&
+            typeof value !== "object"
+          ) {
+            throw new Error("Requirements must be a valid JSON object");
+          }
         },
       },
     },
@@ -83,7 +83,7 @@ const Campaign = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: "brands", // Reference to the Brand model
+        model: "brands",
         key: "brand_id",
       },
     },
@@ -91,7 +91,7 @@ const Campaign = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
-    }
+    },
   },
   {
     timestamps: true,
