@@ -11,13 +11,7 @@ import {
   userRegistrationValidation,
   userLoginValidation,
 } from "../controllers/userController.js";
-import {
-  verifyToken,
-  isAdmin,
-  isOwner,
-  isAdminOrOwner,
-  isModerator,
-} from "../middlewares/authRole.js";
+import { verifyToken } from "../middlewares/authRole.js";
 
 const router = express.Router();
 

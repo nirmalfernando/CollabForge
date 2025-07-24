@@ -63,8 +63,10 @@ const userRegistrationValidation = [
   body("role")
     .notEmpty()
     .withMessage("Role is required")
-    .isIn(["influencer", "brand"])
-    .withMessage("Role must be either 'influencer' or 'brand'"),
+    .isIn(["influencer", "brand", "admin", "moderator"])
+    .withMessage(
+      "Role must be either 'influencer', 'brand', 'admin', or 'moderator'"
+    ),
 ];
 
 // Register a new user
@@ -145,7 +147,11 @@ export const registerUser = async (req, res) => {
 
 // Validation rules for user login
 const userLoginValidation = [
-  body("username").notEmpty().withMessage("Username is required"),
+  body("identifier")
+    .notEmpty()
+    .withMessage("Username or email is required")
+    .isString()
+    .withMessage("Username or email must be a string"),
   body("password").notEmpty().withMessage("Password is required"),
 ];
 
@@ -162,14 +168,22 @@ export const loginUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { username, password } = req.body;
+  const { identifier, password } = req.body;
 
   try {
-    // Check if the user exists
-    const user = await User.findOne({ where: { username, status: true } });
+    // Check if the user exists using either username or email
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [
+          { username: identifier },
+          { email: identifier }, 
+        ],
+        status: true,
+      },
+    });
 
     if (!user) {
-      logger.warn("User login failed: User not found", { username });
+      logger.warn("User login failed: User not found", { identifier });
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -177,7 +191,7 @@ export const loginUser = async (req, res) => {
     const isMatch = bcrypt.compareSync(password, user.password);
 
     if (!isMatch) {
-      logger.warn("User login failed: Incorrect password", { username });
+      logger.warn("User login failed: Incorrect password", { identifier });
       return res.status(401).json({ message: "Incorrect password" });
     }
 
@@ -185,7 +199,7 @@ export const loginUser = async (req, res) => {
     const userId = user.userId;
 
     if (!userId) {
-      logger.error("User login failed: User ID is missing", { username });
+      logger.error("User login failed: User ID is missing", { identifier });
       return res.status(500).json({ message: "Internal server error" });
     }
 
@@ -200,7 +214,7 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       maxAge: 3600000, // 1 hour
     });

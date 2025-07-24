@@ -17,7 +17,7 @@ const Brand = sequelize.define(
         },
       },
       references: {
-        model: "users", // Reference to the User model
+        model: "users",
         key: "user_id",
       },
     },
@@ -45,8 +45,14 @@ const Brand = sequelize.define(
       type: DataTypes.JSON,
       allowNull: true,
       validate: {
-        isJSON: {
-          msg: "Description must be a valid JSON object",
+        isValidDescription(value) {
+          if (
+            value !== null &&
+            value !== undefined &&
+            typeof value !== "object"
+          ) {
+            throw new Error("Description must be a valid JSON object");
+          }
         },
       },
     },
@@ -54,8 +60,14 @@ const Brand = sequelize.define(
       type: DataTypes.JSON,
       allowNull: true,
       validate: {
-        isJSON: {
-          msg: "What we look for must be a valid JSON object",
+        isValidWhatWeLookFor(value) {
+          if (
+            value !== null &&
+            value !== undefined &&
+            typeof value !== "object"
+          ) {
+            throw new Error("What we look for must be a valid JSON object");
+          }
         },
       },
     },
@@ -82,24 +94,23 @@ const Brand = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "Popular campaigns must be a valid JSON object",
-        },
         isValidCampaigns(value) {
-          if (!Array.isArray(value)) {
+          if (value !== null && value !== undefined && !Array.isArray(value)) {
             throw new Error("Popular campaigns must be an array of objects");
           }
-          value.forEach((item) => {
-            if (
-              typeof item !== "object" ||
-              Array.isArray(item) ||
-              !item.campaignId
-            ) {
-              throw new Error(
-                "Each campaign must be an object with a campaignId"
-              );
-            }
-          });
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              if (
+                typeof item !== "object" ||
+                Array.isArray(item) ||
+                !item.campaignId
+              ) {
+                throw new Error(
+                  "Each campaign must be an object with a campaignId"
+                );
+              }
+            });
+          }
         },
       },
     },

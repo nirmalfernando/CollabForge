@@ -17,13 +17,13 @@ import { verifyToken } from "../middlewares/authRole.js";
 const router = express.Router();
 
 // Create a new creator
-router.post("/", creatorCreateValidation, verifyToken, createCreator);
+router.post("/", verifyToken, creatorCreateValidation, createCreator);
 
 // Get a creator by ID
 router.get("/:id", verifyToken, getCreatorById);
 
 // Update a creator by ID
-router.put("/:id", creatorUpdateValidation, verifyToken, updateCreator);
+router.put("/:id", verifyToken, creatorUpdateValidation, updateCreator);
 
 // Delete a creator by ID (soft delete)
 router.delete("/:id", verifyToken, deleteCreator);
@@ -34,19 +34,19 @@ router.get("/", verifyToken, getAllCreators);
 // Get creators by category ID
 router.get(
   "/by-category",
-  creatorQueryValidation,
   verifyToken,
+  creatorQueryValidation,
   getCreatorsByCategory
 );
 
 // Get creators by type
-router.get("/by-type", creatorQueryValidation, verifyToken, getCreatorsByType);
+router.get("/by-type", verifyToken, creatorQueryValidation, getCreatorsByType);
 
 // Get creator by user ID
 router.get(
   "/by-user/:userId",
-  creatorQueryValidation,
   verifyToken,
+  creatorQueryValidation,
   getCreatorByUserId
 );
 

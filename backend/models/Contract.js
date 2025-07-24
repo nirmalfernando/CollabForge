@@ -26,6 +26,14 @@ const Contract = sequelize.define(
         key: "campaign_id",
       },
     },
+    proposalId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: "proposals", // Reference to the Proposal model
+        key: "proposal_id",
+      },
+    },
     brandId: {
       type: DataTypes.STRING,
       allowNull: false,

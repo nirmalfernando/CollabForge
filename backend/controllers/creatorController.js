@@ -21,7 +21,7 @@ const creatorCreateValidation = [
       if (!user) {
         throw new Error("Associated user does not exist or is inactive");
       }
-      if (req.user.role !== "creator" || req.user.userId !== value) {
+      if (req.user.role !== "influencer" || req.user.userId !== value) {
         throw new Error(
           "Only the authenticated user can create their creator profile"
         );

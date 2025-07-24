@@ -183,8 +183,8 @@ This document provides details about the CollabForge API, including endpoints, H
 
 ```json
 {
-  "oldPassword": "securepassword123",
-  "newPassword": "newsecurepassword456"
+  "oldPassword": "Secure@123",
+  "newPassword": "Newsecure@123"
 }
 ```
 
@@ -786,7 +786,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 ```json
 {
-  "userId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "0e399101-04cd-458b-a1e2-11b6507328b0",
   "companyName": "TrendyWear",
   "bio": "Leading fashion brand for modern trends.",
   "description": {
@@ -801,11 +801,13 @@ This document provides details about the CollabForge API, including endpoints, H
   "backgroundImageUrl": "https://example.com/trendywear_background.jpg",
   "popularCampaigns": [
     {
+      "campaignId": "a1b2c3d4-e5f6-4789-8a0b-c1d2e3f4g5h6",
       "campaignName": "Summer Collection 2024",
       "startDate": "2024-06-01",
       "endDate": "2024-08-31"
     },
     {
+      "campaignId": "b2c3d4e5-f6g7-489a-9b0c-d1e2f3g4h5i6",
       "campaignName": "Winter Fest 2024",
       "startDate": "2024-12-01",
       "endDate": "2025-02-28"
@@ -1159,7 +1161,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 ```json
 {
-  "campaignId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "campaignId": "542d7ccf-b8f4-4338-93b9-64914518d7fd",
   "proposalTitle": "Summer Video Series",
   "proposalPitch": "A series of engaging video content for the campaign.",
   "contentPlan": {
@@ -1168,7 +1170,8 @@ This document provides details about the CollabForge API, including endpoints, H
   },
   "startDate": "2024-07-01",
   "endDate": "2024-08-15",
-  "creatorId": "e8e616e0-d894-4936-a3f5-391682ee794c",
+  "creatorId": "deb21abc-625a-4866-b245-1999b013974c",
+  "proposalStatus": "pending",
   "status": true
 }
 ```
@@ -1242,7 +1245,37 @@ This document provides details about the CollabForge API, including endpoints, H
 }
 ```
 
-### 3. Get Proposal by ID
+### 3. Update Proposal Status
+
+**Description:** Updates only the status of a proposal (for approving/rejecting proposals).
+
+- **URL:** `/proposals/:id/status`
+- **HTTP Method:** `PUT`
+
+**Request Body:**
+
+```json
+{
+  "proposalStatus": "accepted"
+}
+```
+
+**Response Body:**
+
+```json
+{
+  "message": "Proposal status updated successfully",
+  "proposalId": "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p",
+  "proposalStatus": "accepted"
+}
+```
+
+**Notes:**
+- `proposalStatus` must be one of: `"pending"`, `"accepted"`, or `"rejected"`
+- This endpoint only updates the proposal status, not other proposal details
+- Useful for brand managers to quickly approve or reject proposals without updating other fields
+
+### 4. Get Proposal by ID
 
 **Description:** Retrieves a proposal by its ID.
 
@@ -1269,7 +1302,7 @@ This document provides details about the CollabForge API, including endpoints, H
 }
 ```
 
-### 4. Get All Proposals
+### 5. Get All Proposals
 
 **Description:** Retrieves all active proposals.
 
@@ -1279,7 +1312,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of proposal objects
 
-### 5. Get Proposals by Campaign
+### 6. Get Proposals by Campaign
 
 **Description:** Retrieves proposals by campaign ID.
 
@@ -1289,7 +1322,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of proposal objects filtered by campaign
 
-### 6. Get Proposals by Creator
+### 7. Get Proposals by Creator
 
 **Description:** Retrieves proposals by creator ID.
 
@@ -1299,7 +1332,40 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of proposal objects filtered by creator
 
-### 7. Get Proposals by Date Range
+### 8. Get Proposals by Status
+
+**Description:** Retrieves proposals by their status.
+
+- **URL:** `/proposals/by-status?proposalStatus=string`
+- **HTTP Method:** `GET`
+- **Request Body:** None
+
+**Query Parameters:**
+- `proposalStatus` (required): Must be one of `"pending"`, `"accepted"`, or `"rejected"`
+
+**Response Body:**
+
+```json
+[
+  {
+    "proposalId": "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p",
+    "campaignId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "proposalTitle": "Summer Video Series",
+    "proposalPitch": "A series of engaging video content for the campaign.",
+    "contentPlan": {
+      "videos": 3,
+      "duration": "1-2 minutes each"
+    },
+    "startDate": "2024-07-01",
+    "endDate": "2024-08-15",
+    "creatorId": "e8e616e0-d894-4936-a3f5-391682ee794c",
+    "proposalStatus": "pending",
+    "status": true
+  }
+]
+```
+
+### 9. Get Proposals by Date Range
 
 **Description:** Retrieves proposals within a specified date range.
 
@@ -1309,7 +1375,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of proposal objects filtered by date range
 
-### 8. Delete a Proposal
+### 10. Delete a Proposal
 
 **Description:** Soft deletes a proposal by setting its status to false.
 
@@ -1472,7 +1538,49 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of contract objects filtered by creator
 
-### 8. Get Contracts by Status
+### 8. Get Contracts by Proposal
+
+**Description:** Retrieves contracts by proposal ID.
+
+- **URL:** `/contracts/by-proposal?proposalId=string`
+- **HTTP Method:** `GET`
+- **Request Body:** None
+
+**Query Parameters:**
+- `proposalId` (required): Must be a valid UUID
+
+**Response Body:**
+
+```json
+[
+  {
+    "contractId": "b9c8d7e6-f5a4-3b2c-1d0e-9f8g7h6i5j4k",
+    "campaignId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "proposalId": "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p",
+    "brandId": "28f69273-7825-4ce5-af65-034dd404ca6c",
+    "creatorId": "e8e616e0-d894-4936-a3f5-391682ee794c",
+    "contractTitle": "Summer Campaign Contract",
+    "contractDetails": "Agreement for video content creation.",
+    "contractSuggestions": {
+      "additionalTerms": "Include behind-the-scenes footage."
+    },
+    "creatorSignature": "John Doe",
+    "signedDate": "2024-07-01T12:00:00Z",
+    "contractStatus": "Pending",
+    "status": true
+  }
+]
+```
+
+**Error Response (No contracts found):**
+
+```json
+{
+  "message": "No active contracts found for this proposal"
+}
+```
+
+### 9. Get Contracts by Status
 
 **Description:** Retrieves contracts by status.
 
@@ -1482,7 +1590,7 @@ This document provides details about the CollabForge API, including endpoints, H
 
 **Response Body:** Array of contract objects filtered by status
 
-### 9. Delete a Contract
+### 10. Delete a Contract
 
 **Description:** Soft deletes a contract by setting its status to false.
 

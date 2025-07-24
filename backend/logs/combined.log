@@ -1,0 +1,102 @@
+2025-07-24T05:14:28.057Z [CollabForge] info: User logged in successfully
+2025-07-24T05:14:34.775Z [CollabForge] warn: Get user failed: User not found or inactive
+2025-07-24T05:15:13.968Z [CollabForge] info: User logged in successfully
+2025-07-24T05:15:16.998Z [CollabForge] warn: Get user failed: User not found or inactive
+2025-07-24T05:16:26.713Z [CollabForge] info: All active users retrieved successfully
+2025-07-24T05:16:34.127Z [CollabForge] info: User details retrieved successfully
+2025-07-24T05:17:28.763Z [CollabForge] info: User details updated successfully
+2025-07-24T05:17:28.764Z [CollabForge] info: User updated successfully
+2025-07-24T05:18:11.803Z [CollabForge] warn: Password update failed: User not found
+2025-07-24T05:18:24.863Z [CollabForge] info: User password updated successfully
+2025-07-24T05:21:54.448Z [CollabForge] error: Validation errors during user registration
+2025-07-24T05:22:48.637Z [CollabForge] info: User registered successfully
+2025-07-24T05:23:04.503Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-24T05:23:11.454Z [CollabForge] info: User logged in successfully
+2025-07-24T05:27:35.623Z [CollabForge] error: Validation errors during user login
+2025-07-24T05:27:46.175Z [CollabForge] error: Validation errors during user login
+2025-07-24T05:28:03.428Z [CollabForge] error: Validation errors during user login
+2025-07-24T05:28:48.384Z [CollabForge] info: User logged in successfully
+2025-07-24T05:28:59.941Z [CollabForge] info: User logged in successfully
+2025-07-24T05:29:46.403Z [CollabForge] info: User logged in successfully
+2025-07-24T05:30:29.368Z [CollabForge] info: User logged in successfully
+2025-07-24T05:32:18.072Z [CollabForge] info: User logged in successfully
+2025-07-24T05:32:23.457Z [CollabForge] info: All active users retrieved successfully
+2025-07-24T05:41:12.862Z [CollabForge] error: Validation errors during user login
+2025-07-24T05:41:23.075Z [CollabForge] warn: User login failed: User not found
+2025-07-24T05:42:30.909Z [CollabForge] info: Category retrieved successfully
+2025-07-24T05:42:56.699Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T05:44:37.469Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T05:51:53.413Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T05:52:01.325Z [CollabForge] warn: User login failed: User not found
+2025-07-24T05:52:37.617Z [CollabForge] info: User logged in successfully
+2025-07-24T05:52:41.648Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T05:52:51.785Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T05:53:13.392Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T05:54:59.533Z [CollabForge] info: All active users retrieved successfully
+2025-07-24T05:55:04.487Z [CollabForge] error: Error during creator creation
+2025-07-24T05:57:04.795Z [CollabForge] info: Creator created successfully
+2025-07-24T06:08:19.125Z [CollabForge] info: All active creators retrieved successfully
+2025-07-24T06:08:30.029Z [CollabForge] info: Creator details retrieved successfully
+2025-07-24T06:27:51.619Z [CollabForge] error: Validation errors during brand creation
+2025-07-24T06:28:49.729Z [CollabForge] info: User registered successfully
+2025-07-24T06:28:54.541Z [CollabForge] info: All active users retrieved successfully
+2025-07-24T06:29:10.058Z [CollabForge] error: Validation errors during brand creation
+2025-07-24T09:19:07.694Z [CollabForge] info: User logged in successfully
+2025-07-24T09:19:13.158Z [CollabForge] error: Validation errors during brand creation
+2025-07-24T09:20:48.811Z [CollabForge] error: Validation errors during brand creation
+2025-07-24T09:22:41.835Z [CollabForge] error: Error during brand creation
+2025-07-24T09:25:02.502Z [CollabForge] info: Brand created successfully
+2025-07-24T09:25:38.365Z [CollabForge] info: Brand updated successfully
+2025-07-24T09:25:43.593Z [CollabForge] info: All active brands retrieved successfully
+2025-07-24T09:25:50.285Z [CollabForge] info: Brand details retrieved successfully
+2025-07-24T09:25:56.043Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T09:27:02.023Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:28:32.371Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:29:11.398Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:29:51.292Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:33:32.826Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:36:46.004Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:37:09.008Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:39:26.815Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:39:28.261Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:39:52.036Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:40:06.554Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:40:46.852Z [CollabForge] info: User registered successfully
+2025-07-24T09:40:49.694Z [CollabForge] info: User logged in successfully
+2025-07-24T09:41:08.739Z [CollabForge] info: Brand created successfully
+2025-07-24T09:42:34.892Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:45:46.592Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:46:38.674Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:46:42.112Z [CollabForge] error: Error during campaign creation
+2025-07-24T09:48:15.514Z [CollabForge] info: Campaign created successfully
+2025-07-24T09:49:15.816Z [CollabForge] warn: Campaign update failed: Campaign not found
+2025-07-24T09:49:26.331Z [CollabForge] error: Error during campaign update
+2025-07-24T09:51:19.918Z [CollabForge] info: Campaign updated successfully
+2025-07-24T09:51:43.052Z [CollabForge] info: Campaign updated successfully
+2025-07-24T09:51:53.369Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-24T09:52:07.926Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-24T09:52:24.259Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:52:45.846Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:53:38.144Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:55:02.633Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:55:04.128Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:58:30.486Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:58:52.378Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:59:06.639Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T09:59:26.556Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T10:00:00.272Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-24T10:01:49.867Z [CollabForge] info: Campaigns retrieved successfully for category
+2025-07-24T10:01:53.907Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-24T10:01:57.099Z [CollabForge] info: Campaigns retrieved successfully for status
+2025-07-24T10:02:00.258Z [CollabForge] info: Campaigns retrieved successfully for budget range
+2025-07-24T10:16:34.056Z [CollabForge] info: User registered successfully
+2025-07-24T10:16:37.098Z [CollabForge] info: User logged in successfully
+2025-07-24T10:16:51.188Z [CollabForge] error: Validation errors during brand creation
+2025-07-24T10:17:22.011Z [CollabForge] info: Brand created successfully
+2025-07-24T10:18:35.141Z [CollabForge] info: Campaign created successfully
+2025-07-24T10:19:06.305Z [CollabForge] info: User registered successfully
+2025-07-24T10:19:58.305Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T10:20:12.360Z [CollabForge] info: User logged in successfully
+2025-07-24T10:20:16.733Z [CollabForge] info: Creator created successfully
+2025-07-24T10:21:36.490Z [CollabForge] error: Error during proposal creation
+2025-07-24T10:22:41.616Z [CollabForge] info: Proposal created successfully

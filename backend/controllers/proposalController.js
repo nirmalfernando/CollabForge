@@ -73,6 +73,12 @@ const proposalCreateValidation = [
         throw new Error("Creator does not exist or is inactive");
       }
     }),
+  body("proposalStatus")
+    .optional()
+    .isIn(["pending", "accepted", "rejected"])
+    .withMessage(
+      "Proposal status must be one of 'pending', 'accepted', or 'rejected'"
+    ),
   body("status")
     .optional()
     .isBoolean()
@@ -89,6 +95,12 @@ const proposalQueryValidation = [
     .optional()
     .isUUID(4)
     .withMessage("Creator ID must be a valid UUID"),
+  query("proposalStatus")
+    .optional()
+    .isIn(["pending", "accepted", "rejected"])
+    .withMessage(
+      "Proposal status must be one of 'pending', 'accepted', or 'rejected'"
+    ),
   query("startDate")
     .optional()
     .isISO8601()
@@ -128,6 +140,7 @@ export const createProposal = async (req, res) => {
     startDate,
     endDate,
     creatorId,
+    proposalStatus,
     status,
   } = req.body;
 
@@ -149,20 +162,20 @@ export const createProposal = async (req, res) => {
       startDate,
       endDate,
       creatorId,
+      proposalStatus: proposalStatus || "pending", // Default to "pending" if not provided
       status: status !== undefined ? status : true, // Default to true if not provided
     });
 
     logger.info("Proposal created successfully", {
       proposalId: newProposal.proposalId,
       proposalTitle: newProposal.proposalTitle,
+      proposalStatus: newProposal.proposalStatus,
     });
 
-    return res
-      .status(201)
-      .json({
-        message: "Proposal created successfully",
-        proposal: newProposal,
-      });
+    return res.status(201).json({
+      message: "Proposal created successfully",
+      proposal: newProposal,
+    });
   } catch (error) {
     logger.error("Error during proposal creation", {
       error: error.message,
@@ -186,6 +199,7 @@ export const updateProposal = async (req, res) => {
     startDate,
     endDate,
     creatorId,
+    proposalStatus,
     status,
   } = req.body;
 
@@ -252,11 +266,15 @@ export const updateProposal = async (req, res) => {
       }
       proposal.creatorId = creatorId;
     }
+    if (proposalStatus) proposal.proposalStatus = proposalStatus;
     if (status !== undefined) proposal.status = status;
 
     await proposal.save();
 
-    logger.info("Proposal updated successfully", { proposalId });
+    logger.info("Proposal updated successfully", {
+      proposalId,
+      proposalStatus: proposal.proposalStatus,
+    });
     return res
       .status(200)
       .json({ message: "Proposal updated successfully", proposal });
@@ -414,6 +432,49 @@ export const getProposalsByCreator = async (req, res) => {
   }
 };
 
+// Get proposals by proposal status
+export const getProposalsByStatus = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    logger.error("Validation errors during get proposals by status", {
+      errors: errors.array(),
+      query: req.query,
+    });
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { proposalStatus } = req.query;
+
+  try {
+    const proposals = await Proposal.findAll({
+      where: { proposalStatus, status: true },
+    });
+
+    if (proposals.length === 0) {
+      logger.info("No active proposals found for status", { proposalStatus });
+      return res.status(404).json({
+        message: `No active proposals found with status '${proposalStatus}'`,
+      });
+    }
+
+    logger.info("Proposals retrieved successfully for status", {
+      proposalStatus,
+      count: proposals.length,
+    });
+    return res.status(200).json(proposals);
+  } catch (error) {
+    logger.error("Error during getting proposals by status", {
+      error: error.message,
+      proposalStatus,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting proposals by status",
+      error: error.message,
+    });
+  }
+};
+
 // Get proposals by date range
 export const getProposalsByDateRange = async (req, res) => {
   const errors = validationResult(req);
@@ -463,6 +524,63 @@ export const getProposalsByDateRange = async (req, res) => {
   }
 };
 
+// Update proposal status only (for approving/rejecting proposals)
+export const updateProposalStatus = async (req, res) => {
+  const proposalId = req.params.id;
+  const { proposalStatus } = req.body;
+
+  // Validate proposalStatus
+  if (
+    !proposalStatus ||
+    !["pending", "accepted", "rejected"].includes(proposalStatus)
+  ) {
+    logger.warn("Invalid proposal status provided", {
+      proposalId,
+      proposalStatus,
+    });
+    return res.status(400).json({
+      message:
+        "Proposal status must be one of 'pending', 'accepted', or 'rejected'",
+    });
+  }
+
+  try {
+    // Find the proposal by proposalId
+    const proposal = await Proposal.findByPk(proposalId);
+
+    if (!proposal) {
+      logger.warn("Proposal status update failed: Proposal not found", {
+        proposalId,
+      });
+      return res.status(404).json({ message: "Proposal not found" });
+    }
+
+    // Update only the proposal status
+    proposal.proposalStatus = proposalStatus;
+    await proposal.save();
+
+    logger.info("Proposal status updated successfully", {
+      proposalId,
+      newStatus: proposalStatus,
+    });
+    return res.status(200).json({
+      message: "Proposal status updated successfully",
+      proposalId,
+      proposalStatus: proposal.proposalStatus,
+    });
+  } catch (error) {
+    logger.error("Error during proposal status update", {
+      error: error.message,
+      proposalId,
+      proposalStatus,
+    });
+    return res.status(500).json({
+      message: "Internal server error during proposal status update",
+      error: error.message,
+    });
+  }
+};
+
 // Delete a proposal (soft delete)
 export const deleteProposal = async (req, res) => {
   const proposalId = req.params.id;
@@ -506,6 +624,8 @@ export default {
   getAllProposals,
   getProposalsByCampaign,
   getProposalsByCreator,
+  getProposalsByStatus,
   getProposalsByDateRange,
+  updateProposalStatus,
   deleteProposal,
 };

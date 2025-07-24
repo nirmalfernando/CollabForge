@@ -15,7 +15,7 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT || 5432,
     logging: true,
     pool: {
-      max: 5,
+      max: 10,
       min: 0,
       acquire: 30000,
       idle: 10000,

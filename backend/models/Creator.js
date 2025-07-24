@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../connect.js";
 
-// Define the Creator model
 const Creator = sequelize.define(
   "Creator",
   {
@@ -17,7 +16,7 @@ const Creator = sequelize.define(
         },
       },
       references: {
-        model: "users", // Reference to the User model
+        model: "users",
         key: "user_id",
       },
     },
@@ -66,9 +65,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "Details must be a valid JSON object",
-        },
         isValidDetails(value) {
           if (!Array.isArray(value)) {
             throw new Error("Details must be an array of objects");
@@ -86,9 +82,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "Social media must be a valid JSON object",
-        },
         isValidSocialMedia(value) {
           if (!Array.isArray(value)) {
             throw new Error("Social media must be an array of objects");
@@ -106,9 +99,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "What I do must be a valid JSON object",
-        },
         isValidWhatIDo(value) {
           if (!Array.isArray(value)) {
             throw new Error("What I do must be an array of objects");
@@ -126,9 +116,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "My people must be a valid JSON object",
-        },
         isValidMyPeople(value) {
           if (!Array.isArray(value)) {
             throw new Error("My people must be an array of objects");
@@ -146,9 +133,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "My content must be a valid JSON object",
-        },
         isValidMyContent(value) {
           if (!Array.isArray(value)) {
             throw new Error("My content must be an array of objects");
@@ -166,9 +150,6 @@ const Creator = sequelize.define(
       allowNull: true,
       defaultValue: [],
       validate: {
-        isJSON: {
-          msg: "Past collaborations must be a valid JSON object",
-        },
         isValidPastCollaborations(value) {
           if (!Array.isArray(value)) {
             throw new Error("Past collaborations must be an array of objects");
@@ -185,7 +166,7 @@ const Creator = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: "categories", // Reference to the Category model
+        model: "categories",
         key: "category_id",
       },
     },

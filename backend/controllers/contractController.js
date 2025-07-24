@@ -2,6 +2,7 @@ import Contract from "../models/Contract.js";
 import Campaign from "../models/Campaign.js";
 import Brand from "../models/Brand.js";
 import Creator from "../models/Creator.js";
+import Proposal from "../models/Proposal.js";
 import { body, query, validationResult } from "express-validator";
 import { Op } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
@@ -20,6 +21,19 @@ const contractCreateValidation = [
       });
       if (!campaign) {
         throw new Error("Campaign does not exist or is inactive");
+      }
+    }),
+  body("proposalId")
+    .notEmpty()
+    .withMessage("Proposal ID is required")
+    .isUUID(4)
+    .withMessage("Proposal ID must be a valid UUID")
+    .custom(async (value) => {
+      const proposal = await Proposal.findOne({
+        where: { proposalId: value, status: true },
+      });
+      if (!proposal) {
+        throw new Error("Proposal does not exist or is inactive");
       }
     }),
   body("brandId")
@@ -159,6 +173,10 @@ const contractQueryValidation = [
     .optional()
     .isUUID(4)
     .withMessage("Campaign ID must be a valid UUID"),
+  query("proposalId")
+    .optional()
+    .isUUID(4)
+    .withMessage("Proposal ID must be a valid UUID"),
   query("brandId")
     .optional()
     .isUUID(4)
@@ -189,6 +207,7 @@ export const createContract = async (req, res) => {
 
   const {
     campaignId,
+    proposalId,
     brandId,
     creatorId,
     contractTitle,
@@ -214,6 +233,7 @@ export const createContract = async (req, res) => {
     const newContract = await Contract.create({
       contractId: uuidv4(),
       campaignId,
+      proposalId,
       brandId,
       creatorId,
       contractTitle,
@@ -228,14 +248,13 @@ export const createContract = async (req, res) => {
     logger.info("Contract created successfully", {
       contractId: newContract.contractId,
       contractTitle: newContract.contractTitle,
+      proposalId: newContract.proposalId,
     });
 
-    return res
-      .status(201)
-      .json({
-        message: "Contract created successfully",
-        contract: newContract,
-      });
+    return res.status(201).json({
+      message: "Contract created successfully",
+      contract: newContract,
+    });
   } catch (error) {
     logger.error("Error during contract creation", {
       error: error.message,
@@ -401,6 +420,48 @@ export const getContractsByCampaign = async (req, res) => {
     });
     return res.status(500).json({
       message: "Internal server error during getting contracts by campaign",
+      error: error.message,
+    });
+  }
+};
+
+// Get contracts by proposal ID
+export const getContractsByProposal = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    logger.error("Validation errors during get contracts by proposal", {
+      errors: errors.array(),
+      query: req.query,
+    });
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { proposalId } = req.query;
+
+  try {
+    const contracts = await Contract.findAll({
+      where: { proposalId, status: true },
+    });
+
+    if (contracts.length === 0) {
+      logger.info("No active contracts found for proposal", { proposalId });
+      return res
+        .status(404)
+        .json({ message: "No active contracts found for this proposal" });
+    }
+
+    logger.info("Contracts retrieved successfully for proposal", {
+      proposalId,
+    });
+    return res.status(200).json(contracts);
+  } catch (error) {
+    logger.error("Error during getting contracts by proposal", {
+      error: error.message,
+      proposalId,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting contracts by proposal",
       error: error.message,
     });
   }
@@ -574,6 +635,7 @@ export default {
   getContractById,
   getAllContracts,
   getContractsByCampaign,
+  getContractsByProposal,
   getContractsByBrand,
   getContractsByCreator,
   getContractsByStatus,
