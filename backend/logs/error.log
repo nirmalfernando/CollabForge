@@ -33,3 +33,9 @@
 2025-07-24T10:16:51.188Z [CollabForge] error: Validation errors during brand creation
 2025-07-24T10:19:58.305Z [CollabForge] error: Validation errors during creator creation
 2025-07-24T10:21:36.490Z [CollabForge] error: Error during proposal creation
+2025-07-24T10:40:49.057Z [CollabForge] error: Validation errors during contract creation
+2025-07-24T10:41:29.835Z [CollabForge] error: Validation errors during contract creation
+2025-07-24T11:06:11.894Z [CollabForge] error: Validation errors during contract creation
+2025-07-24T11:07:40.677Z [CollabForge] error: Validation errors during contract creation
+2025-07-24T11:18:34.499Z [CollabForge] error: Error during contract update
+2025-07-24T11:23:34.350Z [CollabForge] error: Validation errors during get contracts by status

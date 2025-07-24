@@ -73,11 +73,6 @@ const Contract = sequelize.define(
     contractSuggestions: {
       type: DataTypes.JSON,
       allowNull: true,
-      validate: {
-        isJSON: {
-          msg: "Contract suggestions must be a valid JSON object",
-        },
-      },
     },
     creatorSignature: {
       type: DataTypes.STRING,

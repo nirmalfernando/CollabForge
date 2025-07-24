@@ -48,8 +48,8 @@ const contractCreateValidation = [
       if (!brand) {
         throw new Error("Brand does not exist or is inactive");
       }
-      // Ensure the authenticated user is a brand and matches the brandId
-      if (req.user.role !== "brand" || req.user.brandId !== value) {
+
+      if (req.user.role !== "brand" || req.user.userId !== value) {
         throw new Error(
           "Only the brand associated with this contract can create it"
         );
