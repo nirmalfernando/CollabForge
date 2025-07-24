@@ -353,7 +353,7 @@ export const getUserById = async (req, res) => {
   try {
     // Find the user by userId with status true
     const user = await User.findOne({
-      where: { id: userId, status: true },
+      where: { userId: userId, status: true },
       attributes: { exclude: ["password"] }, // Exclude password from the response
     });
 
