@@ -32,8 +32,8 @@ This document provides details about the CollabForge API, including endpoints, H
   "name": "John Doe",
   "username": "johndoe123",
   "email": "john.doe@example.com",
-  "password": "securepassword123",
-  "confirmPassword": "securepassword123",
+  "password": "Secure@123",
+  "confirmPassword": "Secure@123",
   "contactNo": "+1234567890",
   "role": "influencer"
 }
@@ -60,7 +60,7 @@ This document provides details about the CollabForge API, including endpoints, H
 ```json
 {
   "username": "johndoe123",
-  "password": "securepassword123"
+  "password": "Secure@123"
 }
 ```
 
