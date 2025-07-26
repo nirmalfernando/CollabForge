@@ -44,12 +44,11 @@ import { creatorApi, categoryApi, getAuthData, imageUploadApi } from "@/lib/api"
 
 const MAX_FILE_SIZE_MB = 10 // Max file size for image uploads
 
-export default function CreatorEditProfilePage() {
+export default function CreatorNewProfilePage() {
   const router = useRouter()
   const [authData, setAuthDataState] = useState<any>(null)
   const [categories, setCategories] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true) // Start as loading to fetch existing data
-  const [creatorId, setCreatorId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   // State for managing forms
   const [isAddingDetail, setIsAddingDetail] = useState(false)
@@ -85,7 +84,7 @@ export default function CreatorEditProfilePage() {
     Custom: { icon: PlusCircle, placeholder: "Enter custom detail" },
   }
 
-  // Initial creator data state
+  // Initial creator data for new profile - set image URLs to null
   const [creatorData, setCreatorData] = useState({
     name: "",
     nickname: "",
@@ -110,74 +109,17 @@ export default function CreatorEditProfilePage() {
     }
     setAuthDataState(auth)
 
-    const loadProfileAndCategories = async () => {
+    // Load categories
+    const loadCategories = async () => {
       try {
-        setIsLoading(true)
-        // Fetch creator profile
-        const profile = await creatorApi.getCreatorByUserId(auth.user.userId)
-        setCreatorId(profile._id) // Store creator ID for updates
-
-        // Populate form fields with existing data
-        setCreatorData({
-          name: profile.firstName || "",
-          nickname: profile.nickName || "",
-          lastName: profile.lastName || "",
-          followerInfo: profile.socialMedia?.[0]?.followers
-            ? `${profile.socialMedia[0].followers} Followers (${profile.socialMedia[0].platform})`
-            : "",
-          bio: profile.bio || "",
-          details:
-            profile.details?.map((d: any) => ({
-              type: d.label,
-              value: d.value,
-              icon: detailTypeMap[d.label as keyof typeof detailTypeMap]?.icon || PlusCircle,
-            })) || [],
-          platforms:
-            profile.socialMedia?.map((p: any) => ({
-              icon:
-                (
-                  {
-                    TikTok: Monitor,
-                    Instagram: Instagram,
-                    YouTube: Youtube,
-                    Email: Mail,
-                    Website: Globe,
-                  } as { [key: string]: any }
-                )[p.platform] || Monitor,
-              name: p.platform,
-              handle: p.handle,
-              link: p.url,
-            })) || [],
-          whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
-          myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
-          myContent: profile.myContent?.map((item: any) => item.title) || [""],
-          workedWith: profile.pastCollaborations?.map((item: any) => item.brand) || [""],
-          bannerImageUrl: profile.backgroundImgUrl || null, // Set to null if backend returns null/undefined
-          profilePicUrl: profile.profilePicUrl || null, // Set to null if backend returns null/undefined
-        })
-        setSelectedCategory(profile.categoryId || "")
-        setSelectedCreatorType(profile.type || "")
-
-        // Load categories
         const categoriesData = await categoryApi.getAllCategories()
         setCategories(categoriesData)
-      } catch (error: any) {
-        console.error("Failed to load creator profile or categories:", error)
-        toast({
-          title: "Error",
-          description: error.message || "Failed to load profile data.",
-          variant: "destructive",
-        })
-        // If profile not found, redirect to new profile creation
-        if (error.status === 404) {
-          router.push("/creator/profile/new")
-        }
-      } finally {
-        setIsLoading(false)
+      } catch (error) {
+        console.error("Failed to load categories:", error)
       }
     }
 
-    loadProfileAndCategories()
+    loadCategories()
   }, [router])
 
   // Cleanup object URLs when component unmounts or image changes
@@ -240,8 +182,8 @@ export default function CreatorEditProfilePage() {
     }
   }
 
-  const handleUpdateSettings = async () => {
-    if (!authData || !creatorId) return
+  const handleSaveSettings = async () => {
+    if (!authData) return
 
     if (!creatorData.name.trim() || !creatorData.lastName.trim() || !selectedCategory || !selectedCreatorType) {
       toast({
@@ -257,6 +199,7 @@ export default function CreatorEditProfilePage() {
 
       // Transform data to match API format
       const apiData = {
+        userId: authData.user.userId,
         firstName: creatorData.name,
         lastName: creatorData.lastName,
         nickName: creatorData.nickname || undefined,
@@ -304,20 +247,20 @@ export default function CreatorEditProfilePage() {
         type: selectedCreatorType as "Content Creator" | "Model" | "Live Streamer",
       }
 
-      await creatorApi.updateCreator(creatorId, apiData)
+      await creatorApi.createCreator(apiData)
 
       toast({
-        title: "Profile Updated",
-        description: "Your creator profile has been updated successfully!",
+        title: "Profile Created",
+        description: "Your creator profile has been created successfully!",
       })
 
       // Redirect to profile page
       router.push("/creator/profile")
     } catch (error: any) {
-      console.error("Failed to update profile:", error)
+      console.error("Failed to create profile:", error)
       toast({
         title: "Error",
-        description: error.message || "Failed to update profile. Please try again.",
+        description: error.message || "Failed to create profile. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -475,18 +418,6 @@ export default function CreatorEditProfilePage() {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <Header isLoggedIn={true} userRole="influencer" />
-        <main className="flex-1 flex items-center justify-center">
-          <div>Loading profile data...</div>
-        </main>
-        <Footer />
-      </div>
-    )
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="influencer" />
@@ -626,12 +557,12 @@ export default function CreatorEditProfilePage() {
                     className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
                   />
                   <Button
-                    onClick={handleUpdateSettings}
+                    onClick={handleSaveSettings}
                     disabled={isLoading}
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
-                    {isLoading ? "Updating..." : "Update Settings"}
+                    {isLoading ? "Creating..." : "Create Profile"}
                   </Button>
                 </div>
               </div>

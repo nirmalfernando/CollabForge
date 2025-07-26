@@ -6,206 +6,208 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { toast } from "@/hooks/use-toast"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { useRouter } from "next/navigation"
-import { Trash2, X } from "lucide-react"
 
 export default function CreateCampaignPage() {
   const [campaignData, setCampaignData] = useState({
-    title: "",
-    budget: "",
-    status: "",
-    requirements: "",
+    name: "",
     description: "",
-    category: "", // Added category state
+    budget: "",
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
+    category: "", // New field for category
   })
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  const router = useRouter()
 
+  // Category options - in the future this will come from a GET request to category table
   const categoryOptions = [
-    "Technology",
-    "Beauty",
-    "Fashion",
-    "Fitness",
-    "Gaming",
-    "Education",
-    "Food & Drink",
-    "Travel",
-    "Lifestyle",
-    "Arts & Culture",
-    "Music",
-    "Sports",
-    "Finance",
-    "Health & Wellness",
-    "Parenting",
-    "DIY & Crafts",
-    "Pets",
-    "Automotive",
-    "Science",
-    "Comedy",
+    { id: "1", name: "Technology" },
+    { id: "2", name: "Beauty & Skincare" },
+    { id: "3", name: "Fashion & Style" },
+    { id: "4", name: "Fitness & Health" },
+    { id: "5", name: "Food & Cooking" },
+    { id: "6", name: "Travel & Adventure" },
+    { id: "7", name: "Gaming" },
+    { id: "8", name: "Education & Science" },
+    { id: "9", name: "Music & Entertainment" },
+    { id: "10", name: "Lifestyle & Vlogs" },
+    { id: "11", name: "Art & Design" },
+    { id: "12", name: "Business & Finance" },
+    { id: "13", name: "Home & DIY" },
+    { id: "14", name: "Parenting & Family" },
+    { id: "15", name: "Sports" },
+    { id: "16", name: "Comedy & Humor" },
+    { id: "17", name: "Photography" },
+    { id: "18", name: "Automotive" },
+    { id: "19", name: "Pets & Animals" },
+    { id: "20", name: "Other" },
   ]
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Open the confirmation dialog
-    setIsConfirmDialogOpen(true)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target
+    setCampaignData((prev) => ({ ...prev, [id]: value }))
+  }
+
+  const handleCategoryChange = (value: string) => {
+    setCampaignData((prev) => ({ ...prev, category: value }))
+  }
+
+  const handleDateChange = (field: "startDate" | "endDate", date: Date | undefined) => {
+    setCampaignData((prev) => ({ ...prev, [field]: date }))
   }
 
   const handleConfirmCampaign = () => {
-    console.log("Campaign Data confirmed for submission:", campaignData)
-    // In a real app, this is where you would call your API to submit the campaign data
-    // For now, simulate submission and redirect
-    setTimeout(() => {
-      setIsConfirmDialogOpen(false) // Close dialog
-      router.push("/brand/dashboard") // Redirect to brand dashboard after creation
-    }, 500)
+    // In a real application, you would send campaignData to your backend
+    console.log("Campaign Data:", campaignData)
+    toast({
+      title: "Campaign Created",
+      description: "Your sponsorship campaign has been successfully created!",
+    })
+    // Redirect to campaign list or dashboard
   }
 
   return (
-    <>
-      <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <Header isLoggedIn={true} userRole="brand-manager" />
-
-        <main className="flex-1 flex items-center justify-center py-12 px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full max-w-6xl rounded-xl overflow-hidden shadow-lg bg-card">
-            {/* Left Panel - Campaign Form */}
-            <div className="bg-card p-8 md:p-12 flex flex-col justify-center">
-              <h1 className="text-4xl font-bold mb-8 text-primary">Sponsorships</h1>
-
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <Input
-                  type="text"
-                  placeholder="Title"
-                  value={campaignData.title}
-                  onChange={(e) => setCampaignData({ ...campaignData, title: e.target.value })}
-                  className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3"
-                  required
-                />
-                <Input
-                  type="text"
-                  placeholder="Budget"
-                  value={campaignData.budget}
-                  onChange={(e) => setCampaignData({ ...campaignData, budget: e.target.value })}
-                  className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3"
-                  required
-                />
-                <Select
-                  value={campaignData.status}
-                  onValueChange={(value) => setCampaignData({ ...campaignData, status: value })}
-                >
-                  <SelectTrigger className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card text-foreground">
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="paused">Paused</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                  </SelectContent>
-                </Select>
-                {/* New Category Dropdown */}
-                <Select
-                  value={campaignData.category}
-                  onValueChange={(value) => setCampaignData({ ...campaignData, category: value })}
-                >
-                  <SelectTrigger className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
-                    <SelectValue placeholder="Select Category/Niche" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
-                    {categoryOptions.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  type="text"
-                  placeholder="Requirements"
-                  value={campaignData.requirements}
-                  onChange={(e) => setCampaignData({ ...campaignData, requirements: e.target.value })}
-                  className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3"
-                  required
-                />
-                <Textarea
-                  placeholder="Description"
-                  value={campaignData.description}
-                  onChange={(e) => setCampaignData({ ...campaignData, description: e.target.value })}
-                  rows={5}
-                  className="w-full bg-background border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 resize-y"
-                  required
-                />
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent mt-6"
-                >
-                  Next
-                </Button>
-              </form>
-            </div>
-
-            {/* Right Panel - Decorative (mimicking the arc) */}
-            <div className="hidden lg:flex items-center justify-center bg-background relative overflow-hidden">
-              {/* Large blue arc */}
-              <div
-                className="absolute -right-40 -top-40 w-[600px] h-[600px] rounded-full bg-primary"
-                style={{ clipPath: "ellipse(50% 50% at 100% 50%)" }}
-              />
-              <h2 className="text-5xl font-bold text-white z-10">CollabForge</h2>
-            </div>
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <Header isLoggedIn={true} userRole="brand-manager" />
+      <main className="flex-1 p-4 md:p-6">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold">Create New Sponsorship Campaign</h1>
+            <p className="text-muted-foreground mt-2">Fill out the details for your new campaign.</p>
           </div>
-        </main>
 
-        <Footer />
-      </div>
+          <div className="space-y-6 rounded-lg border border-muted bg-card p-6 shadow-lg">
+            <div>
+              <Label htmlFor="name" className="text-lg font-semibold">
+                Campaign Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="e.g., Summer Product Launch"
+                value={campaignData.name}
+                onChange={handleChange}
+                className="mt-2 bg-muted border-none text-foreground placeholder:text-muted-foreground"
+              />
+            </div>
 
-      {/* Confirmation Dialog - Moved outside main content */}
-      <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] bg-card text-foreground border-4 border-primary rounded-xl p-8 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-          <DialogHeader className="relative mb-6">
-            <DialogTitle className="text-primary text-3xl font-bold text-left">Confirm</DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-0 right-0 text-primary hover:text-primary/80"
-              onClick={() => setIsConfirmDialogOpen(false)}
-            >
-              <X className="h-6 w-6" />
-              <span className="sr-only">Close</span>
+            <div>
+              <Label htmlFor="description" className="text-lg font-semibold">
+                Campaign Description
+              </Label>
+              <Textarea
+                id="description"
+                placeholder="Describe your campaign objectives, target audience, and desired outcomes."
+                value={campaignData.description}
+                onChange={handleChange}
+                className="mt-2 min-h-[120px] bg-muted border-none text-foreground placeholder:text-muted-foreground"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="budget" className="text-lg font-semibold">
+                Budget ($)
+              </Label>
+              <Input
+                id="budget"
+                type="number"
+                placeholder="e.g., 5000"
+                value={campaignData.budget}
+                onChange={handleChange}
+                className="mt-2 bg-muted border-none text-foreground placeholder:text-muted-foreground"
+              />
+            </div>
+
+            {/* Category Selection */}
+            <div>
+              <Label htmlFor="category" className="text-lg font-semibold">
+                Category/Niche
+              </Label>
+              <Select value={campaignData.category} onValueChange={handleCategoryChange}>
+                <SelectTrigger className="w-full mt-2 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
+                  <SelectValue placeholder="Select campaign category/niche" />
+                </SelectTrigger>
+                <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
+                  {categoryOptions.map((category) => (
+                    <SelectItem key={category.id} value={category.id} className="hover:bg-primary/20">
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label htmlFor="startDate" className="text-lg font-semibold">
+                  Start Date
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal mt-2 bg-muted border-none text-foreground hover:bg-muted/80",
+                        !campaignData.startDate && "text-muted-foreground",
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {campaignData.startDate ? format(campaignData.startDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-card text-foreground">
+                    <Calendar
+                      mode="single"
+                      selected={campaignData.startDate}
+                      onSelect={(date) => handleDateChange("startDate", date)}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div>
+                <Label htmlFor="endDate" className="text-lg font-semibold">
+                  End Date
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal mt-2 bg-muted border-none text-foreground hover:bg-muted/80",
+                        !campaignData.endDate && "text-muted-foreground",
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {campaignData.endDate ? format(campaignData.endDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-card text-foreground">
+                    <Calendar
+                      mode="single"
+                      selected={campaignData.endDate}
+                      onSelect={(date) => handleDateChange("endDate", date)}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+
+            <Button onClick={handleConfirmCampaign} className="w-full rounded-full py-3 text-lg">
+              Create Campaign
             </Button>
-            <Button variant="ghost" size="icon" className="absolute top-0 right-10 text-primary hover:text-primary/80">
-              <Trash2 className="h-6 w-6" />
-              <span className="sr-only">Delete</span>
-            </Button>
-          </DialogHeader>
-          <DialogDescription className="text-foreground text-base leading-relaxed mb-8">
-            You&apos;re about to finalize this action. Please double-check all the information provided, as once
-            confirmed, changes may not be possible. If everything looks good and you&apos;re ready to proceed, click
-            &apos;Confirm&apos; to continue. Otherwise, take a moment to review your inputs before moving forward.
-          </DialogDescription>
-          <DialogFooter className="flex justify-center">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
-              onClick={handleConfirmCampaign}
-            >
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
   )
 }

@@ -2,6 +2,8 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Header from "@/components/header"
@@ -10,7 +12,6 @@ import {
   Pencil,
   Monitor,
   Users,
-  MapPin,
   Sparkles,
   Instagram,
   Youtube,
@@ -22,50 +23,79 @@ import {
   Zap,
   Leaf,
 } from "lucide-react"
+import { creatorApi, getAuthData } from "@/lib/api"
+import { toast } from "@/hooks/use-toast"
 
 export default function CreatorProfilePage() {
-  // Dummy data for the creator profile
-  const creatorData = {
-    name: "Madeline",
-    nickname: "Mads_Molecule",
-    lastName: "Carter",
-    followers: "320,000",
-    platform: "TikTok",
-    bio: "Hey hey! I'm Mads Molecule 🔬 Full-time chaos coordinator / part-time science exploder. I make loud, weird, totally questionable science content on TikTok that turns “ugh, chemistry” into “wait, what just happened!?”",
-    details: [
-      { icon: Monitor, text: "Platform: TikTok" },
-      { icon: Users, text: "Followers: 320,000 strong and mostly here for the explosions" },
-      { icon: MapPin, text: "Based in: Austin, TX (but mentally in a test tube)" },
-      { icon: Sparkles, text: "Vibe: Imagine if Bill Nye and a highlighter had a baby" },
-    ],
-    platforms: [
-      { icon: Monitor, name: "TikTok", handle: "@madsmolcule", link: "#" },
-      { icon: Instagram, name: "Instagram", handle: "@madsmolcule", link: "#" },
-      { icon: Youtube, name: "YouTube", handle: "Mad Science in Motion", link: "#" },
-      { icon: Mail, name: "Email", handle: "mads@madsmolcule.com", link: "#" },
-      { icon: Globe, name: "Website", handle: "www.madsmolcule.com", link: "#" },
-    ],
-    whatIDo: [
-      "I break down real science concepts into 60 seconds of color, chaos and commentary.",
-      "I answer wild questions from my followers like “Can you microwave acid?” (spoiler: no)",
-      "I build ridiculous experiments with stuff I probably shouldn't own.",
-    ],
-    myPeople: [
-      "13-30 year olds who like science but have attention spans shaped by pop songs",
-      "Nerds, students, meme collectors, and the occasional confused parent",
-      "Folks who want to learn but also laugh and maybe scream a little",
-    ],
-    myContent: [
-      '"Why This Happens" series = most likely to go viral',
-      "Duets & stitches with bad science takes (don't worry, I come in peace)",
-      "Glow-in-the-dark demos, soda geysers, DIY slime chaos",
-      "Unboxings of things that really shouldn't be unboxed at home",
-    ],
-    workedWith: [
-      "FizzCo Kits (we made 3 kinds of slime and 2 kinds of regret)",
-      "EduHub App (yes, learning can be fun)",
-      "BrainFood Energy (which I consume right before regrettable experiments)",
-    ],
+  const router = useRouter()
+  const [creatorData, setCreatorData] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [authData, setAuthDataState] = useState<any>(null)
+
+  useEffect(() => {
+    const auth = getAuthData()
+    if (!auth || auth.user.role !== "influencer") {
+      router.push("/login")
+      return
+    }
+    setAuthDataState(auth)
+
+    const loadCreatorProfile = async () => {
+      try {
+        setIsLoading(true)
+        const profile = await creatorApi.getCreatorByUserId(auth.user.userId)
+        setCreatorData(profile)
+      } catch (error: any) {
+        console.error("Failed to load creator profile:", error)
+        if (error.status === 404) {
+          // Profile doesn't exist, redirect to create new profile
+          router.push("/creator/profile/new")
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to load profile",
+            variant: "destructive",
+          })
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadCreatorProfile()
+  }, [router])
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="influencer" />
+        <main className="flex-1 flex items-center justify-center">
+          <div>Loading profile...</div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (!creatorData) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="influencer" />
+        <main className="flex-1 flex items-center justify-center">
+          <div>Profile not found</div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  // Map social media platforms to icons
+  const platformIconMap: { [key: string]: any } = {
+    TikTok: Monitor,
+    Instagram: Instagram,
+    YouTube: Youtube,
+    Email: Mail,
+    Website: Globe,
   }
 
   return (
@@ -76,7 +106,7 @@ export default function CreatorProfilePage() {
         {/* Banner Section - Changed background to light gray #f5f5f5 */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src="/placeholder.svg?height=400&width=1200"
+            src={creatorData.backgroundImgUrl || "/placeholder.svg?height=400&width=1200"}
             alt="Profile banner"
             layout="fill"
             objectFit="cover"
@@ -100,12 +130,12 @@ export default function CreatorProfilePage() {
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
                 <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg">
                   <AvatarImage
-                    src="/placeholder.svg?height=200&width=200"
-                    alt={`${creatorData.name} profile picture`}
+                    src={creatorData.profilePicUrl || "/placeholder.svg?height=200&width=200"}
+                    alt={`${creatorData.firstName} profile picture`}
                   />
                   <AvatarFallback>
-                    {creatorData.name[0]}
-                    {creatorData.lastName[0]}
+                    {creatorData.firstName?.[0]}
+                    {creatorData.lastName?.[0]}
                   </AvatarFallback>
                 </Avatar>
               </div>
@@ -113,12 +143,13 @@ export default function CreatorProfilePage() {
                 {/* Follower count and Edit Profile button - next to avatar */}
                 <div className="flex items-center justify-between w-full mb-4">
                   <p className="text-2xl font-semibold text-muted-foreground">
-                    {creatorData.followers} Followers ({creatorData.platform})
+                    {creatorData.socialMedia?.find((sm: any) => sm.followers)?.followers || "0"} Followers (
+                    {creatorData.socialMedia?.[0]?.platform || "Platform"})
                   </p>
                   <Link href="/creator/profile/edit" prefetch={false}>
                     <Button
                       variant="outline"
-                      className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
+                      className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
                     >
                       Edit Profile
                     </Button>
@@ -126,19 +157,30 @@ export default function CreatorProfilePage() {
                 </div>
                 {/* Name, Bio, Details, Platforms - now correctly positioned below the avatar and its horizontal content */}
                 <h1 className="text-4xl md:text-5xl font-bold mt-2">
-                  {creatorData.name} <span className="text-primary">&quot;{creatorData.nickname}&quot;</span>{" "}
+                  {creatorData.firstName}{" "}
+                  {creatorData.nickName && <span className="text-primary">&quot;{creatorData.nickName}&quot;</span>}{" "}
                   {creatorData.lastName}
                 </h1>
                 <p className="text-foreground mt-4">{creatorData.bio}</p>
+
+                {/* Display Creator Type */}
+                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-lg">
+                  {creatorData.type && (
+                    <div className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-primary" />
+                      <span>Type: {creatorData.type}</span>
+                    </div>
+                  )}
+                </div>
 
                 <div className="mt-6 space-y-4">
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Details:</h3>
                     <ul className="space-y-2">
-                      {creatorData.details.map((detail, index) => (
+                      {creatorData.details?.map((detail: any, index: number) => (
                         <li key={index} className="flex items-center gap-2">
-                          <detail.icon className="h-5 w-5 text-primary" />
-                          {detail.text}
+                          <Sparkles className="h-5 w-5 text-primary" />
+                          {detail.label}: {detail.value}
                         </li>
                       ))}
                     </ul>
@@ -146,14 +188,17 @@ export default function CreatorProfilePage() {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Official Platforms:</h3>
                     <ul className="space-y-2">
-                      {creatorData.platforms.map((platform, index) => (
-                        <li key={index} className="flex items-center gap-2">
-                          <platform.icon className="h-5 w-5 text-primary" />
-                          <Link href={platform.link} className="hover:underline" prefetch={false}>
-                            {platform.name} - {platform.handle}
-                          </Link>
-                        </li>
-                      ))}
+                      {creatorData.socialMedia?.map((platform: any, index: number) => {
+                        const IconComponent = platformIconMap[platform.platform] || Monitor
+                        return (
+                          <li key={index} className="flex items-center gap-2">
+                            <IconComponent className="h-5 w-5 text-primary" />
+                            <Link href={platform.url || "#"} className="hover:underline" prefetch={false}>
+                              {platform.platform} - {platform.handle}
+                            </Link>
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 </div>
@@ -166,8 +211,10 @@ export default function CreatorProfilePage() {
                   What <span className="text-primary">I Do</span>
                 </h2>
                 <ul className="list-disc list-inside space-y-2">
-                  {creatorData.whatIDo.map((item, index) => (
-                    <li key={index}>{item}</li>
+                  {creatorData.whatIDo?.map((item: any, index: number) => (
+                    <li key={index}>
+                      {item.activity} {item.experience && `(${item.experience})`}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -177,8 +224,10 @@ export default function CreatorProfilePage() {
                   My <span className="text-primary">People</span>
                 </h2>
                 <ul className="list-disc list-inside space-y-2">
-                  {creatorData.myPeople.map((item, index) => (
-                    <li key={index}>{item}</li>
+                  {creatorData.myPeople?.map((item: any, index: number) => (
+                    <li key={index}>
+                      {item.name} {item.role && `- ${item.role}`}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -188,8 +237,10 @@ export default function CreatorProfilePage() {
                   My <span className="text-primary">Content</span>
                 </h2>
                 <ul className="list-disc list-inside space-y-2">
-                  {creatorData.myContent.map((item, index) => (
-                    <li key={index}>{item}</li>
+                  {creatorData.myContent?.map((item: any, index: number) => (
+                    <li key={index}>
+                      {item.title} {item.views && `(${item.views} views)`}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -199,8 +250,10 @@ export default function CreatorProfilePage() {
                   I&apos;ve <span className="text-primary">Worked With</span>
                 </h2>
                 <ul className="list-disc list-inside space-y-2">
-                  {creatorData.workedWith.map((item, index) => (
-                    <li key={index}>{item}</li>
+                  {creatorData.pastCollaborations?.map((item: any, index: number) => (
+                    <li key={index}>
+                      {item.brand} - {item.campaign} {item.date && `(${item.date})`}
+                    </li>
                   ))}
                 </ul>
               </div>

@@ -608,7 +608,7 @@ export const updateCreator = async (req, res) => {
     }
 
     // Ensure authenticated user matches creatorId
-    if (req.user.role !== "creator" || req.user.userId !== creatorId) {
+    if (req.user.role !== "influencer" || req.user.userId !== creatorId) {
       logger.warn("Creator update failed: Unauthorized", {
         creatorId,
         userId: req.user.userId,
