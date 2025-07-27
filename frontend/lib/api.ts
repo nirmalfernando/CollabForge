@@ -15,15 +15,56 @@ export class ApiError extends Error {
   }
 }
 
+// Helper function to clear auth data
+export function clearAuthData() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+}
+
+// Helper function to check if user is authenticated
+export function isAuthenticated(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
+  if (!token || !user) return false;
+
+  // Optionally check if token is expired
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const currentTime = Date.now() / 1000;
+
+    // Check if token is expired
+    if (payload.exp && payload.exp < currentTime) {
+      clearAuthData();
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error checking token validity:", error);
+    clearAuthData();
+    return false;
+  }
+}
+
+// FIXED: Updated apiRequest function with proper token handling
 async function apiRequest(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
+
+  // Get token from localStorage
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const config: RequestInit = {
     headers: {
       "Content-Type": "application/json",
+      // Include Authorization header if token exists
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
-    credentials: "include", // Include cookies for authentication
+    credentials: "include", // Keep this for any cookie-based auth
     ...options,
   };
 
@@ -34,6 +75,18 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
     if (!response.ok) {
       // Log the full response data for debugging
       console.error(`API Error for ${url}:`, response.status, data);
+
+      // Handle 401 Unauthorized - token expired or invalid
+      if (response.status === 401) {
+        // Clear stored auth data
+        clearAuthData();
+
+        // Redirect to login (only if we're in the browser)
+        if (typeof window !== "undefined") {
+          window.location.href = "/auth/login";
+        }
+      }
+
       throw new ApiError(
         response.status,
         data.message || "An error occurred",
@@ -425,10 +478,4 @@ export function getAuthData() {
   }
 
   return null;
-}
-
-// Helper function to clear auth data
-export function clearAuthData() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
 }
