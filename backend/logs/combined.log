@@ -418,3 +418,93 @@
 2025-07-27T03:30:38.993Z [CollabForge] info: Campaigns retrieved successfully for brand
 2025-07-27T03:30:40.027Z [CollabForge] info: Categories retrieved successfully
 2025-07-27T03:30:40.078Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:14:32.291Z [CollabForge] info: User logged in successfully
+2025-07-27T04:14:35.035Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:35.083Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:38.941Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:38.989Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:22:50.406Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:25:28.825Z [CollabForge] info: User logged in successfully
+2025-07-27T04:25:33.847Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:25:33.895Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:28:12.379Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:28:53.258Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:29:34.566Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:34:38.610Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:34:38.658Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:35:10.402Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:17.234Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:18.279Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:18.823Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:19.007Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:19.199Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:20.015Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:20.624Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:31.066Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:32.648Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:40:21.127Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:40:38.236Z [CollabForge] info: User logged in successfully
+2025-07-27T04:40:40.889Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:40:40.944Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:41:18.617Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:43:30.453Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:43:30.628Z [CollabForge] info: Campaign created successfully
+2025-07-27T04:44:01.929Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:44:01.978Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:44:58.973Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:44:59.143Z [CollabForge] info: Campaign created successfully
+2025-07-27T04:49:00.238Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:49:00.299Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T04:49:33.700Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:49:33.753Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T04:52:02.433Z [CollabForge] info: User logged in successfully
+2025-07-27T04:52:05.612Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:05.664Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:52:05.716Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:05.766Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:52:19.688Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:19.730Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:53:26.152Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:53:26.211Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:54:53.811Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:54:53.814Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:55:10.153Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:55:10.158Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:55:10.201Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:55:10.206Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:59:33.093Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:59:33.098Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:59:34.183Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-27T04:59:34.237Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-27T05:00:01.304Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:00:01.306Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:02.222Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:04:02.229Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:24.103Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:24.105Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:10.486Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:10.491Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:14.396Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:14.448Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:14.463Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:14.513Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:35.118Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:35.157Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:35.167Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:35.218Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:36.290Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:36.348Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:36.349Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:36.435Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:50.549Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:50.589Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:50.598Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:50.645Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:52.054Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:52.121Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:52.127Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:52.177Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:55.249Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:55.259Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:55.299Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:55.316Z [CollabForge] info: Categories retrieved successfully
