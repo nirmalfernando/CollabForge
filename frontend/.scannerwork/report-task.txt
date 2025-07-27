@@ -1,0 +1,6 @@
+projectKey=CollabForge-Frontend
+serverUrl=http://localhost:9099
+serverVersion=25.7.0.110598
+dashboardUrl=http://localhost:9099/dashboard?id=CollabForge-Frontend
+ceTaskId=3129889b-fb5f-4659-90cd-c60e0bcddc4c
+ceTaskUrl=http://localhost:9099/api/ce/task?id=3129889b-fb5f-4659-90cd-c60e0bcddc4c

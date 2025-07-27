@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import Image from "next/image"
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -21,11 +21,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "@/hooks/use-toast"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import {
   Pencil,
   Plus,
@@ -39,42 +45,57 @@ import {
   Globe,
   PlusCircle,
   X,
-} from "lucide-react"
-import { creatorApi, categoryApi, getAuthData, imageUploadApi } from "@/lib/api" // Import imageUploadApi
+} from "lucide-react";
+import {
+  creatorApi,
+  categoryApi,
+  getAuthData,
+  imageUploadApi,
+} from "@/lib/api"; // Import imageUploadApi
 
-const MAX_FILE_SIZE_MB = 10 // Max file size for image uploads
+const MAX_FILE_SIZE_MB = 10; // Max file size for image uploads
 
 export default function CreatorEditProfilePage() {
-  const router = useRouter()
-  const [authData, setAuthDataState] = useState<any>(null)
-  const [categories, setCategories] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true) // Start as loading to fetch existing data
-  const [creatorId, setCreatorId] = useState<string | null>(null)
+  const router = useRouter();
+  const [authData, setAuthDataState] = useState<any>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // Start as loading to fetch existing data
+  const [creatorId, setCreatorId] = useState<string | null>(null);
 
   // State for managing forms
-  const [isAddingDetail, setIsAddingDetail] = useState(false)
-  const [isAddingPlatform, setIsAddingPlatform] = useState(false)
-  const [isEditingBanner, setIsEditingBanner] = useState(false)
-  const [isEditingProfilePic, setIsEditingProfilePic] = useState(false)
+  const [isAddingDetail, setIsAddingDetail] = useState(false);
+  const [isAddingPlatform, setIsAddingPlatform] = useState(false);
+  const [isEditingBanner, setIsEditingBanner] = useState(false);
+  const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [newDetail, setNewDetail] = useState({ type: "Custom", value: "" })
-  const [newPlatform, setNewPlatform] = useState({ icon: "Monitor", name: "", handle: "", link: "" })
+  const [newDetail, setNewDetail] = useState({ type: "Custom", value: "" });
+  const [newPlatform, setNewPlatform] = useState({
+    icon: "Monitor",
+    name: "",
+    handle: "",
+    link: "",
+  });
 
   // States for image uploads
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
-  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null)
-  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null)
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null)
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
+    null
+  );
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] =
+    useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
+    string | null
+  >(null);
 
-  const [selectedCategory, setSelectedCategory] = useState("")
-  const [selectedCreatorType, setSelectedCreatorType] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCreatorType, setSelectedCreatorType] = useState("");
 
   // Creator Type options - Restricted to only these three
   const creatorTypeOptions = [
     { id: "Content Creator", name: "Content Creator" },
     { id: "Model", name: "Model" },
     { id: "Live Streamer", name: "Live Streamer" },
-  ]
+  ];
 
   // Map detail types to icons and placeholders
   const detailTypeMap = {
@@ -83,7 +104,7 @@ export default function CreatorEditProfilePage() {
     "Based in": { icon: MapPin, placeholder: "e.g., Austin, TX" },
     Vibe: { icon: Sparkles, placeholder: "e.g., Bill Nye meets highlighter" },
     Custom: { icon: PlusCircle, placeholder: "Enter custom detail" },
-  }
+  };
 
   // Initial creator data state
   const [creatorData, setCreatorData] = useState({
@@ -100,22 +121,22 @@ export default function CreatorEditProfilePage() {
     workedWith: [""],
     bannerImageUrl: null as string | null, // Changed to null
     profilePicUrl: null as string | null, // Changed to null
-  })
+  });
 
   useEffect(() => {
-    const auth = getAuthData()
+    const auth = getAuthData();
     if (!auth || auth.user.role !== "influencer") {
-      router.push("/login")
-      return
+      router.push("/login");
+      return;
     }
-    setAuthDataState(auth)
+    setAuthDataState(auth);
 
     const loadProfileAndCategories = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         // Fetch creator profile
-        const profile = await creatorApi.getCreatorByUserId(auth.user.userId)
-        setCreatorId(profile._id) // Store creator ID for updates
+        const profile = await creatorApi.getCreatorByUserId(auth.user.userId);
+        setCreatorId(profile.creatorId); // Store creator ID for updates
 
         // Populate form fields with existing data
         setCreatorData({
@@ -130,7 +151,9 @@ export default function CreatorEditProfilePage() {
             profile.details?.map((d: any) => ({
               type: d.label,
               value: d.value,
-              icon: detailTypeMap[d.label as keyof typeof detailTypeMap]?.icon || PlusCircle,
+              icon:
+                detailTypeMap[d.label as keyof typeof detailTypeMap]?.icon ||
+                PlusCircle,
             })) || [],
           platforms:
             profile.socialMedia?.map((p: any) => ({
@@ -151,42 +174,44 @@ export default function CreatorEditProfilePage() {
           whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
           myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
           myContent: profile.myContent?.map((item: any) => item.title) || [""],
-          workedWith: profile.pastCollaborations?.map((item: any) => item.brand) || [""],
+          workedWith: profile.pastCollaborations?.map(
+            (item: any) => item.brand
+          ) || [""],
           bannerImageUrl: profile.backgroundImgUrl || null, // Set to null if backend returns null/undefined
           profilePicUrl: profile.profilePicUrl || null, // Set to null if backend returns null/undefined
-        })
-        setSelectedCategory(profile.categoryId || "")
-        setSelectedCreatorType(profile.type || "")
+        });
+        setSelectedCategory(profile.categoryId || "");
+        setSelectedCreatorType(profile.type || "");
 
         // Load categories
-        const categoriesData = await categoryApi.getAllCategories()
-        setCategories(categoriesData)
+        const categoriesData = await categoryApi.getAllCategories();
+        setCategories(categoriesData);
       } catch (error: any) {
-        console.error("Failed to load creator profile or categories:", error)
+        console.error("Failed to load creator profile or categories:", error);
         toast({
           title: "Error",
           description: error.message || "Failed to load profile data.",
           variant: "destructive",
-        })
+        });
         // If profile not found, redirect to new profile creation
         if (error.status === 404) {
-          router.push("/creator/profile/new")
+          router.push("/creator/profile/new");
         }
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadProfileAndCategories()
-  }, [router])
+    loadProfileAndCategories();
+  }, [router]);
 
   // Cleanup object URLs when component unmounts or image changes
   useEffect(() => {
     return () => {
-      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl)
-      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl)
-    }
-  }, [bannerPreviewUrl, profilePicPreviewUrl])
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
+    };
+  }, [bannerPreviewUrl, profilePicPreviewUrl]);
 
   const iconMap = {
     Monitor,
@@ -198,27 +223,31 @@ export default function CreatorEditProfilePage() {
     Mail,
     Globe,
     PlusCircle,
-  }
+  };
 
   const handleAddDetail = () => {
     if (newDetail.value.trim()) {
-      const IconComponent = detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon
+      const IconComponent =
+        detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon;
       setCreatorData((prev) => ({
         ...prev,
-        details: [...prev.details, { type: newDetail.type, value: newDetail.value, icon: IconComponent }],
-      }))
-      setNewDetail({ type: "Custom", value: "" })
-      setIsAddingDetail(false)
+        details: [
+          ...prev.details,
+          { type: newDetail.type, value: newDetail.value, icon: IconComponent },
+        ],
+      }));
+      setNewDetail({ type: "Custom", value: "" });
+      setIsAddingDetail(false);
       toast({
         title: "Detail Added",
         description: "Your new detail has been added successfully.",
-      })
+      });
     }
-  }
+  };
 
   const handleAddPlatform = () => {
     if (newPlatform.name.trim() && newPlatform.handle.trim()) {
-      const IconComponent = iconMap[newPlatform.icon as keyof typeof iconMap]
+      const IconComponent = iconMap[newPlatform.icon as keyof typeof iconMap];
       setCreatorData((prev) => ({
         ...prev,
         platforms: [
@@ -230,30 +259,36 @@ export default function CreatorEditProfilePage() {
             link: newPlatform.link || "#",
           },
         ],
-      }))
-      setNewPlatform({ icon: "Monitor", name: "", handle: "", link: "" })
-      setIsAddingPlatform(false)
+      }));
+      setNewPlatform({ icon: "Monitor", name: "", handle: "", link: "" });
+      setIsAddingPlatform(false);
       toast({
         title: "Platform Added",
         description: "Your new platform has been added successfully.",
-      })
+      });
     }
-  }
+  };
 
   const handleUpdateSettings = async () => {
-    if (!authData || !creatorId) return
+    if (!authData || !creatorId) return;
 
-    if (!creatorData.name.trim() || !creatorData.lastName.trim() || !selectedCategory || !selectedCreatorType) {
+    if (
+      !creatorData.name.trim() ||
+      !creatorData.lastName.trim() ||
+      !selectedCategory ||
+      !selectedCreatorType
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
+        description:
+          "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
       // Transform data to match API format
       const apiData = {
@@ -301,179 +336,200 @@ export default function CreatorEditProfilePage() {
         categoryId: selectedCategory,
         profilePicUrl: creatorData.profilePicUrl || undefined, // Send null/undefined if not set
         backgroundImgUrl: creatorData.bannerImageUrl || undefined, // Send null/undefined if not set
-        type: selectedCreatorType as "Content Creator" | "Model" | "Live Streamer",
-      }
+        type: selectedCreatorType as
+          | "Content Creator"
+          | "Model"
+          | "Live Streamer",
+      };
 
-      await creatorApi.updateCreator(creatorId, apiData)
+      await creatorApi.updateCreator(creatorId, apiData);
 
       toast({
         title: "Profile Updated",
         description: "Your creator profile has been updated successfully!",
-      })
+      });
 
       // Redirect to profile page
-      router.push("/creator/profile")
+      router.push("/creator/profile");
     } catch (error: any) {
-      console.error("Failed to update profile:", error)
+      console.error("Failed to update profile:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to update profile. Please try again.",
+        description:
+          error.message || "Failed to update profile. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const removeDetail = (index: number) => {
     setCreatorData((prev) => ({
       ...prev,
       details: prev.details.filter((_, i) => i !== index),
-    }))
+    }));
     toast({
       title: "Detail Removed",
       description: "The detail has been removed from your profile.",
-    })
-  }
+    });
+  };
 
   const removePlatform = (index: number) => {
     setCreatorData((prev) => ({
       ...prev,
       platforms: prev.platforms.filter((_, i) => i !== index),
-    }))
+    }));
     toast({
       title: "Platform Removed",
       description: "The platform has been removed from your profile.",
-    })
-  }
+    });
+  };
 
-  const handleBannerFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  const handleBannerFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid File Type",
           description: "Please select an image file (e.g., JPG, PNG, GIF).",
           variant: "destructive",
-        })
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
-        return
+        });
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
+        return;
       }
       if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         toast({
           title: "File Too Large",
           description: `Please select an image smaller than ${MAX_FILE_SIZE_MB}MB.`,
           variant: "destructive",
-        })
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
-        return
+        });
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
+        return;
       }
-      setSelectedBannerFile(file)
-      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl)
-      setBannerPreviewUrl(URL.createObjectURL(file))
+      setSelectedBannerFile(file);
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+      setBannerPreviewUrl(URL.createObjectURL(file));
     } else {
-      setSelectedBannerFile(null)
-      setBannerPreviewUrl(null)
+      setSelectedBannerFile(null);
+      setBannerPreviewUrl(null);
     }
-  }
+  };
 
   const handleSaveBannerImage = async () => {
     if (selectedBannerFile) {
       try {
-        setIsLoading(true)
-        const uploadedImage = await imageUploadApi.uploadImage(selectedBannerFile)
-        setCreatorData((prev) => ({ ...prev, bannerImageUrl: uploadedImage.url }))
-        setIsEditingBanner(false)
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
+        setIsLoading(true);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedBannerFile
+        );
+        setCreatorData((prev) => ({
+          ...prev,
+          bannerImageUrl: uploadedImage.url,
+        }));
+        setIsEditingBanner(false);
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
         toast({
           title: "Banner Updated",
           description: "Your profile banner has been updated.",
-        })
+        });
       } catch (error: any) {
-        console.error("Failed to upload banner image:", error)
+        console.error("Failed to upload banner image:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload banner image. Please try again.",
+          description:
+            error.message || "Failed to upload banner image. Please try again.",
           variant: "destructive",
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
       toast({
         title: "Error",
         description: "Please select an image file for the banner.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
-  const handleProfilePicFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  const handleProfilePicFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid File Type",
           description: "Please select an image file (e.g., JPG, PNG, GIF).",
           variant: "destructive",
-        })
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
-        return
+        });
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
+        return;
       }
       if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         toast({
           title: "File Too Large",
           description: `Please select an image smaller than ${MAX_FILE_SIZE_MB}MB.`,
           variant: "destructive",
-        })
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
-        return
+        });
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
+        return;
       }
-      setSelectedProfilePicFile(file)
-      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl)
-      setProfilePicPreviewUrl(URL.createObjectURL(file))
+      setSelectedProfilePicFile(file);
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
+      setProfilePicPreviewUrl(URL.createObjectURL(file));
     } else {
-      setSelectedProfilePicFile(null)
-      setProfilePicPreviewUrl(null)
+      setSelectedProfilePicFile(null);
+      setProfilePicPreviewUrl(null);
     }
-  }
+  };
 
   const handleSaveProfilePic = async () => {
     if (selectedProfilePicFile) {
       try {
-        setIsLoading(true)
-        const uploadedImage = await imageUploadApi.uploadImage(selectedProfilePicFile)
-        setCreatorData((prev) => ({ ...prev, profilePicUrl: uploadedImage.url }))
-        setIsEditingProfilePic(false)
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
+        setIsLoading(true);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedProfilePicFile
+        );
+        setCreatorData((prev) => ({
+          ...prev,
+          profilePicUrl: uploadedImage.url,
+        }));
+        setIsEditingProfilePic(false);
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
         toast({
           title: "Profile Picture Updated",
           description: "Your profile picture has been updated.",
-        })
+        });
       } catch (error: any) {
-        console.error("Failed to upload profile picture:", error)
+        console.error("Failed to upload profile picture:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload profile picture. Please try again.",
+          description:
+            error.message ||
+            "Failed to upload profile picture. Please try again.",
           variant: "destructive",
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
       toast({
         title: "Error",
         description: "Please select an image file for the profile picture.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -484,7 +540,7 @@ export default function CreatorEditProfilePage() {
         </main>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -495,7 +551,10 @@ export default function CreatorEditProfilePage() {
         {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src={creatorData.bannerImageUrl || "/placeholder.svg?height=400&width=1200"}
+            src={
+              creatorData.bannerImageUrl ||
+              "/placeholder.svg?height=400&width=1200"
+            }
             alt="Profile banner"
             layout="fill"
             objectFit="cover"
@@ -515,16 +574,25 @@ export default function CreatorEditProfilePage() {
             <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
               <DialogHeader>
                 <DialogTitle>Edit Banner Image</DialogTitle>
-                <DialogDescription>Upload a new image for your banner.</DialogDescription>
+                <DialogDescription>
+                  Upload a new image for your banner.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <Label htmlFor="banner-image-upload" className="text-right">
                   Upload Image
                 </Label>
-                <Input id="banner-image-upload" type="file" accept="image/*" onChange={handleBannerFileChange} />
+                <Input
+                  id="banner-image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerFileChange}
+                />
                 {bannerPreviewUrl && (
                   <div className="mt-4">
-                    <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Preview:
+                    </p>
                     <Image
                       src={bannerPreviewUrl || "/placeholder.svg"}
                       alt="Banner preview"
@@ -537,10 +605,18 @@ export default function CreatorEditProfilePage() {
                 )}
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsEditingBanner(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditingBanner(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="button" onClick={handleSaveBannerImage} disabled={!selectedBannerFile || isLoading}>
+                <Button
+                  type="button"
+                  onClick={handleSaveBannerImage}
+                  disabled={!selectedBannerFile || isLoading}
+                >
                   {isLoading ? "Uploading..." : "Save Changes"}
                 </Button>
               </DialogFooter>
@@ -554,11 +630,17 @@ export default function CreatorEditProfilePage() {
             <div className="flex flex-col md:flex-row items-start gap-6">
               {/* Profile Picture Container - positioned to overlap */}
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
-                <Dialog open={isEditingProfilePic} onOpenChange={setIsEditingProfilePic}>
+                <Dialog
+                  open={isEditingProfilePic}
+                  onOpenChange={setIsEditingProfilePic}
+                >
                   <DialogTrigger asChild>
                     <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg cursor-pointer group relative overflow-hidden">
                       <AvatarImage
-                        src={creatorData.profilePicUrl || "/placeholder.svg?height=200&width=200"}
+                        src={
+                          creatorData.profilePicUrl ||
+                          "/placeholder.svg?height=200&width=200"
+                        }
                         alt={`${creatorData.name} profile picture`}
                       />
                       <AvatarFallback className="bg-primary text-white flex items-center justify-center text-4xl font-bold">
@@ -574,10 +656,15 @@ export default function CreatorEditProfilePage() {
                   <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
                     <DialogHeader>
                       <DialogTitle>Edit Profile Picture</DialogTitle>
-                      <DialogDescription>Upload a new image for your profile picture.</DialogDescription>
+                      <DialogDescription>
+                        Upload a new image for your profile picture.
+                      </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                      <Label htmlFor="profile-pic-upload" className="text-right">
+                      <Label
+                        htmlFor="profile-pic-upload"
+                        className="text-right"
+                      >
                         Upload Image
                       </Label>
                       <Input
@@ -588,7 +675,9 @@ export default function CreatorEditProfilePage() {
                       />
                       {profilePicPreviewUrl && (
                         <div className="mt-4">
-                          <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Preview:
+                          </p>
                           <Image
                             src={profilePicPreviewUrl || "/placeholder.svg"}
                             alt="Profile picture preview"
@@ -601,7 +690,11 @@ export default function CreatorEditProfilePage() {
                       )}
                     </div>
                     <DialogFooter>
-                      <Button type="button" variant="outline" onClick={() => setIsEditingProfilePic(false)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsEditingProfilePic(false)}
+                      >
                         Cancel
                       </Button>
                       <Button
@@ -621,7 +714,12 @@ export default function CreatorEditProfilePage() {
                   <Input
                     type="text"
                     value={creatorData.followerInfo}
-                    onChange={(e) => setCreatorData((prev) => ({ ...prev, followerInfo: e.target.value }))}
+                    onChange={(e) =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        followerInfo: e.target.value,
+                      }))
+                    }
                     placeholder="e.g., 320,000 Followers (TikTok)"
                     className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
                   />
@@ -667,35 +765,62 @@ export default function CreatorEditProfilePage() {
                     <Input
                       type="text"
                       value={creatorData.name}
-                      onChange={(e) => setCreatorData((prev) => ({ ...prev, name: e.target.value }))}
+                      onChange={(e) =>
+                        setCreatorData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
                       placeholder="First Name"
                       className="flex-1 min-w-[100px] bg-muted border-none text-foreground text-4xl md:text-5xl font-bold p-2"
                     />
-                    <span className="text-primary text-4xl md:text-5xl font-bold">&quot;</span>
+                    <span className="text-primary text-4xl md:text-5xl font-bold">
+                      &quot;
+                    </span>
                     <Input
                       type="text"
                       value={creatorData.nickname}
-                      onChange={(e) => setCreatorData((prev) => ({ ...prev, nickname: e.target.value }))}
+                      onChange={(e) =>
+                        setCreatorData((prev) => ({
+                          ...prev,
+                          nickname: e.target.value,
+                        }))
+                      }
                       placeholder="Nickname"
                       className="flex-1 min-w-[100px] bg-muted border-none text-primary text-4xl md:text-5xl font-bold p-2"
                     />
-                    <span className="text-primary text-4xl md:text-5xl font-bold">&quot;</span>
+                    <span className="text-primary text-4xl md:text-5xl font-bold">
+                      &quot;
+                    </span>
                     <Input
                       type="text"
                       value={creatorData.lastName}
-                      onChange={(e) => setCreatorData((prev) => ({ ...prev, lastName: e.target.value }))}
+                      onChange={(e) =>
+                        setCreatorData((prev) => ({
+                          ...prev,
+                          lastName: e.target.value,
+                        }))
+                      }
                       placeholder="Last Name"
                       className="flex-1 min-w-[100px] bg-muted border-none text-foreground text-4xl md:text-5xl font-bold p-2"
                     />
                   </div>
-                  <Label htmlFor="bio" className="text-lg font-semibold mb-2 block">
+                  <Label
+                    htmlFor="bio"
+                    className="text-lg font-semibold mb-2 block"
+                  >
                     Bio
                   </Label>
                   <Textarea
                     id="bio"
                     placeholder="Tell us about yourself..."
                     value={creatorData.bio}
-                    onChange={(e) => setCreatorData((prev) => ({ ...prev, bio: e.target.value }))}
+                    onChange={(e) =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        bio: e.target.value,
+                      }))
+                    }
                     className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
                   />
                 </div>
@@ -703,10 +828,16 @@ export default function CreatorEditProfilePage() {
                 {/* Category/Niche and Creator Type Selection */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="category" className="text-lg font-semibold mb-2 block">
+                    <Label
+                      htmlFor="category"
+                      className="text-lg font-semibold mb-2 block"
+                    >
                       Category/Niche *
                     </Label>
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <Select
+                      value={selectedCategory}
+                      onValueChange={setSelectedCategory}
+                    >
                       <SelectTrigger className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
                         <SelectValue placeholder="Select your category/niche" />
                       </SelectTrigger>
@@ -724,16 +855,26 @@ export default function CreatorEditProfilePage() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="creator-type" className="text-lg font-semibold mb-2 block">
+                    <Label
+                      htmlFor="creator-type"
+                      className="text-lg font-semibold mb-2 block"
+                    >
                       Creator Type *
                     </Label>
-                    <Select value={selectedCreatorType} onValueChange={setSelectedCreatorType}>
+                    <Select
+                      value={selectedCreatorType}
+                      onValueChange={setSelectedCreatorType}
+                    >
                       <SelectTrigger className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
                         <SelectValue placeholder="Select your creator type" />
                       </SelectTrigger>
                       <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
                         {creatorTypeOptions.map((type) => (
-                          <SelectItem key={type.id} value={type.id} className="hover:bg-primary/20">
+                          <SelectItem
+                            key={type.id}
+                            value={type.id}
+                            className="hover:bg-primary/20"
+                          >
                             {type.name}
                           </SelectItem>
                         ))}
@@ -745,25 +886,37 @@ export default function CreatorEditProfilePage() {
                 {/* Toggles */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="contacts-toggle" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="contacts-toggle"
+                      className="text-lg font-semibold"
+                    >
                       Contacts
                     </Label>
                     <Switch id="contacts-toggle" defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="display-activities-toggle" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="display-activities-toggle"
+                      className="text-lg font-semibold"
+                    >
                       Display In App Activities
                     </Label>
                     <Switch id="display-activities-toggle" defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="public-availability-toggle" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="public-availability-toggle"
+                      className="text-lg font-semibold"
+                    >
                       Public Availability
                     </Label>
                     <Switch id="public-availability-toggle" defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="notifications-toggle" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="notifications-toggle"
+                      className="text-lg font-semibold"
+                    >
                       Notifications
                     </Label>
                     <Switch id="notifications-toggle" defaultChecked />
@@ -775,7 +928,7 @@ export default function CreatorEditProfilePage() {
                   <h3 className="text-xl font-semibold mb-2">Details:</h3>
                   <ul className="space-y-2">
                     {creatorData.details.map((detail, index) => {
-                      const IconComponent = detail.icon || PlusCircle
+                      const IconComponent = detail.icon || PlusCircle;
                       return (
                         <li key={index} className="flex items-center gap-2">
                           <IconComponent className="h-5 w-5 text-primary" />
@@ -786,9 +939,12 @@ export default function CreatorEditProfilePage() {
                             type="text"
                             value={detail.value}
                             onChange={(e) => {
-                              const updatedDetails = [...creatorData.details]
-                              updatedDetails[index].value = e.target.value
-                              setCreatorData((prev) => ({ ...prev, details: updatedDetails }))
+                              const updatedDetails = [...creatorData.details];
+                              updatedDetails[index].value = e.target.value;
+                              setCreatorData((prev) => ({
+                                ...prev,
+                                details: updatedDetails,
+                              }));
                             }}
                             className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
                           />
@@ -801,14 +957,20 @@ export default function CreatorEditProfilePage() {
                             <X className="h-4 w-4" />
                           </Button>
                         </li>
-                      )
+                      );
                     })}
                   </ul>
 
                   {/* Add New Detail Dialog */}
-                  <Dialog open={isAddingDetail} onOpenChange={setIsAddingDetail}>
+                  <Dialog
+                    open={isAddingDetail}
+                    onOpenChange={setIsAddingDetail}
+                  >
                     <DialogTrigger asChild>
-                      <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80">
+                      <Button
+                        variant="ghost"
+                        className="mt-4 text-primary hover:text-primary/80"
+                      >
                         <PlusCircle className="h-5 w-5 mr-2" /> Add New Detail
                       </Button>
                     </DialogTrigger>
@@ -816,7 +978,8 @@ export default function CreatorEditProfilePage() {
                       <DialogHeader>
                         <DialogTitle>Add New Detail</DialogTitle>
                         <DialogDescription>
-                          Add a new detail to your profile. Choose a type and enter the text.
+                          Add a new detail to your profile. Choose a type and
+                          enter the text.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
@@ -826,7 +989,13 @@ export default function CreatorEditProfilePage() {
                           </Label>
                           <Select
                             value={newDetail.type}
-                            onValueChange={(value) => setNewDetail((prev) => ({ ...prev, type: value, value: "" }))}
+                            onValueChange={(value) =>
+                              setNewDetail((prev) => ({
+                                ...prev,
+                                type: value,
+                                value: "",
+                              }))
+                            }
                           >
                             <SelectTrigger className="col-span-3">
                               <SelectValue placeholder="Select detail type" />
@@ -847,14 +1016,27 @@ export default function CreatorEditProfilePage() {
                           <Input
                             id="detail-value"
                             value={newDetail.value}
-                            onChange={(e) => setNewDetail((prev) => ({ ...prev, value: e.target.value }))}
+                            onChange={(e) =>
+                              setNewDetail((prev) => ({
+                                ...prev,
+                                value: e.target.value,
+                              }))
+                            }
                             className="col-span-3"
-                            placeholder={detailTypeMap[newDetail.type as keyof typeof detailTypeMap].placeholder}
+                            placeholder={
+                              detailTypeMap[
+                                newDetail.type as keyof typeof detailTypeMap
+                              ].placeholder
+                            }
                           />
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setIsAddingDetail(false)}>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsAddingDetail(false)}
+                        >
                           Cancel
                         </Button>
                         <Button type="button" onClick={handleAddDetail}>
@@ -867,7 +1049,9 @@ export default function CreatorEditProfilePage() {
 
                 {/* Official Platforms */}
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Official Platforms:</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Official Platforms:
+                  </h3>
                   <ul className="space-y-2">
                     {creatorData.platforms.map((platform, index) => (
                       <li key={index} className="flex items-center gap-2">
@@ -877,7 +1061,11 @@ export default function CreatorEditProfilePage() {
                           defaultValue={`${platform.name} - ${platform.handle}`}
                           className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
                         />
-                        <Link href={platform.link} className="text-primary hover:underline" prefetch={false}>
+                        <Link
+                          href={platform.link}
+                          className="text-primary hover:underline"
+                          prefetch={false}
+                        >
                           View
                         </Link>
                         <Button
@@ -893,16 +1081,24 @@ export default function CreatorEditProfilePage() {
                   </ul>
 
                   {/* Add New Platform Dialog */}
-                  <Dialog open={isAddingPlatform} onOpenChange={setIsAddingPlatform}>
+                  <Dialog
+                    open={isAddingPlatform}
+                    onOpenChange={setIsAddingPlatform}
+                  >
                     <DialogTrigger asChild>
-                      <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80">
+                      <Button
+                        variant="ghost"
+                        className="mt-4 text-primary hover:text-primary/80"
+                      >
                         <PlusCircle className="h-5 w-5 mr-2" /> Add New Platform
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
                       <DialogHeader>
                         <DialogTitle>Add New Platform</DialogTitle>
-                        <DialogDescription>Add a new social media platform to your profile.</DialogDescription>
+                        <DialogDescription>
+                          Add a new social media platform to your profile.
+                        </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -911,14 +1107,21 @@ export default function CreatorEditProfilePage() {
                           </Label>
                           <Select
                             value={newPlatform.icon}
-                            onValueChange={(value) => setNewPlatform((prev) => ({ ...prev, icon: value }))}
+                            onValueChange={(value) =>
+                              setNewPlatform((prev) => ({
+                                ...prev,
+                                icon: value,
+                              }))
+                            }
                           >
                             <SelectTrigger className="col-span-3">
                               <SelectValue placeholder="Select an icon" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="Monitor">TikTok</SelectItem>
-                              <SelectItem value="Instagram">Instagram</SelectItem>
+                              <SelectItem value="Instagram">
+                                Instagram
+                              </SelectItem>
                               <SelectItem value="Youtube">YouTube</SelectItem>
                               <SelectItem value="Mail">Email</SelectItem>
                               <SelectItem value="Globe">Website</SelectItem>
@@ -932,19 +1135,32 @@ export default function CreatorEditProfilePage() {
                           <Input
                             id="platform-name"
                             value={newPlatform.name}
-                            onChange={(e) => setNewPlatform((prev) => ({ ...prev, name: e.target.value }))}
+                            onChange={(e) =>
+                              setNewPlatform((prev) => ({
+                                ...prev,
+                                name: e.target.value,
+                              }))
+                            }
                             className="col-span-3"
                             placeholder="Platform name"
                           />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="platform-handle" className="text-right">
+                          <Label
+                            htmlFor="platform-handle"
+                            className="text-right"
+                          >
                             Handle
                           </Label>
                           <Input
                             id="platform-handle"
                             value={newPlatform.handle}
-                            onChange={(e) => setNewPlatform((prev) => ({ ...prev, handle: e.target.value }))}
+                            onChange={(e) =>
+                              setNewPlatform((prev) => ({
+                                ...prev,
+                                handle: e.target.value,
+                              }))
+                            }
                             className="col-span-3"
                             placeholder="Platform handle (e.g., @johndoe)"
                           />
@@ -956,14 +1172,23 @@ export default function CreatorEditProfilePage() {
                           <Input
                             id="platform-link"
                             value={newPlatform.link}
-                            onChange={(e) => setNewPlatform((prev) => ({ ...prev, link: e.target.value }))}
+                            onChange={(e) =>
+                              setNewPlatform((prev) => ({
+                                ...prev,
+                                link: e.target.value,
+                              }))
+                            }
                             className="col-span-3"
                             placeholder="Link to profile (optional)"
                           />
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setIsAddingPlatform(false)}>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsAddingPlatform(false)}
+                        >
                           Cancel
                         </Button>
                         <Button type="button" onClick={handleAddPlatform}>
@@ -987,9 +1212,12 @@ export default function CreatorEditProfilePage() {
                         type="text"
                         value={item}
                         onChange={(e) => {
-                          const updated = [...creatorData.whatIDo]
-                          updated[index] = e.target.value
-                          setCreatorData((prev) => ({ ...prev, whatIDo: updated }))
+                          const updated = [...creatorData.whatIDo];
+                          updated[index] = e.target.value;
+                          setCreatorData((prev) => ({
+                            ...prev,
+                            whatIDo: updated,
+                          }));
                         }}
                         placeholder="e.g., Create engaging short-form videos"
                         className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
@@ -1012,7 +1240,12 @@ export default function CreatorEditProfilePage() {
                   <Button
                     variant="ghost"
                     className="mt-2 text-primary hover:text-primary/80"
-                    onClick={() => setCreatorData((prev) => ({ ...prev, whatIDo: [...prev.whatIDo, ""] }))}
+                    onClick={() =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        whatIDo: [...prev.whatIDo, ""],
+                      }))
+                    }
                   >
                     <PlusCircle className="h-5 w-5 mr-2" /> Add Activity
                   </Button>
@@ -1029,9 +1262,12 @@ export default function CreatorEditProfilePage() {
                         type="text"
                         value={item}
                         onChange={(e) => {
-                          const updated = [...creatorData.myPeople]
-                          updated[index] = e.target.value
-                          setCreatorData((prev) => ({ ...prev, myPeople: updated }))
+                          const updated = [...creatorData.myPeople];
+                          updated[index] = e.target.value;
+                          setCreatorData((prev) => ({
+                            ...prev,
+                            myPeople: updated,
+                          }));
                         }}
                         placeholder="e.g., My manager, John Doe"
                         className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
@@ -1042,7 +1278,9 @@ export default function CreatorEditProfilePage() {
                         onClick={() =>
                           setCreatorData((prev) => ({
                             ...prev,
-                            myPeople: prev.myPeople.filter((_, i) => i !== index),
+                            myPeople: prev.myPeople.filter(
+                              (_, i) => i !== index
+                            ),
                           }))
                         }
                         className="text-red-500 hover:text-red-700"
@@ -1054,7 +1292,12 @@ export default function CreatorEditProfilePage() {
                   <Button
                     variant="ghost"
                     className="mt-2 text-primary hover:text-primary/80"
-                    onClick={() => setCreatorData((prev) => ({ ...prev, myPeople: [...prev.myPeople, ""] }))}
+                    onClick={() =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        myPeople: [...prev.myPeople, ""],
+                      }))
+                    }
                   >
                     <PlusCircle className="h-5 w-5 mr-2" /> Add Person
                   </Button>
@@ -1073,9 +1316,12 @@ export default function CreatorEditProfilePage() {
                         type="text"
                         value={item}
                         onChange={(e) => {
-                          const updated = [...creatorData.myContent]
-                          updated[index] = e.target.value
-                          setCreatorData((prev) => ({ ...prev, myContent: updated }))
+                          const updated = [...creatorData.myContent];
+                          updated[index] = e.target.value;
+                          setCreatorData((prev) => ({
+                            ...prev,
+                            myContent: updated,
+                          }));
                         }}
                         placeholder="e.g., Viral TikTok: 'Day in the life of a creator'"
                         className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
@@ -1086,7 +1332,9 @@ export default function CreatorEditProfilePage() {
                         onClick={() =>
                           setCreatorData((prev) => ({
                             ...prev,
-                            myContent: prev.myContent.filter((_, i) => i !== index),
+                            myContent: prev.myContent.filter(
+                              (_, i) => i !== index
+                            ),
                           }))
                         }
                         className="text-red-500 hover:text-red-700"
@@ -1098,7 +1346,12 @@ export default function CreatorEditProfilePage() {
                   <Button
                     variant="ghost"
                     className="mt-2 text-primary hover:text-primary/80"
-                    onClick={() => setCreatorData((prev) => ({ ...prev, myContent: [...prev.myContent, ""] }))}
+                    onClick={() =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        myContent: [...prev.myContent, ""],
+                      }))
+                    }
                   >
                     <PlusCircle className="h-5 w-5 mr-2" /> Add Content
                   </Button>
@@ -1115,9 +1368,12 @@ export default function CreatorEditProfilePage() {
                         type="text"
                         value={item}
                         onChange={(e) => {
-                          const updated = [...creatorData.workedWith]
-                          updated[index] = e.target.value
-                          setCreatorData((prev) => ({ ...prev, workedWith: updated }))
+                          const updated = [...creatorData.workedWith];
+                          updated[index] = e.target.value;
+                          setCreatorData((prev) => ({
+                            ...prev,
+                            workedWith: updated,
+                          }));
                         }}
                         placeholder="e.g., Brand X - Summer Campaign"
                         className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
@@ -1128,7 +1384,9 @@ export default function CreatorEditProfilePage() {
                         onClick={() =>
                           setCreatorData((prev) => ({
                             ...prev,
-                            workedWith: prev.workedWith.filter((_, i) => i !== index),
+                            workedWith: prev.workedWith.filter(
+                              (_, i) => i !== index
+                            ),
                           }))
                         }
                         className="text-red-500 hover:text-red-700"
@@ -1140,7 +1398,12 @@ export default function CreatorEditProfilePage() {
                   <Button
                     variant="ghost"
                     className="mt-2 text-primary hover:text-primary/80"
-                    onClick={() => setCreatorData((prev) => ({ ...prev, workedWith: [...prev.workedWith, ""] }))}
+                    onClick={() =>
+                      setCreatorData((prev) => ({
+                        ...prev,
+                        workedWith: [...prev.workedWith, ""],
+                      }))
+                    }
                   >
                     <PlusCircle className="h-5 w-5 mr-2" /> Add Collaboration
                   </Button>
@@ -1153,5 +1416,5 @@ export default function CreatorEditProfilePage() {
 
       <Footer />
     </div>
-  )
+  );
 }
