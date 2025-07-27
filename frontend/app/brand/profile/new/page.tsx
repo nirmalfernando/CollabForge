@@ -29,11 +29,10 @@ import { brandApi, getAuthData, imageUploadApi } from "@/lib/api" // Import imag
 
 const MAX_FILE_SIZE_MB = 10 // Max file size for image uploads
 
-export default function BrandEditProfilePage() {
+export default function BrandNewProfilePage() {
   const router = useRouter()
   const [authData, setAuthDataState] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true) // Start as loading to fetch existing data
-  const [brandId, setBrandId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   // State for managing forms
   const [isEditingBanner, setIsEditingBanner] = useState(false)
@@ -45,7 +44,7 @@ export default function BrandEditProfilePage() {
   const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null)
   const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null)
 
-  // Initial brand data state
+  // Initial brand data for new profile - set image URLs to null
   const [brandData, setBrandData] = useState({
     companyName: "",
     bio: "",
@@ -64,42 +63,6 @@ export default function BrandEditProfilePage() {
       return
     }
     setAuthDataState(auth)
-
-    const loadProfile = async () => {
-      try {
-        setIsLoading(true)
-        // Fetch brand profile
-        const profile = await brandApi.getBrandByUserId(auth.user.userId)
-        setBrandId(profile._id) // Store brand ID for updates
-
-        // Populate form fields with existing data
-        setBrandData({
-          companyName: profile.companyName || "",
-          bio: profile.bio || "",
-          mission: profile.description?.mission || "",
-          vision: profile.description?.vision || "",
-          targetAudience: profile.whatWeLookFor?.targetAudience || "",
-          collaborationType: profile.whatWeLookFor?.collaborationType || "",
-          profilePicUrl: profile.profilePicUrl || null, // Set to null if backend returns null/undefined
-          bannerImageUrl: profile.backgroundImageUrl || null, // Set to null if backend returns null/undefined
-        })
-      } catch (error: any) {
-        console.error("Failed to load brand profile:", error)
-        toast({
-          title: "Error",
-          description: error.message || "Failed to load profile data.",
-          variant: "destructive",
-        })
-        // If profile not found, redirect to new profile creation
-        if (error.status === 404) {
-          router.push("/brand/profile/new")
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadProfile()
   }, [router])
 
   // Cleanup object URLs when component unmounts or image changes
@@ -110,8 +73,8 @@ export default function BrandEditProfilePage() {
     }
   }, [bannerPreviewUrl, profilePicPreviewUrl])
 
-  const handleUpdateSettings = async () => {
-    if (!authData || !brandId) return
+  const handleSaveSettings = async () => {
+    if (!authData) return
 
     if (!brandData.companyName.trim()) {
       toast({
@@ -127,6 +90,7 @@ export default function BrandEditProfilePage() {
 
       // Transform data to match API format
       const apiData = {
+        userId: authData.user.userId,
         companyName: brandData.companyName,
         bio: brandData.bio || undefined,
         description: {
@@ -141,20 +105,20 @@ export default function BrandEditProfilePage() {
         backgroundImageUrl: brandData.bannerImageUrl || undefined, // Send null/undefined if not set
       }
 
-      await brandApi.updateBrand(brandId, apiData)
+      await brandApi.createBrand(apiData)
 
       toast({
-        title: "Profile Updated",
-        description: "Your brand profile has been updated successfully!",
+        title: "Profile Created",
+        description: "Your brand profile has been created successfully!",
       })
 
       // Redirect to profile page
       router.push("/brand/profile")
     } catch (error: any) {
-      console.error("Failed to update brand profile:", error)
+      console.error("Failed to create brand profile:", error)
       toast({
         title: "Error",
-        description: error.message || "Failed to update brand profile. Please try again.",
+        description: error.message || "Failed to create brand profile. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -288,18 +252,6 @@ export default function BrandEditProfilePage() {
         variant: "destructive",
       })
     }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <Header isLoggedIn={true} userRole="brand" />
-        <main className="flex-1 flex items-center justify-center">
-          <div>Loading profile data...</div>
-        </main>
-        <Footer />
-      </div>
-    )
   }
 
   return (
@@ -440,12 +392,12 @@ export default function BrandEditProfilePage() {
                     className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
                   />
                   <Button
-                    onClick={handleUpdateSettings}
+                    onClick={handleSaveSettings}
                     disabled={isLoading}
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
-                    {isLoading ? "Updating..." : "Update Settings"}
+                    {isLoading ? "Creating..." : "Create Profile"}
                   </Button>
                 </div>
               </div>

@@ -124,3 +124,439 @@
 2025-07-24T11:23:34.350Z [CollabForge] error: Validation errors during get contracts by status
 2025-07-24T11:23:41.733Z [CollabForge] info: Contracts retrieved successfully for status
 2025-07-24T11:23:52.485Z [CollabForge] info: Contracts retrieved successfully for proposal
+2025-07-24T15:08:14.491Z [CollabForge] info: User registered successfully
+2025-07-24T15:09:00.309Z [CollabForge] info: User logged in successfully
+2025-07-24T15:09:30.755Z [CollabForge] info: User logged in successfully
+2025-07-24T16:36:00.147Z [CollabForge] info: User logged in successfully
+2025-07-24T16:36:06.350Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:36:06.404Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:40:43.619Z [CollabForge] info: User logged in successfully
+2025-07-24T16:40:53.718Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:40:53.768Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:40:58.155Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:40:58.205Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:41:29.734Z [CollabForge] info: Brand updated successfully
+2025-07-24T16:51:03.588Z [CollabForge] info: User logged in successfully
+2025-07-24T16:51:08.568Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:08.626Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:17.180Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:17.236Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:25.390Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:25.448Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:39.284Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:51:39.335Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:58:12.476Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:58:50.770Z [CollabForge] info: Brand updated successfully
+2025-07-24T16:58:56.364Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T16:58:56.418Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T17:01:05.162Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T17:01:05.219Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T17:01:52.391Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T17:01:52.439Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-24T17:05:23.267Z [CollabForge] info: User logged in successfully
+2025-07-24T17:05:27.345Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:05:27.405Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:05:31.693Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:05:31.751Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:05:31.801Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:05:31.858Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:10:01.249Z [CollabForge] error: Validation errors during creator update
+2025-07-24T17:16:43.038Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:19:37.259Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:19:37.307Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:19:37.350Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:19:37.401Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:22:03.998Z [CollabForge] error: Validation errors during creator update
+2025-07-24T17:30:21.879Z [CollabForge] info: User logged in successfully
+2025-07-24T17:30:22.965Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:23.014Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:27.558Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:27.603Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:30:27.658Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:27.701Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:30:37.596Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:37.652Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:37.711Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:30:37.767Z [CollabForge] info: User details retrieved successfully
+2025-07-24T17:52:23.742Z [CollabForge] info: User logged in successfully
+2025-07-24T17:52:33.388Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:52:33.438Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:52:36.696Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:52:36.746Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T17:52:36.790Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:52:36.839Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T17:55:41.688Z [CollabForge] error: Validation errors during creator update
+2025-07-24T18:08:48.053Z [CollabForge] error: Validation errors during creator update
+2025-07-24T18:09:27.375Z [CollabForge] info: User logged in successfully
+2025-07-24T18:09:32.001Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:09:32.052Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:09:34.247Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T18:09:34.297Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T18:09:34.340Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:09:34.400Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:10:02.659Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:10:02.819Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T18:10:32.951Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:10:33.096Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T18:12:59.781Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:12:59.942Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T18:16:45.754Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:16:45.899Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T18:18:27.899Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-24T18:18:37.428Z [CollabForge] info: User logged in successfully
+2025-07-24T18:18:45.953Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:18:46.005Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:18:48.685Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T18:18:48.735Z [CollabForge] info: Categories retrieved successfully
+2025-07-24T18:18:48.779Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:18:48.857Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:19:33.826Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:19:33.994Z [CollabForge] error: Validation errors during creator creation
+2025-07-24T18:26:57.985Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-24T18:26:58.238Z [CollabForge] error: Validation errors during creator creation
+2025-07-26T17:49:01.276Z [CollabForge] info: User logged in successfully
+2025-07-26T17:49:09.038Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:09.097Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:11.801Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T17:49:11.859Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T17:49:11.910Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:11.968Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:12.760Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:12.812Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T17:49:12.822Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T17:49:12.878Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T17:51:45.657Z [CollabForge] info: User logged in successfully
+2025-07-26T17:51:51.415Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:51:51.471Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:51:56.083Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:51:56.141Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:57:53.782Z [CollabForge] info: User logged in successfully
+2025-07-26T17:57:58.036Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:57:58.086Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:58:00.316Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:58:00.375Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T17:58:51.087Z [CollabForge] info: Brand updated successfully
+2025-07-26T18:01:38.005Z [CollabForge] info: User logged in successfully
+2025-07-26T18:01:40.508Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:01:40.560Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:01:41.741Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:01:41.796Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:07:06.658Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:07:06.682Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:07:06.708Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:07:06.737Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:07:06.751Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:07:06.800Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:10:46.555Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-26T18:10:53.635Z [CollabForge] info: User logged in successfully
+2025-07-26T18:10:59.336Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:10:59.381Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:10:59.425Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:10:59.472Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:10:59.516Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:10:59.578Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:11:35.148Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:11:35.157Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:11:35.198Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T18:11:35.207Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T18:11:35.254Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:11:35.304Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-26T18:42:12.620Z [CollabForge] info: User registered successfully
+2025-07-26T18:42:46.487Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-26T18:42:56.496Z [CollabForge] info: User logged in successfully
+2025-07-26T18:43:10.172Z [CollabForge] info: User logged in successfully
+2025-07-26T19:17:35.443Z [CollabForge] info: User logged in successfully
+2025-07-26T19:17:39.523Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:17:39.580Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:17:44.722Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:17:44.778Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:18:10.868Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:18:10.917Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:18:14.421Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:18:14.471Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:18:49.823Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-26T19:19:02.048Z [CollabForge] info: User logged in successfully
+2025-07-26T19:19:05.677Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:19:05.734Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:19:06.849Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:19:06.900Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:20:58.371Z [CollabForge] error: Validation errors during creator creation
+2025-07-26T19:31:42.592Z [CollabForge] info: User logged in successfully
+2025-07-26T19:31:48.883Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:31:48.951Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:31:50.431Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:31:50.489Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:33:39.556Z [CollabForge] error: Validation errors during creator creation
+2025-07-26T19:40:22.963Z [CollabForge] info: User logged in successfully
+2025-07-26T19:40:31.243Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:40:31.308Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-07-26T19:40:32.877Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:40:32.933Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:41:49.196Z [CollabForge] info: Creator created successfully
+2025-07-26T19:41:49.409Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:41:49.470Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:41:55.265Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:41:55.325Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:41:55.382Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:41:55.439Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:42:37.185Z [CollabForge] info: User logged in successfully
+2025-07-26T19:42:43.959Z [CollabForge] warn: Get brand failed: Brand not found or inactive
+2025-07-26T19:42:44.011Z [CollabForge] warn: Get brand failed: Brand not found or inactive
+2025-07-26T19:43:16.672Z [CollabForge] info: Brand created successfully
+2025-07-26T19:43:16.839Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:43:16.900Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:43:24.088Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:43:24.145Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-26T19:59:09.069Z [CollabForge] info: User logged in successfully
+2025-07-26T19:59:13.810Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:59:13.858Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:59:20.283Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:59:20.332Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T19:59:20.375Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T19:59:20.423Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T20:08:13.938Z [CollabForge] info: User logged in successfully
+2025-07-26T20:08:17.774Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:08:17.826Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:08:20.261Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:08:20.310Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:08:20.353Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T20:08:20.401Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T20:23:28.637Z [CollabForge] info: User logged in successfully
+2025-07-26T20:23:31.696Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:23:31.754Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:23:34.430Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:23:34.487Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-26T20:23:34.538Z [CollabForge] info: Categories retrieved successfully
+2025-07-26T20:23:34.593Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T02:49:03.271Z [CollabForge] info: User logged in successfully
+2025-07-27T02:49:11.266Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:49:11.319Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:49:14.016Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:49:14.066Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:49:46.986Z [CollabForge] info: User logged in successfully
+2025-07-27T02:49:50.753Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:49:50.812Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:49:53.664Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:49:53.722Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:49:53.773Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T02:49:53.828Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T02:50:00.752Z [CollabForge] info: Creator updated successfully
+2025-07-27T02:50:00.949Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:50:00.997Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:50:08.753Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:50:08.802Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:50:08.844Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T02:50:08.896Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T02:50:33.357Z [CollabForge] info: Creator updated successfully
+2025-07-27T02:50:33.547Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:50:33.597Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T02:59:48.244Z [CollabForge] info: User logged in successfully
+2025-07-27T02:59:51.953Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:59:52.009Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:59:55.666Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T02:59:55.724Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:01:22.366Z [CollabForge] info: User logged in successfully
+2025-07-27T03:01:26.362Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:01:26.411Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:01:28.745Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:01:28.798Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:01:28.842Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:01:28.891Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:01:31.918Z [CollabForge] info: Creator updated successfully
+2025-07-27T03:01:32.119Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:01:32.176Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:08:25.266Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:08:25.315Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:09:11.828Z [CollabForge] info: User logged in successfully
+2025-07-27T03:13:50.350Z [CollabForge] warn: User login failed: Incorrect password
+2025-07-27T03:14:08.090Z [CollabForge] info: User logged in successfully
+2025-07-27T03:14:11.453Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:14:11.511Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:14:17.106Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:14:17.162Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:15:03.300Z [CollabForge] info: Campaign created successfully
+2025-07-27T03:15:06.083Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:06.139Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:14.444Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:17.690Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:29.257Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:15:29.304Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:15:36.742Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:36.790Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:15:44.408Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:15:44.456Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:15:49.451Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:15:49.500Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:15:51.702Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:15:51.754Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T03:16:10.834Z [CollabForge] info: User logged in successfully
+2025-07-27T03:16:15.020Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T03:16:15.071Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T03:17:59.834Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T03:18:03.156Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:18:03.206Z [CollabForge] info: Creator retrieved successfully for user
+2025-07-27T03:29:38.660Z [CollabForge] info: User logged in successfully
+2025-07-27T03:29:42.630Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:29:42.680Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:29:56.439Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:29:56.495Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:30:05.414Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:05.471Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:18.376Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:18.424Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:21.589Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T03:30:21.639Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T03:30:21.685Z [CollabForge] info: Category retrieved successfully
+2025-07-27T03:30:21.736Z [CollabForge] info: Category retrieved successfully
+2025-07-27T03:30:35.060Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:35.111Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:36.288Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T03:30:36.339Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T03:30:36.382Z [CollabForge] info: Category retrieved successfully
+2025-07-27T03:30:36.431Z [CollabForge] info: Category retrieved successfully
+2025-07-27T03:30:38.942Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:38.993Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T03:30:40.027Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T03:30:40.078Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:14:32.291Z [CollabForge] info: User logged in successfully
+2025-07-27T04:14:35.035Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:35.083Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:38.941Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:14:38.989Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:22:50.406Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:25:28.825Z [CollabForge] info: User logged in successfully
+2025-07-27T04:25:33.847Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:25:33.895Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:28:12.379Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:28:53.258Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:29:34.566Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:34:38.610Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:34:38.658Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:35:10.402Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:17.234Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:18.279Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:18.823Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:19.007Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:19.199Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:20.015Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:20.624Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:31.066Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:35:32.648Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:40:21.127Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:40:38.236Z [CollabForge] info: User logged in successfully
+2025-07-27T04:40:40.889Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:40:40.944Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:41:18.617Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:43:30.453Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:43:30.628Z [CollabForge] info: Campaign created successfully
+2025-07-27T04:44:01.929Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:44:01.978Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:44:58.973Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:44:59.143Z [CollabForge] info: Campaign created successfully
+2025-07-27T04:49:00.238Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:49:00.299Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T04:49:33.700Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T04:49:33.753Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T04:52:02.433Z [CollabForge] info: User logged in successfully
+2025-07-27T04:52:05.612Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:05.664Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:52:05.716Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:05.766Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:52:19.688Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:52:19.730Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:53:26.152Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:53:26.211Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:54:53.811Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:54:53.814Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:55:10.153Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:55:10.158Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:55:10.201Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:55:10.206Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:59:33.093Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T04:59:33.098Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T04:59:34.183Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-27T04:59:34.237Z [CollabForge] warn: Get campaign failed: Campaign not found or inactive
+2025-07-27T05:00:01.304Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:00:01.306Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:02.222Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:04:02.229Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:24.103Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:04:24.105Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:10.486Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:10.491Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:14.396Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:14.448Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:14.463Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:14.513Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:35.118Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:35.157Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:35.167Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:35.218Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:36.290Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:36.348Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:36.349Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:36.435Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:50.549Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:50.589Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:50.598Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:50.645Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:52.054Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:52.121Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:08:52.127Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:52.177Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:08:55.249Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:55.259Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:08:55.299Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:08:55.316Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:17:22.895Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:17:22.950Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:17:22.999Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:17:23.053Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:17:26.543Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:17:26.552Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:17:26.592Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:17:26.607Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:18:08.022Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:18:08.090Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:18:08.140Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:18:08.197Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:18:18.246Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:18:18.258Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:18:18.296Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:18:18.316Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:18:19.084Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:18:19.139Z [CollabForge] info: Campaign details retrieved successfully
+2025-07-27T05:18:19.146Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:18:19.196Z [CollabForge] info: Brand details retrieved successfully
+2025-07-27T05:18:21.352Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:18:21.369Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:18:21.401Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:18:21.427Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:18:59.823Z [CollabForge] info: User logged in successfully
+2025-07-27T05:19:05.731Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:19:05.781Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:19:05.825Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T05:19:05.875Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T05:19:19.924Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:19:19.980Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:19:20.031Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T05:19:20.086Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T05:19:24.506Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:19:24.559Z [CollabForge] info: Campaigns retrieved successfully for brand
+2025-07-27T05:22:50.689Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:22:55.581Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:23:09.381Z [CollabForge] info: User logged in successfully
+2025-07-27T05:23:11.747Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:23:11.803Z [CollabForge] info: Categories retrieved successfully
+2025-07-27T05:23:14.070Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:23:14.126Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:24:06.229Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:24:06.282Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:42:10.289Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:42:18.048Z [CollabForge] info: User logged in successfully
+2025-07-27T05:42:20.038Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:42:20.120Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:42:20.214Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:42:20.316Z [CollabForge] info: All active campaigns retrieved successfully
+2025-07-27T05:42:28.609Z [CollabForge] info: Brand retrieved successfully for user
+2025-07-27T05:42:28.694Z [CollabForge] info: All active campaigns retrieved successfully

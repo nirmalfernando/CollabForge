@@ -27,6 +27,8 @@ const creatorData = {
   lastName: "Carter",
   followers: "320,000",
   platform: "TikTok",
+  category: "Education & Science", // Added category
+  creatorType: "Content Creator", // Added creator type
   bio: 'Hey hey! I\'m Mads Molecule 🔬\nFull-time chaos coordinator / part-time science exploder. I make loud, weird, totally questionable science content on TikTok that turns "ugh, chemistry" into "wait, what just happened!?"',
   details: [
     { icon: Monitor, text: "Platform: TikTok" },
@@ -133,6 +135,22 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
                 {creatorData.lastName}
               </h1>
               <p className="text-lg leading-relaxed whitespace-pre-line">{creatorData.bio}</p>
+
+              {/* Display Category and Creator Type */}
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-lg">
+                {creatorData.category && (
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    <span>Category: {creatorData.category}</span>
+                  </div>
+                )}
+                {creatorData.creatorType && (
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    <span>Type: {creatorData.creatorType}</span>
+                  </div>
+                )}
+              </div>
 
               <div className="space-y-3">
                 {creatorData.details.map((detail, index) => (

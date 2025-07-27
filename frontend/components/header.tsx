@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,20 +11,59 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { authApi, clearAuthData } from "@/lib/api"; // Adjust the import path as needed
+import { useState } from "react";
 
 interface HeaderProps {
-  isLoggedIn: boolean
-  userRole?: "influencer" | "brand-manager"
+  isLoggedIn: boolean;
+  userRole?: "influencer" | "brand-manager";
 }
 
 export default function Header({ isLoggedIn, userRole }: HeaderProps) {
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   // Determine the dashboard path based on user role
-  const dashboardPath = userRole === "influencer" ? "/creator/dashboard" : "/brand/dashboard"
+  const dashboardPath =
+    userRole === "influencer" ? "/creator/dashboard" : "/brand/dashboard";
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return; // Prevent multiple logout attempts
+
+    setIsLoggingOut(true);
+
+    try {
+      // Call the logout API
+      await authApi.logout();
+
+      // Clear local storage auth data
+      clearAuthData();
+
+      // Redirect to home page
+      router.push("/");
+
+      // Optional: You might want to trigger a page refresh to ensure all state is cleared
+      // window.location.href = "/"
+    } catch (error) {
+      console.error("Logout failed:", error);
+
+      // Even if the API call fails, clear local data and redirect
+      // This ensures the user is logged out on the frontend
+      clearAuthData();
+      router.push("/");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <header className="flex items-center justify-between px-4 py-6 md:px-6 bg-background text-foreground">
-      <Link href={isLoggedIn ? dashboardPath : "/"} className="text-2xl font-bold" prefetch={false}>
+      <Link
+        href={isLoggedIn ? dashboardPath : "/"}
+        className="text-2xl font-bold"
+        prefetch={false}
+      >
         CollabForge
       </Link>
       <div className="flex items-center space-x-6">
@@ -47,7 +87,7 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
                     Campaigns
                   </Link>
                   <Link
-                    href="/creator/creators" // Removed the trailing backslash
+                    href="/creator/creators"
                     className="text-lg font-medium hover:text-primary transition-colors"
                     prefetch={false}
                   >
@@ -90,16 +130,32 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
             </>
           ) : (
             <>
-              <Link href="/" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+              <Link
+                href="/"
+                className="text-lg font-medium hover:text-primary transition-colors"
+                prefetch={false}
+              >
                 Home
               </Link>
-              <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+              <Link
+                href="#"
+                className="text-lg font-medium hover:text-primary transition-colors"
+                prefetch={false}
+              >
                 About Us
               </Link>
-              <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+              <Link
+                href="#"
+                className="text-lg font-medium hover:text-primary transition-colors"
+                prefetch={false}
+              >
                 Contact Us
               </Link>
-              <Link href="#" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+              <Link
+                href="#"
+                className="text-lg font-medium hover:text-primary transition-colors"
+                prefetch={false}
+              >
                 Pricing
               </Link>
             </>
@@ -108,14 +164,24 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-10 w-10 rounded-full"
+              >
                 <Avatar className="h-10 w-10 border-2 border-primary">
-                  <AvatarImage src="/placeholder.svg?height=100&width=100" alt="@user" />
+                  <AvatarImage
+                    src="/placeholder.svg?height=100&width=100"
+                    alt="@user"
+                  />
                   <AvatarFallback>U</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-card text-foreground" align="end" forceMount>
+            <DropdownMenuContent
+              className="w-56 bg-card text-foreground"
+              align="end"
+              forceMount
+            >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">User Name</p>
@@ -127,7 +193,11 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
               <DropdownMenuSeparator className="bg-muted" />
               <DropdownMenuItem className="cursor-pointer hover:bg-primary/20">
                 <Link
-                  href={userRole === "influencer" ? "/creator/profile" : "/brand/profile"}
+                  href={
+                    userRole === "influencer"
+                      ? "/creator/profile"
+                      : "/brand/profile"
+                  }
                   className="w-full"
                   prefetch={false}
                 >
@@ -140,10 +210,14 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-muted" />
-              <DropdownMenuItem className="cursor-pointer hover:bg-primary/20">
-                <Link href="#" className="w-full" prefetch={false}>
-                  Log-Out
-                </Link>
+              <DropdownMenuItem
+                className="cursor-pointer hover:bg-primary/20"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+              >
+                <span className="w-full">
+                  {isLoggingOut ? "Logging out..." : "Log-Out"}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -159,5 +233,5 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
         )}
       </div>
     </header>
-  )
+  );
 }
