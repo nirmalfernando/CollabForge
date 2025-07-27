@@ -110,6 +110,10 @@ export default function CreatorCampaignDetailPage({
         const campaignResponse = await campaignApi.getCampaignById(id);
         const campaignData = campaignResponse.campaign || campaignResponse;
 
+        console.log("Campaign data:", campaignData);
+        console.log("Campaign _id:", campaignData._id);
+        console.log("Campaign object keys:", Object.keys(campaignData));
+
         setCampaign(campaignData);
 
         // Fetch brand data if brandId is available
@@ -187,6 +191,12 @@ export default function CreatorCampaignDetailPage({
       bonuses:
         campaign.requirements.bonuses || "Performance-based bonuses available",
     };
+  };
+
+  // Helper function to get the campaign ID (handles both _id and campaignId)
+  const getCampaignId = () => {
+    if (!campaign) return id;
+    return campaign._id || id;
   };
 
   if (loading) {
@@ -364,15 +374,25 @@ export default function CreatorCampaignDetailPage({
                   variant="outline"
                   className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   onClick={() => {
-                    // You can implement contact functionality here
+                    console.log("Contact campaign:", getCampaignId());
                     alert("Contact functionality to be implemented");
                   }}
                 >
                   Contact Us
                 </Button>
                 <Link
-                  href={`/creator/campaigns/${campaign._id}/apply`}
+                  href={`/creator/campaigns/${getCampaignId()}/apply`}
                   prefetch={false}
+                  onClick={() => {
+                    console.log(
+                      "Navigating to apply page with ID:",
+                      getCampaignId()
+                    );
+                    console.log(
+                      "Full URL:",
+                      `/creator/campaigns/${getCampaignId()}/apply`
+                    );
+                  }}
                 >
                   <Button
                     variant="outline"

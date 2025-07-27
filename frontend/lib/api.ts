@@ -68,13 +68,46 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
     ...options,
   };
 
+  console.log(`🚀 Making API request to: ${url}`);
+  console.log(`📝 Request method:`, config.method || "GET");
+  console.log(`🔑 Has token:`, !!token);
+  console.log(`📦 Request body:`, options.body);
+  console.log(`📋 Request headers:`, config.headers);
+
   try {
     const response = await fetch(url, config);
-    const data = await response.json();
+    console.log(`📡 Response status:`, response.status);
+    console.log(
+      `📡 Response headers:`,
+      Object.fromEntries(response.headers.entries())
+    );
+
+    // Try to parse JSON, but handle cases where response might be empty or invalid JSON
+    let data;
+    const contentType = response.headers.get("content-type");
+    const responseText = await response.text();
+
+    console.log(`📄 Raw response text for ${url}:`, responseText);
+
+    if (contentType && contentType.includes("application/json")) {
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch (parseError) {
+        console.error(`❌ JSON parse error for ${url}:`, parseError);
+        data = { message: "Invalid JSON response", rawResponse: responseText };
+      }
+    } else {
+      data = {
+        message: responseText || "No response body",
+        rawResponse: responseText,
+      };
+    }
+
+    console.log(`📊 Parsed response data:`, data);
 
     if (!response.ok) {
       // Log the full response data for debugging
-      console.error(`API Error for ${url}:`, response.status, data);
+      console.error(`❌ API Error for ${url}:`, response.status, data);
 
       // Handle 401 Unauthorized - token expired or invalid
       if (response.status === 401) {
@@ -89,18 +122,19 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
       throw new ApiError(
         response.status,
-        data.message || "An error occurred",
+        data.message || `HTTP ${response.status} error`,
         data
       );
     }
 
+    console.log(`✅ API request successful for ${url}`);
     return data;
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;
     }
     // Catch network errors or other unexpected issues
-    console.error(`Network or unexpected error for ${url}:`, error);
+    console.error(`🌐 Network or unexpected error for ${url}:`, error);
     throw new ApiError(500, "Network error occurred");
   }
 }
@@ -324,6 +358,79 @@ export const campaignApi = {
 
   deleteCampaign: async (campaignId: string) => {
     return apiRequest(`/campaigns/${campaignId}`, {
+      method: "DELETE",
+    });
+  },
+};
+
+// Proposal API functions
+export const proposalApi = {
+  createProposal: async (proposalData: {
+    campaignId: string;
+    proposalTitle: string;
+    proposalPitch: string;
+    contentPlan?: string | object;
+    startDate: string;
+    endDate: string;
+    creatorId: string;
+    proposalStatus?: "pending" | "accepted" | "rejected";
+    status?: boolean;
+  }) => {
+    return apiRequest("/proposals", {
+      method: "POST",
+      body: JSON.stringify(proposalData),
+    });
+  },
+
+  updateProposal: async (proposalId: string, proposalData: any) => {
+    return apiRequest(`/proposals/${proposalId}`, {
+      method: "PUT",
+      body: JSON.stringify(proposalData),
+    });
+  },
+
+  getProposalById: async (proposalId: string) => {
+    return apiRequest(`/proposals/${proposalId}`);
+  },
+
+  getAllProposals: async () => {
+    return apiRequest("/proposals");
+  },
+
+  getProposalsByCampaign: async (campaignId: string) => {
+    return apiRequest(`/proposals/by-campaign?campaignId=${campaignId}`);
+  },
+
+  getProposalsByCreator: async (creatorId: string) => {
+    return apiRequest(`/proposals/by-creator?creatorId=${creatorId}`);
+  },
+
+  getProposalsByStatus: async (proposalStatus: string) => {
+    return apiRequest(
+      `/proposals/by-status?proposalStatus=${encodeURIComponent(
+        proposalStatus
+      )}`
+    );
+  },
+
+  getProposalsByDateRange: async (startDate: string, endDate: string) => {
+    return apiRequest(
+      `/proposals/by-date-range?startDate=${startDate}&endDate=${endDate}`
+    );
+  },
+
+  updateProposalStatus: async (
+    proposalId: string,
+    proposalStatus: "pending" | "accepted" | "rejected"
+  ) => {
+    return apiRequest(`/proposals/${proposalId}/status`, {
+      method: "PUT",
+      body: JSON.stringify({ proposalStatus }),
+    });
+  },
+
+  deleteProposal: async (proposalId: string) => {
+    return apiRequest(`/proposals/${proposalId}`, {
       method: "DELETE",
     });
   },
