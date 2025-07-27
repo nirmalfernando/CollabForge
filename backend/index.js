@@ -61,10 +61,25 @@ app.use(cookieParser());
 app.use(helmet());
 
 // Middleware to enable CORS
+const allowedOrigins = [
+  "https://helpful-begonia-22aec6.netlify.app",
+  "https://*.netlify.app", // For Netlify deploy previews
+  "http://localhost:3000", // For local development
+  "https://www.collabforge.xyz",
+  "https://collabforge.xyz",
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true, // Allow cookies to be sent
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"), false);
+    },
+    credentials: true,
   })
 );
 
