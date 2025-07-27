@@ -1,31 +1,62 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Leaf } from "lucide-react"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Leaf } from "lucide-react";
+import { useEffect, useState, use } from "react";
+import { campaignApi, proposalApi, creatorApi, brandApi } from "@/lib/api";
 
-// Dummy data for a single application detail
-const applicationDetailData = {
-  campaignId: "1", // Example campaign ID
-  applicantId: "1", // Example applicant ID
-  campaignTitle: "Science, Simplified",
-  brandName: "Zentro Labs",
-  applicantName: "Mads Molecule",
-  applicantAvatar: "/images/mads-molecule-avatar.png",
-  proposalTitle: "Boosting Your Summer Collection on Instagram & TikTok",
-  proposalPitch:
-    "I plan to create engaging short-form content that highlights the unique features of your summer collection. My audience (fashion & lifestyle enthusiasts) resonates well with seasonal product promotions. I will ensure each post links directly to your store to drive conversions.",
-  contentPlan: [
-    "Instagram: 3 Reels (15-30 seconds), 5 Stories with swipe-up links",
-    "TikTok: 2 Trend-based short videos featuring product use",
-    "Instagram Live: 1 Q&A session reviewing the collection",
-    "Twitter (Optional): 3 Tweets highlighting styling tips",
-  ],
-  timeline: {
-    startDate: "2025-08-01",
-    endDate: "2025-08-20",
-  },
+interface Creator {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  nickName?: string;
+  bio?: string;
+  profilePicUrl?: string;
+  socialMedia?: Array<{
+    platform: string;
+    handle: string;
+    url: string;
+    followers?: number;
+  }>;
+  type: string;
+}
+
+interface Brand {
+  _id: string;
+  companyName: string;
+  bio?: string;
+  profilePicUrl?: string;
+}
+
+interface Campaign {
+  _id: string;
+  campaignTitle: string;
+  description: string;
+  brandId: string;
+}
+
+interface Proposal {
+  _id?: string;
+  proposalId?: string;
+  campaignId: string;
+  creatorId: string;
+  proposalTitle: string;
+  proposalPitch: string;
+  contentPlan?: string;
+  startDate: string;
+  endDate: string;
+  proposalStatus: string;
+  createdAt: string;
+}
+
+interface ApplicationData {
+  proposal: Proposal;
+  creator: Creator;
+  campaign: Campaign;
+  brand: Brand;
 }
 
 // Dummy data for "You Might Also Like" section (other applicants)
@@ -62,12 +93,186 @@ const otherApplicants = [
     followers: "320,000",
     avatarSrc: "/images/mads-molecule-avatar.png",
   },
-]
+];
 
-export default function BrandApplicationDetailPage({ params }: { params: { id: string; applicantId: string } }) {
-  // In a real app, you would use params.id and params.applicantId to fetch the specific application data
-  const application = applicationDetailData
-  const campaignId = params.id // Use the campaign ID from params
+export default function ApplicationDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string; applicantId: string }>;
+}) {
+  const resolvedParams = use(params);
+  const [applicationData, setApplicationData] =
+    useState<ApplicationData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApplicationData = async () => {
+      try {
+        setLoading(true);
+        console.log(
+          "Fetching application data for:",
+          resolvedParams.applicantId
+        );
+        console.log("All resolved params:", resolvedParams);
+
+        // Validate applicantId (which is actually the proposalId)
+        if (
+          !resolvedParams.applicantId ||
+          resolvedParams.applicantId === "undefined"
+        ) {
+          throw new Error("Invalid proposal ID");
+        }
+
+        // Fetch proposal details directly using the proposalId
+        const proposal: Proposal = await proposalApi.getProposalById(
+          resolvedParams.applicantId
+        );
+        console.log("Proposal data:", proposal);
+
+        // Fetch creator details
+        const creator: Creator = await creatorApi.getCreatorById(
+          proposal.creatorId
+        );
+        console.log("Creator data:", creator);
+
+        // Fetch campaign details
+        const campaign: Campaign = await campaignApi.getCampaignById(
+          proposal.campaignId
+        );
+        console.log("Campaign data:", campaign);
+
+        // Fetch brand details
+        const brand: Brand = await brandApi.getBrandById(campaign.brandId);
+        console.log("Brand data:", brand);
+
+        setApplicationData({
+          proposal,
+          creator,
+          campaign,
+          brand,
+        });
+      } catch (err) {
+        console.error("Error fetching application data:", err);
+        // Ensure error is always a string
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : "Failed to load application details";
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplicationData();
+  }, [resolvedParams.applicantId]);
+
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return dateString; // Return original if parsing fails
+    }
+  };
+
+  const handleStatusUpdate = async (status: "accepted" | "rejected") => {
+    if (!applicationData) return;
+
+    try {
+      const proposalId =
+        applicationData.proposal._id || applicationData.proposal.proposalId;
+      if (!proposalId) {
+        console.error("No proposal ID available");
+        return;
+      }
+
+      await proposalApi.updateProposalStatus(proposalId, status);
+
+      // Update local state
+      setApplicationData((prev) =>
+        prev
+          ? {
+              ...prev,
+              proposal: { ...prev.proposal, proposalStatus: status },
+            }
+          : null
+      );
+    } catch (err) {
+      console.error("Error updating proposal status:", err);
+    }
+  };
+
+  const parseContentPlan = (contentPlan?: string): string[] => {
+    if (!contentPlan) return [];
+
+    try {
+      // If it's a JSON string, parse it
+      if (contentPlan.startsWith("[") || contentPlan.startsWith("{")) {
+        const parsed = JSON.parse(contentPlan);
+        if (Array.isArray(parsed)) {
+          // Ensure all items are strings
+          return parsed.map((item) =>
+            typeof item === "string" ? item : String(item)
+          );
+        }
+        // If it's an object, convert values to string array
+        return Object.values(parsed).map((item) => String(item));
+      }
+
+      // If it's a regular string, split by newlines or common delimiters
+      return contentPlan
+        .split(/\n|;|\|/)
+        .filter((item) => item.trim().length > 0)
+        .map((item) => item.trim());
+    } catch {
+      // If parsing fails, return as single item array
+      return [String(contentPlan)];
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="brand-manager" />
+        <main className="flex-1 py-12 px-4 md:px-6">
+          <div className="container mx-auto">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-lg">Loading application details...</div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !applicationData) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="brand-manager" />
+        <main className="flex-1 py-12 px-4 md:px-6">
+          <div className="container mx-auto">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-red-500">
+                {error || "Application not found"}
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const { proposal, creator, campaign, brand } = applicationData;
+  const creatorName =
+    creator.nickName || `${creator.firstName} ${creator.lastName}`;
+  const contentPlanItems = parseContentPlan(proposal.contentPlan);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -78,10 +283,12 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
           {/* Top Section: Campaign Title and Brand */}
           <div className="space-y-4">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <h1 className="text-5xl md:text-6xl font-bold text-primary">&ldquo;{application.campaignTitle}&rdquo;</h1>
+              <h1 className="text-5xl md:text-6xl font-bold text-primary">
+                &ldquo;{String(campaign.campaignTitle)}&rdquo;
+              </h1>
               <div className="flex items-center gap-3 text-foreground flex-shrink-0">
                 <Leaf className="h-6 w-6" />
-                <span className="text-lg">By {application.brandName}</span>
+                <span className="text-lg">By {brand.companyName}</span>
               </div>
             </div>
           </div>
@@ -91,15 +298,20 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
             <h2 className="text-4xl font-bold text-primary">Applicant</h2>
             <div className="flex items-center gap-4">
               <Avatar className="w-20 h-20 border-2 border-primary">
-                <AvatarImage src={application.applicantAvatar || "/placeholder.svg"} alt={application.applicantName} />
+                <AvatarImage
+                  src={creator.profilePicUrl || "/placeholder.svg"}
+                  alt={creatorName}
+                />
                 <AvatarFallback className="bg-primary text-white text-2xl font-bold">
-                  {application.applicantName
+                  {creatorName
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-4xl font-semibold text-foreground">{application.applicantName}</span>
+              <span className="text-4xl font-semibold text-foreground">
+                {creatorName}
+              </span>
             </div>
           </div>
 
@@ -109,61 +321,73 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
             <div className="lg:col-span-2 space-y-8">
               {/* Proposal Title */}
               <div className="space-y-2">
-                <h3 className="text-3xl font-bold text-primary">Proposal Title</h3>
-                <p className="text-lg leading-relaxed text-foreground">{application.proposalTitle}</p>
+                <h3 className="text-3xl font-bold text-primary">
+                  Proposal Title
+                </h3>
+                <p className="text-lg leading-relaxed text-foreground">
+                  {String(proposal.proposalTitle)}
+                </p>
               </div>
 
               {/* Proposal Pitch */}
               <div className="space-y-2">
-                <h3 className="text-3xl font-bold text-primary">Proposal Pitch</h3>
-                <p className="text-lg leading-relaxed text-foreground">{application.proposalPitch}</p>
+                <h3 className="text-3xl font-bold text-primary">
+                  Proposal Pitch
+                </h3>
+                <p className="text-lg leading-relaxed text-foreground whitespace-pre-wrap">
+                  {String(proposal.proposalPitch)}
+                </p>
               </div>
 
               {/* Content Plan */}
-              <div className="space-y-2">
-                <h3 className="text-3xl font-bold text-primary">Content Plan</h3>
-                <ul className="list-disc list-inside space-y-1 text-lg text-foreground">
-                  {application.contentPlan.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              {contentPlanItems.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="text-3xl font-bold text-primary">
+                    Content Plan
+                  </h3>
+                  <ul className="list-disc list-inside space-y-1 text-lg text-foreground">
+                    {contentPlanItems.map((item, index) => (
+                      <li key={index}>{String(item)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Content Timeline */}
               <div className="space-y-2">
-                <h3 className="text-3xl font-bold text-primary">Content Timeline</h3>
+                <h3 className="text-3xl font-bold text-primary">
+                  Content Timeline
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-lg text-foreground">
-                  <li>Start Date: {application.timeline.startDate}</li>
-                  <li>End Date: {application.timeline.endDate}</li>
+                  <li>Start Date: {formatDate(proposal.startDate)}</li>
+                  <li>End Date: {formatDate(proposal.endDate)}</li>
                 </ul>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-8">
                 <div className="flex-1">
-                  {" "}
-                  {/* New wrapper div */}
-                  <Link
-                    href={`/brand/campaigns/${campaignId}/applications/${application.applicantId}/contract`}
-                    prefetch={false}
-                    className="w-full block" // Ensure Link fills its parent
+                  <Button
+                    onClick={() => handleStatusUpdate("accepted")}
+                    variant="outline"
+                    disabled={proposal.proposalStatus !== "pending"}
+                    className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent disabled:opacity-50"
                   >
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
-                    >
-                      Accept
-                    </Button>
-                  </Link>
+                    {proposal.proposalStatus === "accepted"
+                      ? "Accepted"
+                      : "Accept"}
+                  </Button>
                 </div>
                 <div className="flex-1">
-                  {" "}
-                  {/* New wrapper div */}
                   <Button
+                    onClick={() => handleStatusUpdate("rejected")}
                     variant="outline"
-                    className="w-full rounded-full border-[#f32121] text-[#f32121] hover:bg-[#ff0000]/10 hover:text-[#ff0000] px-6 py-3 text-lg bg-transparent"
+                    disabled={proposal.proposalStatus !== "pending"}
+                    className="w-full rounded-full border-[#f32121] text-[#f32121] hover:bg-[#ff0000]/10 hover:text-[#ff0000] px-6 py-3 text-lg bg-transparent disabled:opacity-50"
                   >
-                    Reject
+                    {proposal.proposalStatus === "rejected"
+                      ? "Rejected"
+                      : "Reject"}
                   </Button>
                 </div>
               </div>
@@ -176,9 +400,15 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
               </h2>
               <div className="space-y-6">
                 {otherApplicants.map((otherApplicant) => (
-                  <div key={otherApplicant.id} className="flex items-start gap-4">
+                  <div
+                    key={otherApplicant.id}
+                    className="flex items-start gap-4"
+                  >
                     <Avatar className="w-16 h-16 border-2 border-primary flex-shrink-0">
-                      <AvatarImage src={otherApplicant.avatarSrc || "/placeholder.svg"} alt={otherApplicant.name} />
+                      <AvatarImage
+                        src={otherApplicant.avatarSrc || "/placeholder.svg"}
+                        alt={otherApplicant.name}
+                      />
                       <AvatarFallback className="bg-primary text-white font-bold">
                         {otherApplicant.name
                           .split(" ")
@@ -187,12 +417,23 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 space-y-1">
-                      <h3 className="text-lg font-bold text-foreground">{otherApplicant.name}</h3>
-                      <p className="text-muted-foreground text-sm">Platform: {otherApplicant.platform}</p>
-                      <p className="text-muted-foreground text-sm">Handle: {otherApplicant.handle}</p>
-                      <p className="text-muted-foreground text-sm">Followers: {otherApplicant.followers}</p>
+                      <h3 className="text-lg font-bold text-foreground">
+                        {otherApplicant.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        Platform: {otherApplicant.platform}
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        Handle: {otherApplicant.handle}
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        Followers: {otherApplicant.followers}
+                      </p>
                       <div className="flex flex-row gap-2 mt-2">
-                        <Link href={`/brand/creators/${otherApplicant.id}`} prefetch={false}>
+                        <Link
+                          href={`/brand/creators/${otherApplicant.id}`}
+                          prefetch={false}
+                        >
                           <Button
                             variant="outline"
                             className="w-24 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-4 py-1 text-sm bg-transparent"
@@ -201,7 +442,7 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
                           </Button>
                         </Link>
                         <Link
-                          href={`/brand/campaigns/${campaignId}/applications/${otherApplicant.id}`}
+                          href={`/brand/campaigns/${resolvedParams.id}/applications/${otherApplicant.id}`}
                           prefetch={false}
                         >
                           <Button
@@ -218,7 +459,7 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
               </div>
               <div className="text-right">
                 <Link
-                  href={`/brand/campaigns/${campaignId}/applications`}
+                  href={`/brand/campaigns/${resolvedParams.id}/applicants`}
                   className="text-primary hover:underline text-lg"
                   prefetch={false}
                 >
@@ -232,5 +473,5 @@ export default function BrandApplicationDetailPage({ params }: { params: { id: s
 
       <Footer />
     </div>
-  )
+  );
 }
