@@ -12,21 +12,94 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authApi, clearAuthData } from "@/lib/api"; // Adjust the import path as needed
-import { useState } from "react";
+import {
+  authApi,
+  clearAuthData,
+  getAuthData,
+  creatorApi,
+  brandApi,
+} from "@/lib/api";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   isLoggedIn: boolean;
   userRole?: "influencer" | "brand-manager";
 }
 
+interface UserData {
+  username: string;
+  profilePicUrl?: string;
+}
+
 export default function Header({ isLoggedIn, userRole }: HeaderProps) {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(false);
 
   // Determine the dashboard path based on user role
   const dashboardPath =
     userRole === "influencer" ? "/creator/dashboard" : "/brand/dashboard";
+
+  // Fetch user data when component mounts and user is logged in
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!isLoggedIn) return;
+
+      setIsLoadingUserData(true);
+      try {
+        const authData = getAuthData();
+        if (!authData || !authData.user) {
+          console.error("No auth data found");
+          return;
+        }
+
+        const userId = authData.user.userId || authData.user.id;
+        if (!userId) {
+          console.error("No user ID found in auth data");
+          return;
+        }
+
+        // First, get the user's basic info (username)
+        const userResponse = await authApi.getUserById(userId);
+
+        let profileData = {
+          username: userResponse.username,
+          profilePicUrl: undefined as string | undefined,
+        };
+
+        // Then, get profile picture based on role
+        try {
+          if (userRole === "influencer") {
+            const creatorResponse = await creatorApi.getCreatorByUserId(userId);
+            profileData.profilePicUrl = creatorResponse.profilePicUrl;
+          } else if (userRole === "brand-manager") {
+            const brandResponse = await brandApi.getBrandByUserId(userId);
+            profileData.profilePicUrl = brandResponse.profilePicUrl;
+          }
+        } catch (profileError) {
+          // Profile might not exist yet, which is fine
+          console.warn("Profile data not found, using defaults:", profileError);
+        }
+
+        setUserData(profileData);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        // Set fallback data if available from auth
+        const authData = getAuthData();
+        if (authData?.user?.username) {
+          setUserData({
+            username: authData.user.username,
+            profilePicUrl: undefined,
+          });
+        }
+      } finally {
+        setIsLoadingUserData(false);
+      }
+    };
+
+    fetchUserData();
+  }, [isLoggedIn, userRole]);
 
   const handleLogout = async () => {
     if (isLoggingOut) return; // Prevent multiple logout attempts
@@ -40,6 +113,9 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
       // Clear local storage auth data
       clearAuthData();
 
+      // Clear user data state
+      setUserData(null);
+
       // Redirect to home page
       router.push("/");
 
@@ -51,10 +127,20 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
       // Even if the API call fails, clear local data and redirect
       // This ensures the user is logged out on the frontend
       clearAuthData();
+      setUserData(null);
       router.push("/");
     } finally {
       setIsLoggingOut(false);
     }
+  };
+
+  // Helper function to get user initials for avatar fallback
+  const getUserInitials = (username: string) => {
+    return username
+      .split(" ")
+      .map((name) => name.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join("");
   };
 
   return (
@@ -167,13 +253,21 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
               <Button
                 variant="ghost"
                 className="relative h-10 w-10 rounded-full"
+                disabled={isLoadingUserData}
               >
                 <Avatar className="h-10 w-10 border-2 border-primary">
                   <AvatarImage
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="@user"
+                    src={
+                      userData?.profilePicUrl ||
+                      "/placeholder.svg?height=100&width=100"
+                    }
+                    alt={userData?.username || "User"}
                   />
-                  <AvatarFallback>U</AvatarFallback>
+                  <AvatarFallback>
+                    {userData?.username
+                      ? getUserInitials(userData.username)
+                      : "U"}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -184,7 +278,11 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
             >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">User Name</p>
+                  <p className="text-sm font-medium leading-none">
+                    {isLoadingUserData
+                      ? "Loading..."
+                      : userData?.username || "User"}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {userRole === "influencer" ? "Influencer" : "Brand Manager"}
                   </p>
