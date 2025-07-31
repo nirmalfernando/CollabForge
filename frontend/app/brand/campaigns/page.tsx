@@ -74,37 +74,105 @@ export default function BrandCampaignsPage() {
     return count.toString();
   };
 
-  // Helper function to format timestamp
-  const formatTimestamp = (dateString?: string): string => {
-    if (!dateString) return "00:00:00";
+  // Enhanced helper function to get relative time (e.g., "2 hours ago", "3 days ago")
+  const getRelativeTime = (dateString?: string): string => {
+    if (!dateString) return "Unknown time";
 
     try {
       const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+      const now = new Date();
+      const diffInMs = now.getTime() - date.getTime();
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+      const diffInWeeks = Math.floor(diffInDays / 7);
+      const diffInMonths = Math.floor(diffInDays / 30);
+
+      if (diffInMinutes < 1) return "Just now";
+      if (diffInMinutes < 60)
+        return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`;
+      if (diffInHours < 24)
+        return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+      if (diffInDays < 7)
+        return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+      if (diffInWeeks < 4)
+        return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
+      if (diffInMonths < 12)
+        return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
+
+      // For dates older than a year, show the actual date
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
       });
     } catch {
-      return "00:00:00";
+      return "Unknown time";
     }
   };
 
-  // Helper function to get status text based on campaign status
-  const getStatusText = (campaignStatus: string): string => {
+  // Helper function to format full date and time for tooltips
+  const formatFullDateTime = (dateString?: string): string => {
+    if (!dateString) return "No date available";
+
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } catch {
+      return "Invalid date";
+    }
+  };
+
+  // Helper function to get status-specific timestamp text
+  const getStatusTimestampText = (
+    campaignStatus: string,
+    createdAt?: string,
+    updatedAt?: string
+  ): {
+    text: string;
+    timestamp: string;
+    fullDateTime: string;
+  } => {
+    // Determine which timestamp to use based on status
+    let relevantDate: string | undefined;
+    let statusText: string;
+
     switch (campaignStatus) {
       case "draft":
-        return "Since draft";
+        relevantDate = createdAt;
+        statusText = "Created";
+        break;
       case "active":
-        return "Since reveal";
+        // Use updatedAt if it's different from createdAt (meaning it was activated later)
+        relevantDate =
+          updatedAt && updatedAt !== createdAt ? updatedAt : createdAt;
+        statusText = "Activated";
+        break;
       case "completed":
-        return "Since completion";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Completed";
+        break;
       case "cancelled":
-        return "Since cancellation";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Cancelled";
+        break;
       default:
-        return "Since creation";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Updated";
     }
+
+    return {
+      text: statusText,
+      timestamp: getRelativeTime(relevantDate),
+      fullDateTime: formatFullDateTime(relevantDate),
+    };
   };
 
   // Helper function to get status badge styling
@@ -356,10 +424,13 @@ export default function BrandCampaignsPage() {
                 const proposalCount = campaign.proposalCount || 0;
                 const formattedProposalCount =
                   formatProposalCount(proposalCount);
-                const timestamp = formatTimestamp(
-                  campaign.updatedAt || campaign.createdAt
+
+                // Get enhanced timestamp information
+                const timestampInfo = getStatusTimestampText(
+                  campaign.campaignStatus,
+                  campaign.createdAt,
+                  campaign.updatedAt
                 );
-                const statusText = getStatusText(campaign.campaignStatus);
 
                 return (
                   <Card
@@ -378,8 +449,12 @@ export default function BrandCampaignsPage() {
                           </h2>
                           {getStatusBadge(campaign.campaignStatus)}
                         </div>
-                        <p className="text-primary text-lg">
-                          {timestamp} {statusText}
+                        <p
+                          className="text-primary text-lg cursor-help"
+                          title={timestampInfo.fullDateTime}
+                        >
+                          {timestampInfo.timestamp} •{" "}
+                          {timestampInfo.text.toLowerCase()}
                         </p>
                       </div>
                     </div>
