@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Leaf } from "lucide-react";
 import { useEffect, useState, use } from "react";
+import { useRouter } from "next/navigation";
 import { campaignApi, proposalApi, creatorApi, brandApi } from "@/lib/api";
 
 interface Creator {
@@ -101,6 +102,7 @@ export default function ApplicationDetailsPage({
   params: Promise<{ id: string; applicantId: string }>;
 }) {
   const resolvedParams = use(params);
+  const router = useRouter();
   const [applicationData, setApplicationData] =
     useState<ApplicationData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -202,6 +204,13 @@ export default function ApplicationDetailsPage({
             }
           : null
       );
+
+      // If proposal is accepted, redirect to contract creation page
+      if (status === "accepted") {
+        router.push(
+          `/brand/campaigns/${resolvedParams.id}/applications/${resolvedParams.applicantId}/contract`
+        );
+      }
     } catch (err) {
       console.error("Error updating proposal status:", err);
     }
