@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import { Menu, Leaf } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { campaignApi, brandApi, getAuthData } from "@/lib/api";
+import { campaignApi, brandApi, proposalApi, getAuthData } from "@/lib/api";
 
 interface Campaign {
   _id?: string;
@@ -30,6 +30,8 @@ interface Campaign {
   category?: {
     name: string;
   };
+  // Add proposal count
+  proposalCount?: number;
 }
 
 interface Brand {
@@ -49,47 +51,128 @@ export default function BrandCampaignsPage() {
     return campaign._id || campaign.id || campaign.campaignId || null;
   };
 
-  // Helper function to count applicants (placeholder - would need actual applicants API)
-  const getApplicantsCount = (campaign: Campaign): string => {
-    // This is a placeholder - in real implementation, you'd fetch actual applicant count
-    // For now, we'll generate a random-ish number based on campaign data
-    const baseCount = Math.floor(Math.random() * 50) + 1;
-    return baseCount >= 1000
-      ? `${Math.floor(baseCount / 1000)}K`
-      : baseCount.toString();
+  // Helper function to fetch proposal count for a campaign
+  const fetchProposalCount = async (campaignId: string): Promise<number> => {
+    try {
+      const response = await proposalApi.getProposalsByCampaign(campaignId);
+      const proposals = response.proposals || response || [];
+      return Array.isArray(proposals) ? proposals.length : 0;
+    } catch (error) {
+      console.error(
+        `Error fetching proposals for campaign ${campaignId}:`,
+        error
+      );
+      return 0;
+    }
   };
 
-  // Helper function to format timestamp
-  const formatTimestamp = (dateString?: string): string => {
-    if (!dateString) return "00:00:00";
+  // Helper function to format proposal count
+  const formatProposalCount = (count: number): string => {
+    if (count >= 1000) {
+      return `${Math.floor(count / 1000)}K`;
+    }
+    return count.toString();
+  };
+
+  // Enhanced helper function to get relative time (e.g., "2 hours ago", "3 days ago")
+  const getRelativeTime = (dateString?: string): string => {
+    if (!dateString) return "Unknown time";
 
     try {
       const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+      const now = new Date();
+      const diffInMs = now.getTime() - date.getTime();
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+      const diffInWeeks = Math.floor(diffInDays / 7);
+      const diffInMonths = Math.floor(diffInDays / 30);
+
+      if (diffInMinutes < 1) return "Just now";
+      if (diffInMinutes < 60)
+        return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`;
+      if (diffInHours < 24)
+        return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+      if (diffInDays < 7)
+        return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+      if (diffInWeeks < 4)
+        return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
+      if (diffInMonths < 12)
+        return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
+
+      // For dates older than a year, show the actual date
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
       });
     } catch {
-      return "00:00:00";
+      return "Unknown time";
     }
   };
 
-  // Helper function to get status text based on campaign status
-  const getStatusText = (campaignStatus: string): string => {
+  // Helper function to format full date and time for tooltips
+  const formatFullDateTime = (dateString?: string): string => {
+    if (!dateString) return "No date available";
+
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } catch {
+      return "Invalid date";
+    }
+  };
+
+  // Helper function to get status-specific timestamp text
+  const getStatusTimestampText = (
+    campaignStatus: string,
+    createdAt?: string,
+    updatedAt?: string
+  ): {
+    text: string;
+    timestamp: string;
+    fullDateTime: string;
+  } => {
+    // Determine which timestamp to use based on status
+    let relevantDate: string | undefined;
+    let statusText: string;
+
     switch (campaignStatus) {
       case "draft":
-        return "Since draft";
+        relevantDate = createdAt;
+        statusText = "Created";
+        break;
       case "active":
-        return "Since reveal";
+        // Use updatedAt if it's different from createdAt (meaning it was activated later)
+        relevantDate =
+          updatedAt && updatedAt !== createdAt ? updatedAt : createdAt;
+        statusText = "Activated";
+        break;
       case "completed":
-        return "Since completion";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Completed";
+        break;
       case "cancelled":
-        return "Since cancellation";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Cancelled";
+        break;
       default:
-        return "Since creation";
+        relevantDate = updatedAt || createdAt;
+        statusText = "Updated";
     }
+
+    return {
+      text: statusText,
+      timestamp: getRelativeTime(relevantDate),
+      fullDateTime: formatFullDateTime(relevantDate),
+    };
   };
 
   // Helper function to get status badge styling
@@ -169,7 +252,19 @@ export default function BrandCampaignsPage() {
             const allCampaignsResponse = await campaignApi.getAllCampaigns();
             const allCampaigns =
               allCampaignsResponse.campaigns || allCampaignsResponse || [];
-            setCampaigns(allCampaigns);
+
+            // Fetch proposal counts for all campaigns
+            const campaignsWithProposals = await Promise.all(
+              allCampaigns.map(async (campaign: Campaign) => {
+                const campaignId = getCampaignId(campaign);
+                const proposalCount = campaignId
+                  ? await fetchProposalCount(campaignId)
+                  : 0;
+                return { ...campaign, proposalCount };
+              })
+            );
+
+            setCampaigns(campaignsWithProposals);
             setBrand({ _id: "unknown", companyName: "Your Brand" });
             return;
           } catch (fallbackError) {
@@ -184,7 +279,19 @@ export default function BrandCampaignsPage() {
             const allCampaignsResponse = await campaignApi.getAllCampaigns();
             const allCampaigns =
               allCampaignsResponse.campaigns || allCampaignsResponse || [];
-            setCampaigns(allCampaigns);
+
+            // Fetch proposal counts for all campaigns
+            const campaignsWithProposals = await Promise.all(
+              allCampaigns.map(async (campaign: Campaign) => {
+                const campaignId = getCampaignId(campaign);
+                const proposalCount = campaignId
+                  ? await fetchProposalCount(campaignId)
+                  : 0;
+                return { ...campaign, proposalCount };
+              })
+            );
+
+            setCampaigns(campaignsWithProposals);
             setBrand({ _id: "unknown", companyName: "Your Brand" });
             return;
           } catch (fallbackError) {
@@ -204,7 +311,18 @@ export default function BrandCampaignsPage() {
         const brandCampaigns =
           campaignsResponse.campaigns || campaignsResponse || [];
 
-        setCampaigns(brandCampaigns);
+        // Fetch proposal counts for each campaign
+        const campaignsWithProposals = await Promise.all(
+          brandCampaigns.map(async (campaign: Campaign) => {
+            const campaignId = getCampaignId(campaign);
+            const proposalCount = campaignId
+              ? await fetchProposalCount(campaignId)
+              : 0;
+            return { ...campaign, proposalCount };
+          })
+        );
+
+        setCampaigns(campaignsWithProposals);
       } catch (err) {
         // Check if it's a network error, CORS error, or API error
         if (err instanceof Error) {
@@ -236,7 +354,7 @@ export default function BrandCampaignsPage() {
           <div className="container mx-auto">
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">
-                Loading campaigns...
+                Loading campaigns and proposals...
               </p>
             </div>
           </div>
@@ -303,11 +421,16 @@ export default function BrandCampaignsPage() {
             {campaigns.length > 0 ? (
               campaigns.map((campaign, index) => {
                 const campaignId = getCampaignId(campaign);
-                const applicantsCount = getApplicantsCount(campaign);
-                const timestamp = formatTimestamp(
-                  campaign.updatedAt || campaign.createdAt
+                const proposalCount = campaign.proposalCount || 0;
+                const formattedProposalCount =
+                  formatProposalCount(proposalCount);
+
+                // Get enhanced timestamp information
+                const timestampInfo = getStatusTimestampText(
+                  campaign.campaignStatus,
+                  campaign.createdAt,
+                  campaign.updatedAt
                 );
-                const statusText = getStatusText(campaign.campaignStatus);
 
                 return (
                   <Card
@@ -320,14 +443,18 @@ export default function BrandCampaignsPage() {
                           <h2 className="text-2xl md:text-3xl font-bold text-foreground flex-1">
                             {campaign.campaignTitle} -{" "}
                             <span className="text-primary">
-                              {applicantsCount}
+                              {formattedProposalCount}
                             </span>{" "}
-                            Applicants
+                            {proposalCount === 1 ? "Proposal" : "Proposals"}
                           </h2>
                           {getStatusBadge(campaign.campaignStatus)}
                         </div>
-                        <p className="text-primary text-lg">
-                          {timestamp} {statusText}
+                        <p
+                          className="text-primary text-lg cursor-help"
+                          title={timestampInfo.fullDateTime}
+                        >
+                          {timestampInfo.timestamp} •{" "}
+                          {timestampInfo.text.toLowerCase()}
                         </p>
                       </div>
                     </div>

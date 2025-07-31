@@ -20,6 +20,7 @@ import {
   creatorApi,
   campaignApi,
   brandApi,
+  contractApi,
   getAuthData,
   ApiError,
 } from "@/lib/api";
@@ -33,6 +34,8 @@ interface Application {
   brandName: string;
   status: string;
   submissionDate: string;
+  proposalStatus: string; // Add original proposal status
+  contractStatus?: string; // Add contract status
 }
 
 export default function CreatorApplicationsPage() {
@@ -93,7 +96,7 @@ export default function CreatorApplicationsPage() {
           return;
         }
 
-        // Fetch additional data for each proposal (campaign and brand info)
+        // Fetch additional data for each proposal (campaign, brand, and contract info)
         const enrichedApplications = await Promise.all(
           proposalsResponse.map(async (proposal: any) => {
             try {
@@ -111,8 +114,42 @@ export default function CreatorApplicationsPage() {
               );
               console.log("🏷️ Brand response:", brandResponse);
 
+              // Try to fetch contract details if proposal is accepted
+              let contractStatus = null;
+              if (proposal.proposalStatus === "accepted") {
+                try {
+                  const contractsResponse =
+                    await contractApi.getContractsByProposal(
+                      proposal.proposalId
+                    );
+                  if (contractsResponse && contractsResponse.length > 0) {
+                    // Get the most recent contract
+                    const contract = contractsResponse[0];
+                    contractStatus = contract.contractStatus;
+                    console.log("📄 Contract status:", contractStatus);
+                  }
+                } catch (contractError) {
+                  console.log(
+                    "No contract found for proposal:",
+                    proposal.proposalId
+                  );
+                  // This is normal for newly accepted proposals without contracts yet
+                }
+              }
+
               // Map proposal status to display status
-              const getDisplayStatus = (proposalStatus: string) => {
+              const getDisplayStatus = (
+                proposalStatus: string,
+                contractStatus?: string
+              ) => {
+                if (proposalStatus === "accepted" && contractStatus) {
+                  if (contractStatus === "Pending") {
+                    return "Approved - Contract Pending";
+                  } else {
+                    return `Contract ${contractStatus}`;
+                  }
+                }
+
                 switch (proposalStatus) {
                   case "pending":
                     return "Pending";
@@ -130,10 +167,15 @@ export default function CreatorApplicationsPage() {
                 campaignTitle:
                   campaignResponse.campaignTitle || "Unknown Campaign",
                 brandName: brandResponse.companyName || "Unknown Brand",
-                status: getDisplayStatus(proposal.proposalStatus),
+                status: getDisplayStatus(
+                  proposal.proposalStatus,
+                  contractStatus
+                ),
                 submissionDate: new Date(proposal.createdAt)
                   .toISOString()
                   .split("T")[0], // Format: YYYY-MM-DD
+                proposalStatus: proposal.proposalStatus, // Store original proposal status
+                contractStatus: contractStatus, // Store contract status
               };
             } catch (error) {
               console.error(
@@ -157,6 +199,8 @@ export default function CreatorApplicationsPage() {
                 submissionDate: new Date(proposal.createdAt)
                   .toISOString()
                   .split("T")[0],
+                proposalStatus: proposal.proposalStatus,
+                contractStatus: null,
               };
             }
           })
@@ -193,37 +237,68 @@ export default function CreatorApplicationsPage() {
   }, [router]);
 
   const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Approved":
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case "Rejected":
-        return <XCircle className="h-5 w-5 text-red-500" />;
-      case "Pending":
-        return <Clock className="h-5 w-5 text-yellow-500" />;
-      case "Draft":
-        return <FileText className="h-5 w-5 text-gray-500" />;
-      case "Signed":
-        return <FileCheck className="h-5 w-5 text-blue-500" />; // Using blue for signed contracts
-      default:
-        return null;
+    if (status.includes("Approved") || status.includes("Contract")) {
+      return <CheckCircle className="h-5 w-5 text-green-500" />;
     }
+    if (status === "Rejected") {
+      return <XCircle className="h-5 w-5 text-red-500" />;
+    }
+    if (status === "Pending") {
+      return <Clock className="h-5 w-5 text-yellow-500" />;
+    }
+    if (status === "Draft") {
+      return <FileText className="h-5 w-5 text-gray-500" />;
+    }
+    return <FileCheck className="h-5 w-5 text-blue-500" />;
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Approved":
-        return "text-green-500";
-      case "Rejected":
-        return "text-red-500";
-      case "Pending":
-        return "text-yellow-500";
-      case "Draft":
-        return "text-gray-500";
-      case "Signed":
-        return "text-blue-500"; // Using blue for signed contracts
-      default:
-        return "text-foreground";
+    if (status.includes("Approved") || status.includes("Contract")) {
+      return "text-green-500";
     }
+    if (status === "Rejected") {
+      return "text-red-500";
+    }
+    if (status === "Pending") {
+      return "text-yellow-500";
+    }
+    if (status === "Draft") {
+      return "text-gray-500";
+    }
+    return "text-blue-500";
+  };
+
+  // Function to determine button text and action based on proposal and contract status
+  const getButtonConfig = (app: Application) => {
+    const { proposalStatus, contractStatus } = app;
+
+    if (proposalStatus === "pending" || proposalStatus === "rejected") {
+      return {
+        text: "View Application",
+        href: `/creator/applications/${app.id}`,
+      };
+    }
+
+    if (proposalStatus === "accepted") {
+      if (!contractStatus || contractStatus === "Pending") {
+        return {
+          text: "Sign the Contract",
+          href: `/creator/contracts/${app.id}`,
+        };
+      } else {
+        // Contract exists and is not pending (Active, Awaiting Payment, Completed, Cancelled)
+        return {
+          text: "View Contract",
+          href: `/creator/contracts/${app.id}/view-signed`,
+        };
+      }
+    }
+
+    // Default fallback
+    return {
+      text: "View Details",
+      href: `/creator/applications/${app.id}`,
+    };
   };
 
   // Loading state
@@ -273,39 +348,41 @@ export default function CreatorApplicationsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {applications.map((app) => (
-                <Card
-                  key={app.id}
-                  className="bg-card border-primary rounded-lg p-6 flex flex-col justify-between"
-                >
-                  <div className="space-y-2 mb-4">
-                    <h3 className="text-xl font-bold text-foreground">
-                      {app.campaignTitle}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      Brand:{" "}
-                      <span className="font-medium text-primary">
-                        {app.brandName}
-                      </span>
-                    </p>
-                    <div className="flex items-center gap-2">
-                      {getStatusIcon(app.status)}
-                      <p
-                        className={cn(
-                          "font-medium",
-                          getStatusColor(app.status)
-                        )}
-                      >
-                        Status: {app.status}
+              {applications.map((app) => {
+                const buttonConfig = getButtonConfig(app);
+
+                return (
+                  <Card
+                    key={app.id}
+                    className="bg-card border-primary rounded-lg p-6 flex flex-col justify-between"
+                  >
+                    <div className="space-y-2 mb-4">
+                      <h3 className="text-xl font-bold text-foreground">
+                        {app.campaignTitle}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        Brand:{" "}
+                        <span className="font-medium text-primary">
+                          {app.brandName}
+                        </span>
+                      </p>
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(app.status)}
+                        <p
+                          className={cn(
+                            "font-medium",
+                            getStatusColor(app.status)
+                          )}
+                        >
+                          Status: {app.status}
+                        </p>
+                      </div>
+                      <p className="text-muted-foreground text-sm">
+                        Submitted: {app.submissionDate}
                       </p>
                     </div>
-                    <p className="text-muted-foreground text-sm">
-                      Submitted: {app.submissionDate}
-                    </p>
-                  </div>
-                  {app.status === "Approved" ? (
                     <Link
-                      href={`/creator/contracts/${app.id}`}
+                      href={buttonConfig.href}
                       prefetch={false}
                       className="mt-auto"
                     >
@@ -313,38 +390,12 @@ export default function CreatorApplicationsPage() {
                         variant="outline"
                         className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                       >
-                        Sign the Contract
+                        {buttonConfig.text}
                       </Button>
                     </Link>
-                  ) : app.status === "Signed" ? (
-                    <Link
-                      href={`/creator/contracts/${app.id}/view-signed`}
-                      prefetch={false}
-                      className="mt-auto"
-                    >
-                      <Button
-                        variant="outline"
-                        className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
-                      >
-                        View Contract
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/creator/applications/${app.id}`}
-                      prefetch={false}
-                      className="mt-auto"
-                    >
-                      <Button
-                        variant="outline"
-                        className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
-                      >
-                        View Details
-                      </Button>
-                    </Link>
-                  )}
-                </Card>
-              ))}
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>

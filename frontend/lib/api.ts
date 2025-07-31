@@ -436,6 +436,141 @@ export const proposalApi = {
   },
 };
 
+// Contract API functions with improved error handling
+export const contractApi = {
+  createContract: async (contractData: {
+    campaignId: string;
+    proposalId: string;
+    brandId: string;
+    creatorId: string;
+    contractTitle: string;
+    contractDetails: string;
+    contractSuggestions?: object | string;
+    creatorSignature?: string;
+    contractStatus?:
+      | "Pending"
+      | "Active"
+      | "Awaiting Payment"
+      | "Completed"
+      | "Cancelled";
+    status?: boolean;
+  }) => {
+    console.log("Contract API: Creating contract with data:", contractData);
+
+    // Validate required fields before sending
+    if (
+      !contractData.campaignId ||
+      !contractData.proposalId ||
+      !contractData.brandId ||
+      !contractData.creatorId
+    ) {
+      throw new Error("Missing required IDs for contract creation");
+    }
+
+    if (
+      !contractData.contractTitle?.trim() ||
+      !contractData.contractDetails?.trim()
+    ) {
+      throw new Error("Contract title and details are required");
+    }
+
+    try {
+      const response = await apiRequest("/contracts", {
+        method: "POST",
+        body: JSON.stringify(contractData),
+      });
+      console.log("Contract API: Successfully created contract:", response);
+      return response;
+    } catch (error) {
+      console.error("Contract API: Error creating contract:", error);
+
+      // Enhanced error handling for validation errors
+      if (error instanceof ApiError && error.status === 400 && error.details) {
+        const details = error.details;
+        if (details.errors && Array.isArray(details.errors)) {
+          const validationMessages = details.errors
+            .map((err: any) => err.msg || err.message)
+            .join("; ");
+          throw new ApiError(
+            400,
+            `Validation failed: ${validationMessages}`,
+            details
+          );
+        }
+      }
+
+      throw error;
+    }
+  },
+
+  updateContract: async (
+    contractId: string,
+    contractData: {
+      contractTitle?: string;
+      contractDetails?: string;
+      contractSuggestions?: object | string;
+      creatorSignature?: string;
+      contractStatus?:
+        | "Pending"
+        | "Active"
+        | "Awaiting Payment"
+        | "Completed"
+        | "Cancelled";
+      status?: boolean;
+    }
+  ) => {
+    return apiRequest(`/contracts/${contractId}`, {
+      method: "PUT",
+      body: JSON.stringify(contractData),
+    });
+  },
+
+  getContractById: async (contractId: string) => {
+    return apiRequest(`/contracts/${contractId}`);
+  },
+
+  getAllContracts: async () => {
+    return apiRequest("/contracts");
+  },
+
+  getContractsByCampaign: async (campaignId: string) => {
+    return apiRequest(`/contracts/by-campaign?campaignId=${campaignId}`);
+  },
+
+  getContractsByProposal: async (proposalId: string) => {
+    return apiRequest(`/contracts/by-proposal?proposalId=${proposalId}`);
+  },
+
+  getContractsByBrand: async (brandId: string) => {
+    return apiRequest(`/contracts/by-brand?brandId=${brandId}`);
+  },
+
+  getContractsByCreator: async (creatorId: string) => {
+    return apiRequest(`/contracts/by-creator?creatorId=${creatorId}`);
+  },
+
+  getContractsByStatus: async (
+    contractStatus:
+      | "Pending"
+      | "Active"
+      | "Awaiting Payment"
+      | "Completed"
+      | "Cancelled"
+  ) => {
+    return apiRequest(
+      `/contracts/by-status?contractStatus=${encodeURIComponent(
+        contractStatus
+      )}`
+    );
+  },
+
+  deleteContract: async (contractId: string) => {
+    return apiRequest(`/contracts/${contractId}`, {
+      method: "DELETE",
+    });
+  },
+};
+
 // Categories API functions
 export const categoryApi = {
   getAllCategories: async () => {
