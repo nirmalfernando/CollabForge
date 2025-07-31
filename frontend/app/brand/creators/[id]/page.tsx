@@ -1,9 +1,12 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import {
   Monitor,
   Users,
@@ -18,57 +21,201 @@ import {
   Beaker,
   Wind,
   Flame,
-} from "lucide-react"
+  Loader2,
+  Twitter,
+  Facebook,
+  Linkedin,
+  MessageCircle,
+} from "lucide-react";
+import { creatorApi, categoryApi, ApiError } from "@/lib/api";
 
-// In a real app, you would fetch this data based on the `params.id`
-const creatorData = {
-  name: "Madeline",
-  nickname: "Mads_Molecule",
-  lastName: "Carter",
-  followers: "320,000",
-  platform: "TikTok",
-  category: "Education & Science", // Added category
-  creatorType: "Content Creator", // Added creator type
-  bio: 'Hey hey! I\'m Mads Molecule 🔬\nFull-time chaos coordinator / part-time science exploder. I make loud, weird, totally questionable science content on TikTok that turns "ugh, chemistry" into "wait, what just happened!?"',
-  details: [
-    { icon: Monitor, text: "Platform: TikTok" },
-    { icon: Users, text: "Followers: 320,000 strong and mostly here for the explosions" },
-    { icon: MapPin, text: "Based in: Austin, TX (but mentally in a test tube)" },
-    { icon: Sparkles, text: "Vibe: Imagine if Bill Nye and a highlighter had a baby" },
-  ],
-  platforms: [
-    { icon: Monitor, name: "TikTok", handle: "@madsmolcule", link: "#" },
-    { icon: Instagram, name: "Instagram", handle: "@madsmolcule", link: "#" },
-    { icon: Youtube, name: "YouTube", handle: "Mad Science in Motion", link: "#" },
-    { icon: Mail, name: "Email", handle: "mads@madsmolcule.com", link: "mailto:mads@madsmolcule.com" },
-    { icon: Globe, name: "Website", handle: "www.madsmolcule.com", link: "https://www.madsmolcule.com" },
-  ],
-  whatIDo: [
-    "I break down real science concepts into 60 seconds of color, chaos and commentary.",
-    'I answer wild questions from my followers like "Can you microwave acid?" (spoiler: no)',
-    "I build ridiculous experiments with stuff I probably shouldn't own.",
-  ],
-  myPeople: [
-    "13-30 year olds who like science but have attention spans shaped by pop songs",
-    "Nerds, students, meme collectors, and the occasional confused parent",
-    "Folks who want to learn but also laugh and maybe scream a little",
-  ],
-  myContent: [
-    '"Why This Happens" series = most likely to go viral',
-    "Duets & stitches with bad science takes (don't worry, I come in peace)",
-    "Glow-in-the-dark demos, soda geysers, DIY slime chaos",
-    "Unboxings of things that really shouldn't be unboxed at home",
-  ],
-  workedWith: [
-    "FizzCo Kits (we made 3 kinds of slime and 2 kinds of regret)",
-    "EduHub App (yes, learning can be fun)",
-    "BrainFood Energy (which I consume right before regrettable experiments)",
-  ],
-  bannerImageUrl: "/images/science-banner.jpg",
-  profilePicUrl: "/images/mads-molecule-avatar.jpg",
+// Define types for the creator data
+interface Creator {
+  creatorId: string;
+  firstName: string;
+  lastName: string;
+  nickName?: string;
+  bio?: string;
+  type: "Content Creator" | "Model" | "Live Streamer";
+  profilePicUrl?: string;
+  backgroundImgUrl?: string;
+  categoryId: string;
+  details?: Array<{ label: string; value: string }>;
+  socialMedia?: Array<{
+    platform: string;
+    handle: string;
+    url: string;
+    followers?: number;
+  }>;
+  whatIDo?: Array<{ activity: string; experience?: string }>;
+  myPeople?: Array<{ name: string; role: string; contact?: string }>;
+  myContent?: Array<{ title: string; url?: string; views?: number }>;
+  pastCollaborations?: Array<{
+    brand: string;
+    campaign: string;
+    date?: string;
+  }>;
+  status: boolean;
 }
 
-export default function CreatorProfileViewPage({ params }: { params: { id: string } }) {
+interface Category {
+  categoryId: string;
+  categoryName: string;
+  status: boolean;
+}
+
+export default function CreatorProfileViewPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const [creator, setCreator] = useState<Creator | null>(null);
+  const [category, setCategory] = useState<Category | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch creator data on component mount
+  useEffect(() => {
+    const fetchCreatorData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Fetch creator data
+        const creatorData = await creatorApi.getCreatorById(params.id);
+        setCreator(creatorData);
+
+        // Fetch category data
+        try {
+          const categoryData = await categoryApi.getCategoryById(
+            creatorData.categoryId
+          );
+          setCategory(categoryData);
+        } catch (categoryError) {
+          console.error("Error fetching category:", categoryError);
+          // Don't fail the whole page if category fetch fails
+        }
+      } catch (error) {
+        console.error("Error fetching creator:", error);
+        if (error instanceof ApiError) {
+          if (error.status === 404) {
+            setError("Creator not found");
+          } else {
+            setError(`Failed to fetch creator: ${error.message}`);
+          }
+        } else {
+          setError("Failed to fetch creator. Please try again later.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchCreatorData();
+    }
+  }, [params.id]);
+
+  // Helper function to get platform icon
+  const getPlatformIcon = (platform: string) => {
+    const platformLower = platform.toLowerCase();
+    switch (platformLower) {
+      case "instagram":
+        return Instagram;
+      case "youtube":
+        return Youtube;
+      case "twitter":
+        return Twitter;
+      case "facebook":
+        return Facebook;
+      case "linkedin":
+        return Linkedin;
+      case "tiktok":
+        return MessageCircle;
+      default:
+        return Globe;
+    }
+  };
+
+  // Helper function to format follower count
+  const formatFollowerCount = (followers?: number) => {
+    if (!followers) return "N/A";
+    if (followers >= 1000000) {
+      return `${(followers / 1000000).toFixed(1)}M`;
+    } else if (followers >= 1000) {
+      return `${(followers / 1000).toFixed(0)}K`;
+    }
+    return followers.toString();
+  };
+
+  // Helper function to get total followers
+  const getTotalFollowers = () => {
+    if (!creator?.socialMedia) return "N/A";
+    const total = creator.socialMedia.reduce(
+      (sum, social) => sum + (social.followers || 0),
+      0
+    );
+    return formatFollowerCount(total);
+  };
+
+  // Helper function to get primary platform
+  const getPrimaryPlatform = () => {
+    if (!creator?.socialMedia || creator.socialMedia.length === 0)
+      return "Various Platforms";
+    return creator.socialMedia[0].platform;
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="brand-manager" />
+        <main className="flex-1 flex justify-center items-center">
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="text-lg">Loading creator profile...</span>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !creator) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Header isLoggedIn={true} userRole="brand-manager" />
+        <main className="flex-1 flex justify-center items-center">
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
+              Creator Not Found
+            </h2>
+            <p className="text-muted-foreground text-lg mb-6">{error}</p>
+            <div className="flex gap-4 justify-center">
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              >
+                Retry
+              </Button>
+              <Link href="/brand/creators">
+                <Button
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                  Back to Creators
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="brand-manager" />
@@ -77,8 +224,8 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
         {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96">
           <Image
-            src={creatorData.bannerImageUrl || "/placeholder.svg"}
-            alt="Profile banner with science notes"
+            src={creator.backgroundImgUrl || "/placeholder.svg"}
+            alt="Profile banner"
             layout="fill"
             objectFit="cover"
             className="z-0"
@@ -95,12 +242,12 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
               <div className="relative -mt-24 md:-mt-32 lg:-mt-36 flex-shrink-0">
                 <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg">
                   <AvatarImage
-                    src={creatorData.profilePicUrl || "/placeholder.svg"}
-                    alt={`${creatorData.name} profile picture`}
+                    src={creator.profilePicUrl || "/placeholder.svg"}
+                    alt={`${creator.firstName} ${creator.lastName} profile picture`}
                   />
                   <AvatarFallback className="bg-primary text-white text-5xl font-bold">
-                    {creatorData.name[0]}
-                    {creatorData.lastName[0]}
+                    {creator.firstName[0]}
+                    {creator.lastName[0]}
                   </AvatarFallback>
                 </Avatar>
               </div>
@@ -108,8 +255,12 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
               {/* Follower Count and Action Buttons */}
               <div className="flex-1 flex flex-col md:flex-row items-start md:items-center gap-6 pt-4">
                 <div className="text-left">
-                  <p className="text-4xl font-bold text-foreground">{creatorData.followers}</p>
-                  <p className="text-lg text-muted-foreground">Followers ({creatorData.platform})</p>
+                  <p className="text-4xl font-bold text-foreground">
+                    {getTotalFollowers()}
+                  </p>
+                  <p className="text-lg text-muted-foreground">
+                    Followers ({getPrimaryPlatform()})
+                  </p>
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-auto md:ml-auto">
                   <div className="flex gap-2">
@@ -139,93 +290,161 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
             {/* Profile Details Section */}
             <div className="mt-8 space-y-8">
               <h1 className="text-4xl md:text-5xl font-bold">
-                {creatorData.name} <span className="text-primary">&quot;{creatorData.nickname}&quot;</span>{" "}
-                {creatorData.lastName}
+                {creator.firstName}
+                {creator.nickName && (
+                  <span className="text-primary">
+                    {" "}
+                    &quot;{creator.nickName}&quot;
+                  </span>
+                )}{" "}
+                {creator.lastName}
               </h1>
-              <p className="text-lg leading-relaxed whitespace-pre-line">{creatorData.bio}</p>
+
+              {creator.bio && (
+                <p className="text-lg leading-relaxed whitespace-pre-line">
+                  {creator.bio}
+                </p>
+              )}
 
               {/* Display Category and Creator Type */}
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-lg">
-                {creatorData.category && (
+                {category && (
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-primary" />
-                    <span>Category: {creatorData.category}</span>
+                    <span>Category: {category.categoryName}</span>
                   </div>
                 )}
-                {creatorData.creatorType && (
-                  <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-primary" />
-                    <span>Type: {creatorData.creatorType}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                {creatorData.details.map((detail, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <detail.icon className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span className="text-lg">{detail.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Official Platforms:</h3>
-                <div className="space-y-2">
-                  {creatorData.platforms.map((platform, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <platform.icon className="h-5 w-5 text-primary flex-shrink-0" />
-                      <Link href={platform.link} className="text-lg hover:underline" prefetch={false}>
-                        {platform.name} - {platform.handle}
-                      </Link>
-                    </div>
-                  ))}
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  <span>Type: {creator.type}</span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">
-                  What <span className="text-primary">I Do</span>
-                </h2>
-                <ul className="list-disc list-inside space-y-2 text-lg">
-                  {creatorData.whatIDo.map((item, index) => (
-                    <li key={index}>{item}</li>
+              {/* Details Section */}
+              {creator.details && creator.details.length > 0 && (
+                <div className="space-y-3">
+                  {creator.details.map((detail, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <Monitor className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span className="text-lg">
+                        {detail.label}: {detail.value}
+                      </span>
+                    </div>
                   ))}
-                </ul>
-              </div>
+                </div>
+              )}
 
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">
-                  My <span className="text-primary">People</span>
-                </h2>
-                <ul className="list-disc list-inside space-y-2 text-lg">
-                  {creatorData.myPeople.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              {/* Social Media Platforms */}
+              {creator.socialMedia && creator.socialMedia.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">Official Platforms:</h3>
+                  <div className="space-y-2">
+                    {creator.socialMedia.map((platform, index) => {
+                      const IconComponent = getPlatformIcon(platform.platform);
+                      return (
+                        <div key={index} className="flex items-center gap-3">
+                          <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                          <Link
+                            href={platform.url || "#"}
+                            className="text-lg hover:underline"
+                            prefetch={false}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {platform.platform} - @{platform.handle}
+                            {platform.followers &&
+                              ` (${formatFollowerCount(
+                                platform.followers
+                              )} followers)`}
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">
-                  My <span className="text-primary">Content</span>
-                </h2>
-                <ul className="list-disc list-inside space-y-2 text-lg">
-                  {creatorData.myContent.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              {/* What I Do Section */}
+              {creator.whatIDo && creator.whatIDo.length > 0 && (
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold">
+                    What <span className="text-primary">I Do</span>
+                  </h2>
+                  <ul className="list-disc list-inside space-y-2 text-lg">
+                    {creator.whatIDo.map((item, index) => (
+                      <li key={index}>
+                        {item.activity}
+                        {item.experience && ` - ${item.experience}`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">
-                  I&apos;ve <span className="text-primary">Worked With</span>
-                </h2>
-                <ul className="list-disc list-inside space-y-2 text-lg">
-                  {creatorData.workedWith.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              {/* My People Section */}
+              {creator.myPeople && creator.myPeople.length > 0 && (
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold">
+                    My <span className="text-primary">People</span>
+                  </h2>
+                  <ul className="list-disc list-inside space-y-2 text-lg">
+                    {creator.myPeople.map((person, index) => (
+                      <li key={index}>
+                        {person.name} - {person.role}
+                        {person.contact && ` (${person.contact})`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* My Content Section */}
+              {creator.myContent && creator.myContent.length > 0 && (
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold">
+                    My <span className="text-primary">Content</span>
+                  </h2>
+                  <ul className="list-disc list-inside space-y-2 text-lg">
+                    {creator.myContent.map((content, index) => (
+                      <li key={index}>
+                        {content.url ? (
+                          <Link
+                            href={content.url}
+                            className="hover:underline text-primary"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {content.title}
+                          </Link>
+                        ) : (
+                          content.title
+                        )}
+                        {content.views &&
+                          ` (${content.views.toLocaleString()} views)`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Past Collaborations Section */}
+              {creator.pastCollaborations &&
+                creator.pastCollaborations.length > 0 && (
+                  <div className="space-y-4">
+                    <h2 className="text-3xl font-bold">
+                      I&apos;ve{" "}
+                      <span className="text-primary">Worked With</span>
+                    </h2>
+                    <ul className="list-disc list-inside space-y-2 text-lg">
+                      {creator.pastCollaborations.map((collab, index) => (
+                        <li key={index}>
+                          {collab.brand} - {collab.campaign}
+                          {collab.date && ` (${collab.date})`}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -249,5 +468,5 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
 
       <Footer />
     </div>
-  )
+  );
 }
