@@ -1038,3 +1038,14 @@
 2025-08-08T11:20:00.059Z [CollabForge] info: User details retrieved successfully
 2025-08-08T11:20:00.559Z [CollabForge] warn: Get creator failed: Creator not found or inactive
 2025-08-08T11:20:00.719Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-08T13:50:24.861Z [CollabForge] warn: User login failed: User not found
+2025-08-08T13:50:30.854Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:03.111Z [CollabForge] warn: User login failed: User not found
+2025-08-08T14:00:09.931Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:11.498Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:12.795Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:43.813Z [CollabForge] info: User logged in successfully
+2025-08-08T14:00:44.530Z [CollabForge] info: User details retrieved successfully
+2025-08-08T14:00:44.631Z [CollabForge] info: User details retrieved successfully
+2025-08-08T14:00:44.830Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T14:00:45.090Z [CollabForge] info: Creator retrieved successfully for user

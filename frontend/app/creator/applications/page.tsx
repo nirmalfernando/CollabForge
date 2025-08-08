@@ -55,7 +55,7 @@ export default function CreatorApplicationsPage() {
             description: "Please log in to view your applications.",
             variant: "destructive",
           });
-          router.push("/auth/login");
+          router.push("/login");
           return;
         }
 

@@ -127,7 +127,7 @@ export default function CreatorContractViewPage({
             description: "Please log in to view the contract.",
             variant: "destructive",
           });
-          router.push("/auth/login");
+          router.push("/login");
           return;
         }
 

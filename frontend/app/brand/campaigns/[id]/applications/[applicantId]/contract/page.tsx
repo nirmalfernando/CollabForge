@@ -195,7 +195,7 @@ export default function CreateContractPage({
         description: "Please log in to create a contract.",
         variant: "destructive",
       });
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 

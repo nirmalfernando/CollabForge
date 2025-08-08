@@ -49,74 +49,48 @@ export function isAuthenticated(): boolean {
   }
 }
 
-// FIXED: Updated apiRequest function with proper token handling
-async function apiRequest(endpoint: string, options: RequestInit = {}) {
+export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
 
-  // Get token from localStorage
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const config: RequestInit = {
     headers: {
       "Content-Type": "application/json",
-      // Include Authorization header if token exists
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
-    credentials: "include", // Keep this for any cookie-based auth
+    credentials: "include",
+    redirect: "manual", // Prevent browser from following redirects
     ...options,
   };
 
-  console.log(`🚀 Making API request to: ${url}`);
-  console.log(`📝 Request method:`, config.method || "GET");
-  console.log(`🔑 Has token:`, !!token);
-  console.log(`📦 Request body:`, options.body);
-  console.log(`📋 Request headers:`, config.headers);
-
   try {
     const response = await fetch(url, config);
-    console.log(`📡 Response status:`, response.status);
-    console.log(
-      `📡 Response headers:`,
-      Object.fromEntries(response.headers.entries())
-    );
 
-    // Try to parse JSON, but handle cases where response might be empty or invalid JSON
-    let data;
     const contentType = response.headers.get("content-type");
-    const responseText = await response.text();
+    const rawText = await response.text();
+    let data: any;
 
-    console.log(`📄 Raw response text for ${url}:`, responseText);
-
-    if (contentType && contentType.includes("application/json")) {
+    if (contentType?.includes("application/json")) {
       try {
-        data = responseText ? JSON.parse(responseText) : {};
-      } catch (parseError) {
-        console.error(`❌ JSON parse error for ${url}:`, parseError);
-        data = { message: "Invalid JSON response", rawResponse: responseText };
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch (e) {
+        data = { message: "Invalid JSON response", rawResponse: rawText };
       }
     } else {
-      data = {
-        message: responseText || "No response body",
-        rawResponse: responseText,
-      };
+      data = { message: rawText || "No response body", rawResponse: rawText };
     }
 
-    console.log(`📊 Parsed response data:`, data);
-
     if (!response.ok) {
-      // Log the full response data for debugging
-      console.error(`❌ API Error for ${url}:`, response.status, data);
+      // Only clear auth data and redirect on 401 if NOT during login
+      const isLoginEndpoint = endpoint.includes("/login");
 
-      // Handle 401 Unauthorized - token expired or invalid
-      if (response.status === 401) {
-        // Clear stored auth data
+      if (response.status === 401 && !isLoginEndpoint) {
         clearAuthData();
-
-        // Redirect to login (only if we're in the browser)
         if (typeof window !== "undefined") {
-          window.location.href = "/auth/login";
+          window.location.href = "/login";
         }
       }
 
@@ -127,17 +101,17 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
       );
     }
 
-    console.log(`✅ API request successful for ${url}`);
     return data;
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;
     }
-    // Catch network errors or other unexpected issues
+
     console.error(`🌐 Network or unexpected error for ${url}:`, error);
     throw new ApiError(500, "Network error occurred");
   }
 }
+
 
 // Auth API functions
 export const authApi = {
