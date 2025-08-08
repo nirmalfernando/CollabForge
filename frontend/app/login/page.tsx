@@ -1,110 +1,110 @@
-"use client"
+"use client";
 
-import type React from "react"
-import Link from "next/link"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/hooks/use-toast"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { useRouter } from "next/navigation"
-import { authApi, setAuthData, ApiError } from "@/lib/api"
+import type React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { useRouter } from "next/navigation";
+import { authApi, setAuthData, ApiError } from "@/lib/api";
+import OAuthButtons from "@/components/ui/o-auth-buttons";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     identifier: "", // Can be username or email
     password: "",
-  })
+  });
   const [errors, setErrors] = useState({
     identifier: "",
     password: "",
     general: "",
-  })
+  });
 
   const validateForm = () => {
-    let isValid = true
+    let isValid = true;
     const newErrors = {
       identifier: "",
       password: "",
       general: "",
-    }
+    };
 
     // Validate identifier (username or email)
     if (!formData.identifier.trim()) {
-      newErrors.identifier = "Username or email is required"
-      isValid = false
+      newErrors.identifier = "Username or email is required";
+      isValid = false;
     } else if (formData.identifier.includes("@")) {
       // Validate email format if it contains @
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.identifier)) {
-        newErrors.identifier = "Invalid email format"
-        isValid = false
+        newErrors.identifier = "Invalid email format";
+        isValid = false;
       }
     } else {
       // Validate username length
       if (formData.identifier.length < 3 || formData.identifier.length > 100) {
-        newErrors.identifier = "Username must be between 3 and 100 characters"
-        isValid = false
+        newErrors.identifier = "Username must be between 3 and 100 characters";
+        isValid = false;
       }
     }
 
     // Validate password
     if (!formData.password) {
-      newErrors.password = "Password is required"
-      isValid = false
+      newErrors.password = "Password is required";
+      isValid = false;
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters long"
-      isValid = false
+      newErrors.password = "Password must be at least 8 characters long";
+      isValid = false;
     }
 
-    setErrors(newErrors)
-    return isValid
-  }
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-    setFormData((prev) => ({ ...prev, [id]: value }))
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
     // Clear error when user types
     if (errors[id as keyof typeof errors]) {
-      setErrors((prev) => ({ ...prev, [id]: "" }))
+      setErrors((prev) => ({ ...prev, [id]: "" }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!validateForm()) {
-      return
+      return;
     }
 
-    setIsLoading(true)
-    setErrors({ ...errors, general: "" })
+    setIsLoading(true);
+    setErrors({ ...errors, general: "" });
 
     try {
-      const response = await authApi.login(formData)
+      const response = await authApi.login(formData);
 
       // Store auth data
-      setAuthData(response.token, response.user)
+      setAuthData(response.token, response.user);
 
       toast({
         title: "Login Successful",
         description: "You have been successfully logged in!",
-      })
+      });
 
       // Redirect based on role
       if (response.user.role === "influencer") {
-        router.push("/creator/dashboard")
+        router.push("/creator/dashboard");
       } else if (response.user.role === "brand") {
-        router.push("/brand/dashboard")
+        router.push("/brand/dashboard");
       } else {
         // Handle other roles or default to a home page
-        router.push("/home")
+        router.push("/home");
       }
     } catch (error) {
-      console.error("Login error:", error)
+      console.error("Login error:", error);
 
       if (error instanceof ApiError) {
         if (error.status === 404) {
@@ -112,31 +112,31 @@ export default function LoginPage() {
             ...errors,
             identifier: "User not found",
             password: "",
-          })
+          });
         } else if (error.status === 401) {
           setErrors({
             ...errors,
             identifier: "",
             password: "Incorrect password",
-          })
+          });
         } else {
           toast({
             title: "Login Failed",
             description: error.message,
             variant: "destructive",
-          })
+          });
         }
       } else {
         toast({
           title: "Login Failed",
           description: "An unexpected error occurred. Please try again.",
           variant: "destructive",
-        })
+        });
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -171,7 +171,9 @@ export default function LoginPage() {
                   disabled={isLoading}
                 />
                 {errors.identifier && (
-                  <p className="mt-1 text-sm text-red-600">{errors.identifier}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.identifier}
+                  </p>
                 )}
               </div>
 
@@ -203,11 +205,8 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="text-center mt-4">
-              <Link href="/signup" className="text-primary hover:underline" prefetch={false}>
-                Don&apos;t Have an Account? Sign Up
-              </Link>
-            </div>
+            <OAuthButtons mode="login" isLoading={isLoading} />
+
           </div>
 
           {/* Right Panel - Decorative */}
@@ -222,5 +221,5 @@ export default function LoginPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
