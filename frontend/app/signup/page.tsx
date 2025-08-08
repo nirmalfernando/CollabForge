@@ -192,17 +192,39 @@ export default function SignUpPage() {
       console.error("Sign up error:", error)
 
       if (error instanceof ApiError) {
-        toast({
-          title: "Sign Up Failed",
-          description: error.message,
-          variant: "destructive",
-        })
+        // Handle backend validation errors
+        if (error.details?.errors) {
+          // Convert array of errors to object format
+          const backendErrors = error.details.errors.reduce((acc: Record<string, string>, curr: any) => {
+            // Use 'param' (field name) as key and 'msg' as value
+            const field = curr.param || curr.path || 'general';
+            acc[field] = curr.msg;
+            return acc;
+          }, {});
+
+          // Update the errors state with backend validation errors
+          setErrors(backendErrors);
+
+          toast({
+            title: "Validation Error",
+            description: "Please fix the errors in the form",
+            variant: "destructive",
+          });
+        } else {
+          // Handle other API errors
+          toast({
+            title: "Sign Up Failed",
+            description: error.message || "An unexpected error occurred",
+            variant: "destructive",
+          });
+        }
       } else {
+        // Handle non-API errors
         toast({
           title: "Sign Up Failed",
           description: "An unexpected error occurred. Please try again.",
           variant: "destructive",
-        })
+        });
       }
     } finally {
       setIsLoading(false)
@@ -364,6 +386,13 @@ export default function SignUpPage() {
                   <p className="mt-1 text-sm text-red-500">{errors.contactNo}</p>
                 )}
               </div>
+
+              {/* Display general errors from backend */}
+              {errors.general && (
+                <div className="mt-4 text-sm text-red-500">
+                  {errors.general}
+                </div>
+              )}
 
               <Button
                 type="submit"
