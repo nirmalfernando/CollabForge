@@ -1012,3 +1012,9 @@
 2025-07-31T15:35:59.551Z [CollabForge] info: Creator details retrieved successfully
 2025-07-31T15:35:59.577Z [CollabForge] info: Category retrieved successfully
 2025-07-31T15:35:59.625Z [CollabForge] info: Category retrieved successfully
+2025-08-08T08:30:37.200Z [CollabForge] info: User logged in successfully
+2025-08-08T08:30:38.272Z [CollabForge] info: User details retrieved successfully
+2025-08-08T08:30:38.572Z [CollabForge] info: User details retrieved successfully
+2025-08-08T08:30:39.752Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T08:30:39.892Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T08:40:37.462Z [CollabForge] error: Error during getting user details
