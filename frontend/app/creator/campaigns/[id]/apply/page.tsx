@@ -55,7 +55,7 @@ export default function CampaignApplicationPage({
             description: "Please log in to submit an application.",
             variant: "destructive",
           });
-          router.push("/auth/login");
+          router.push("/login");
           return;
         }
 

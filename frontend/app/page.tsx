@@ -10,7 +10,7 @@ import Link from "next/link"
 export default function LandingPage() {
   const people = [
     {
-      name: "Jamie L.",
+      name: "Jamie",
       handle: "(@jamielifts)",
       description:
         "Fitness Creator — 180K Followers. Jamie built a loyal fitness community on Instagram and YouTube. She partnered with sportswear brands to launch limited-edition collections that sold out within hours.",

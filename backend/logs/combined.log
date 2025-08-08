@@ -1012,3 +1012,41 @@
 2025-07-31T15:35:59.551Z [CollabForge] info: Creator details retrieved successfully
 2025-07-31T15:35:59.577Z [CollabForge] info: Category retrieved successfully
 2025-07-31T15:35:59.625Z [CollabForge] info: Category retrieved successfully
+2025-08-08T08:30:37.200Z [CollabForge] info: User logged in successfully
+2025-08-08T08:30:38.272Z [CollabForge] info: User details retrieved successfully
+2025-08-08T08:30:38.572Z [CollabForge] info: User details retrieved successfully
+2025-08-08T08:30:39.752Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T08:30:39.892Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T08:40:37.462Z [CollabForge] error: Error during getting user details
+2025-08-08T09:25:04.866Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T10:45:59.240Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:46:33.093Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:47:25.195Z [CollabForge] info: User registered successfully
+2025-08-08T10:48:59.342Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:55:58.550Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:36.419Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:44.339Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:50.473Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:52.314Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:53.113Z [CollabForge] error: Validation errors during user registration
+2025-08-08T10:56:53.793Z [CollabForge] error: Validation errors during user registration
+2025-08-08T11:16:43.400Z [CollabForge] error: Validation errors during user registration
+2025-08-08T11:17:06.764Z [CollabForge] info: User registered successfully
+2025-08-08T11:19:45.288Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T11:19:59.568Z [CollabForge] info: User logged in successfully
+2025-08-08T11:19:59.898Z [CollabForge] info: User details retrieved successfully
+2025-08-08T11:20:00.059Z [CollabForge] info: User details retrieved successfully
+2025-08-08T11:20:00.559Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-08T11:20:00.719Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-08T13:50:24.861Z [CollabForge] warn: User login failed: User not found
+2025-08-08T13:50:30.854Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:03.111Z [CollabForge] warn: User login failed: User not found
+2025-08-08T14:00:09.931Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:11.498Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:12.795Z [CollabForge] warn: User login failed: Incorrect password
+2025-08-08T14:00:43.813Z [CollabForge] info: User logged in successfully
+2025-08-08T14:00:44.530Z [CollabForge] info: User details retrieved successfully
+2025-08-08T14:00:44.631Z [CollabForge] info: User details retrieved successfully
+2025-08-08T14:00:44.830Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T14:00:45.090Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-08T14:09:39.829Z [CollabForge] info: User logged out successfully
