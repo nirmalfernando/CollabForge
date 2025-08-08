@@ -231,6 +231,14 @@ export default function SignUpPage() {
     }
   }
 
+  const handleSocialLogin = (provider: "google" | "facebook") => {
+    // Implement your social login logic here
+    toast({
+      title: "Social Login",
+      description: `${provider} login would be implemented here`,
+    })
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={false} />
@@ -268,7 +276,7 @@ export default function SignUpPage() {
                 Brand-Manager
               </Button>
             </div>
-
+            
             {/* Sign-Up Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -403,6 +411,48 @@ export default function SignUpPage() {
                 {isLoading ? "Signing Up..." : "Sign-Up"}
               </Button>
             </form>
+
+            <div className="relative mb-4 mt-5">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-muted-foreground/30"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-background px-4 text-muted-foreground">
+                  OR
+                </span>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <Button
+                type="button"
+                variant="secondary"
+                className="flex-1 gap-2 py-7 bg-muted rounded-full"
+                onClick={() => handleSocialLogin("google")}
+                disabled={isLoading}
+              >
+                <img 
+                  src="https://www.svgrepo.com/show/380993/google-logo-search-new.svg" 
+                  alt="Google logo" 
+                  className="w-10 h-10"
+                />
+                {/* Google */}
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                className="flex-1 gap-2 py-7 bg-muted rounded-full"
+                onClick={() => handleSocialLogin("facebook")}
+                disabled={isLoading}
+              >
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" 
+                  alt="Facebook logo" 
+                  className="w-10 h-10"
+                />
+                {/* Facebook */}
+              </Button>
+            </div>
 
             <div className="text-center mt-4">
               <Link
