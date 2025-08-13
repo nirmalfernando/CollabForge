@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { creatorApi, getAuthData } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import UserDetailsTab from "@/components/creator/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/past-works-tab";
 
@@ -111,7 +110,7 @@ export default function CreatorProfilePage() {
     Custom: PlusCircle,
   };
 
-  // Transform data for tabs (matching the edit page structure)
+  // Transform data for tabs
   const transformedCreatorData = {
     name: creatorData.firstName || "",
     nickname: creatorData.nickName || "",
@@ -140,6 +139,41 @@ export default function CreatorProfilePage() {
     pastCollaborations: creatorData.pastCollaborations || [],
   };
 
+  // Calculate total followers
+  const totalFollowers =
+    creatorData.socialMedia?.reduce(
+      (sum: number, social: any) => sum + (social.followers || 0),
+      0
+    ) || 0;
+  const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "Platform";
+
+  // Format follower count
+  const formatFollowerCount = (count: number) => {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    } else if (count >= 1000) {
+      return `${(count / 1000).toFixed(0)}K`;
+    }
+    return count.toString();
+  };
+
+  // Prepare details array
+  const creatorDetails = [
+    { icon: Monitor, text: `Platform: ${primaryPlatform}` },
+    { icon: Users, text: `Followers: ${formatFollowerCount(totalFollowers)}` },
+    { icon: Sparkles, text: `Type: ${creatorData.type}` },
+  ];
+
+  // Add custom details from backend
+  if (creatorData.details && creatorData.details.length > 0) {
+    creatorData.details.forEach((detail: any) => {
+      creatorDetails.push({
+        icon: MapPin, // Default icon
+        text: `${detail.label}: ${detail.value}`,
+      });
+    });
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="influencer" />
@@ -157,15 +191,14 @@ export default function CreatorProfilePage() {
             objectFit="cover"
             className="z-0"
           />
-          {/* Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/20 z-5"></div>
         </section>
 
-        {/* Main content area with floating profile section */}
-        <div className="relative bg-background">
+        {/* Main content area */}
+        <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
+            {/* Top section with Avatar, Stats, and Buttons */}
             <div className="flex flex-col md:flex-row items-start gap-6 relative -mt-16 z-10">
-              {/* Profile Picture Container */}
               <div className="flex-shrink-0">
                 <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-background shadow-xl bg-background">
                   <AvatarImage
@@ -182,22 +215,20 @@ export default function CreatorProfilePage() {
                 </Avatar>
               </div>
 
-              {/* Profile Info */}
-              <div className="flex-1 w-full mt-4 md:mt-8">
-                <div className="flex items-center justify-between w-full mb-4">
-                  <div>
-                    <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">
-                      {creatorData.socialMedia?.find((sm: any) => sm.followers)
-                        ?.followers || "0"} Followers
-                    </p>
-                    <p className="text-lg text-muted-foreground">
-                      Platform ({creatorData.socialMedia?.[0]?.platform || "No platforms found"})
-                    </p>
-                  </div>
+              <div className="flex-1 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-4 w-full mt-6">
+                <div className="text-left">
+                  <p className="text-4xl font-bold text-foreground">
+                    {formatFollowerCount(totalFollowers)}
+                  </p>
+                  <p className="text-lg text-muted-foreground">
+                    Followers ({primaryPlatform})
+                  </p>
+                </div>
+                <div className="flex gap-2 w-full md:w-auto">
                   <Link href="/creator/profile/edit" prefetch={false}>
                     <Button
                       variant="outline"
-                      className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent px-6 py-2"
+                      className="flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent px-6 py-2"
                     >
                       Edit Profile
                     </Button>
@@ -206,7 +237,7 @@ export default function CreatorProfilePage() {
               </div>
             </div>
 
-            {/* Profile Details and Tabs */}
+            {/* Tabs Section */}
             <div className="mt-8">
               <Tabs defaultValue="user-details" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 bg-muted text-foreground mb-8">
@@ -232,94 +263,83 @@ export default function CreatorProfilePage() {
 
                 <TabsContent value="user-details" className="space-y-8">
                   {/* Name Section */}
-                  <div className="mb-8">
-                    <h1 className="text-3xl md:text-5xl font-bold mb-4">
-                      {creatorData.firstName}{" "}
-                      {creatorData.nickName && (
-                        <span className="text-primary">
-                          &quot;{creatorData.nickName}&quot;
-                        </span>
-                      )}{" "}
-                      {creatorData.lastName}
-                    </h1>
-                    
-                    {/* Bio */}
-                    {creatorData.bio && (
-                      <div className="mb-6">
-                        <p
-                          className="text-lg leading-relaxed text-foreground"
-                          style={{ whiteSpace: "pre-wrap" }}
-                        >
-                          {creatorData.bio}
-                        </p>
+                  <h1 className="text-3xl md:text-5xl font-bold">
+                    {creatorData.firstName}
+                    {creatorData.nickName && (
+                      <span className="text-primary">
+                        {" "}
+                        &quot;{creatorData.nickName}&quot;
+                      </span>
+                    )}{" "}
+                    {creatorData.lastName}
+                  </h1>
+
+                  {/* Bio */}
+                  {creatorData.bio && (
+                    <p className="text-lg leading-relaxed whitespace-pre-line">
+                      {creatorData.bio}
+                    </p>
+                  )}
+
+                  {/* Category and Type */}
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 text-lg">
+                    {creatorData.category && (
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                        <span>Category: {creatorData.category}</span>
                       </div>
                     )}
-
-                    {/* Category and Type */}
-                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-lg mb-6">
-                      {creatorData.category && (
-                        <div className="flex items-center gap-2">
-                          <Sparkles className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Category:</span>
-                          <span>{creatorData.category}</span>
-                        </div>
-                      )}
-                      {creatorData.type && (
-                        <div className="flex items-center gap-2">
-                          <Users className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Type:</span>
-                          <span>{creatorData.type}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Details */}
-                    {creatorData.details && creatorData.details.length > 0 && (
-                      <div className="mb-6">
-                        <h3 className="text-xl font-semibold mb-3">Details:</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {creatorData.details.map((detail: any, index: number) => {
-                            const IconComponent = detailsIconMap[detail.label] || Sparkles;
-                            return (
-                              <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                                <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
-                                <div>
-                                  <span className="font-medium">{detail.label}:</span>
-                                  <span className="ml-2">{detail.value}</span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Official Platforms */}
-                    {creatorData.socialMedia && creatorData.socialMedia.length > 0 && (
-                      <div className="mb-6">
-                        <h3 className="text-xl font-semibold mb-3">Official Platforms:</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {creatorData.socialMedia.map((platform: any, index: number) => {
-                            const IconComponent = platformIconMap[platform.platform] || Monitor;
-                            return (
-                              <Link
-                                key={index}
-                                href={platform.url || "#"}
-                                className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-                                prefetch={false}
-                              >
-                                <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
-                                <div>
-                                  <div className="font-medium">{platform.platform}</div>
-                                  <div className="text-muted-foreground">{platform.handle}</div>
-                                </div>
-                              </Link>
-                            );
-                          })}
-                        </div>
+                    {creatorData.type && (
+                      <div className="flex items-center gap-2">
+                        <Users className="h-5 w-5 text-primary" />
+                        <span>Type: {creatorData.type}</span>
                       </div>
                     )}
                   </div>
+
+                  {/* Creator Details */}
+                  {creatorDetails.length > 0 && (
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold">Details:</h3>
+                      {creatorDetails.map((detail, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <detail.icon className="h-5 w-5 text-primary flex-shrink-0" />
+                          <span className="text-lg">{detail.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Official Platforms */}
+                  {creatorData.socialMedia && creatorData.socialMedia.length > 0 && (
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold">Official Platforms:</h3>
+                      <ul className="space-y-2 list-inside">
+                        {creatorData.socialMedia.map((platform: any, index: number) => {
+                          const IconComponent = platformIconMap[platform.platform] || Monitor;
+                          return (
+                            <li key={index} className="flex items-center gap-3">
+                              <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                              <Link
+                                href={platform.url || "#"}
+                                className="text-lg hover:underline"
+                                prefetch={false}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {platform.platform} - {platform.handle}
+                                {platform.followers && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({formatFollowerCount(platform.followers)} followers)
+                                  </span>
+                                )}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
 
                   {/* What I Do Section */}
                   {creatorData.whatIDo && creatorData.whatIDo.length > 0 && (
@@ -327,16 +347,15 @@ export default function CreatorProfilePage() {
                       <h2 className="text-2xl md:text-3xl font-bold">
                         What <span className="text-primary">I Do</span>
                       </h2>
-                      <ul className="space-y-2">
+                      <ul className="list-disc list-inside space-y-2 text-lg">
                         {creatorData.whatIDo.map((item: any, index: number) => (
-                          <li key={index} className="flex items-start gap-2 text-lg">
-                            <span className="text-primary mt-2">•</span>
-                            <span>
-                              {item.activity}
-                              {item.experience && (
-                                <span className="text-muted-foreground ml-2">({item.experience})</span>
-                              )}
-                            </span>
+                          <li key={index}>
+                            {item.activity}
+                            {item.experience && (
+                              <span className="text-muted-foreground ml-2">
+                                - {item.experience}
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -349,14 +368,20 @@ export default function CreatorProfilePage() {
                       <h2 className="text-2xl md:text-3xl font-bold">
                         My <span className="text-primary">People</span>
                       </h2>
-                      <ul className="space-y-2">
+                      <ul className="list-disc list-inside space-y-2 text-lg">
                         {creatorData.myPeople.map((item: any, index: number) => (
-                          <li key={index} className="flex items-start gap-2 text-lg">
-                            <span className="text-primary mt-2">•</span>
-                            <span>
-                              {item.name}
-                              {item.role && <span className="text-muted-foreground ml-2">- {item.role}</span>}
-                            </span>
+                          <li key={index}>
+                            {item.name}
+                            {item.role && (
+                              <span className="text-muted-foreground ml-2">
+                                - {item.role}
+                              </span>
+                            )}
+                            {item.contact && (
+                              <span className="text-muted-foreground ml-2">
+                                - {item.contact}
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -369,16 +394,26 @@ export default function CreatorProfilePage() {
                       <h2 className="text-2xl md:text-3xl font-bold">
                         My <span className="text-primary">Content</span>
                       </h2>
-                      <ul className="space-y-2">
+                      <ul className="list-disc list-inside space-y-2 text-lg">
                         {creatorData.myContent.map((item: any, index: number) => (
-                          <li key={index} className="flex items-start gap-2 text-lg">
-                            <span className="text-primary mt-2">•</span>
-                            <span>
-                              {item.title}
-                              {item.views && (
-                                <span className="text-muted-foreground ml-2">({item.views} views)</span>
-                              )}
-                            </span>
+                          <li key={index}>
+                            {item.url ? (
+                              <Link
+                                href={item.url}
+                                className="hover:underline text-primary"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {item.title}
+                              </Link>
+                            ) : (
+                              item.title
+                            )}
+                            {item.views && (
+                              <span className="text-muted-foreground ml-2">
+                                ({item.views.toLocaleString()} views)
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -391,17 +426,18 @@ export default function CreatorProfilePage() {
                       <h2 className="text-2xl md:text-3xl font-bold">
                         I&apos;ve <span className="text-primary">Worked With</span>
                       </h2>
-                      <ul className="space-y-2">
+                      <ul className="list-disc list-inside space-y-2 text-lg">
                         {creatorData.pastCollaborations.map((item: any, index: number) => (
-                          <li key={index} className="flex items-start gap-2 text-lg">
-                            <span className="text-primary mt-2">•</span>
-                            <span>
-                              {item.brand}
-                              {item.campaign && <span className="ml-2">- {item.campaign}</span>}
-                              {item.date && (
-                                <span className="text-muted-foreground ml-2">({item.date})</span>
-                              )}
-                            </span>
+                          <li key={index}>
+                            {item.brand}
+                            {item.campaign && (
+                              <span className="ml-2">- {item.campaign}</span>
+                            )}
+                            {item.date && (
+                              <span className="text-muted-foreground ml-2">
+                                ({item.date})
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
