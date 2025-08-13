@@ -145,7 +145,7 @@ export default function CreatorProfilePage() {
       (sum: number, social: any) => sum + (social.followers || 0),
       0
     ) || 0;
-  const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "Platform";
+  const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "N/A";
 
   // Format follower count
   const formatFollowerCount = (count: number) => {

@@ -63,3 +63,11 @@
 2025-08-08T10:56:53.113Z [CollabForge] error: Validation errors during user registration
 2025-08-08T10:56:53.793Z [CollabForge] error: Validation errors during user registration
 2025-08-08T11:16:43.400Z [CollabForge] error: Validation errors during user registration
+2025-08-13T12:18:45.441Z [CollabForge] error: Error during getting user details
+2025-08-13T12:18:45.445Z [CollabForge] error: Error during getting creator by user ID
+2025-08-13T12:42:31.810Z [CollabForge] error: Validation errors during get creator by user ID
+2025-08-13T12:42:31.821Z [CollabForge] error: Validation errors during get creator by user ID
+2025-08-13T12:47:56.995Z [CollabForge] error: Validation errors during get creator by user ID
+2025-08-13T12:48:09.567Z [CollabForge] error: Validation errors during get creator by user ID
+2025-08-13T18:04:49.442Z [CollabForge] error: Validation errors during user registration
+2025-08-13T18:05:28.216Z [CollabForge] error: Error during user login

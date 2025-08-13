@@ -59,13 +59,15 @@ export default function UserDetailsTab({
   setSelectedCreatorType,
 }: UserDetailsTabProps) {
   const [isAddingDetail, setIsAddingDetail] = useState(false);
-  const [isAddingPlatform, setIsAddingPlatform] = useState(false);
   const [newDetail, setNewDetail] = useState({ type: "Custom", value: "" });
-  const [newPlatform, setNewPlatform] = useState({
+  const [isPlatformDialogOpen, setIsPlatformDialogOpen] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(-1);
+  const [currentPlatform, setCurrentPlatform] = useState({
     icon: "Monitor",
     name: "",
     handle: "",
     link: "",
+    followers: "",
   });
 
   const creatorTypeOptions = [
@@ -84,14 +86,19 @@ export default function UserDetailsTab({
 
   const iconMap = {
     Monitor,
-    Users,
-    MapPin,
-    Sparkles,
     Instagram,
     Youtube,
     Mail,
     Globe,
-    PlusCircle,
+  };
+
+  const getIconKey = (iconComponent: any) => {
+    for (const [key, value] of Object.entries(iconMap)) {
+      if (value === iconComponent) {
+        return key;
+      }
+    }
+    return "Monitor"; // default
   };
 
   const handleAddDetail = () => {
@@ -110,26 +117,61 @@ export default function UserDetailsTab({
     }
   };
 
-  const handleAddPlatform = () => {
-    if (newPlatform.name.trim() && newPlatform.handle.trim()) {
-      const IconComponent = iconMap[newPlatform.icon as keyof typeof iconMap];
+  const handleOpenAddPlatform = () => {
+    setEditingIndex(-1);
+    setCurrentPlatform({ icon: "Monitor", name: "", handle: "", link: "", followers: "" });
+    setIsPlatformDialogOpen(true);
+  };
+
+  const handleOpenEditPlatform = (index: number) => {
+    const platform = creatorData.platforms[index];
+    const iconKey = getIconKey(platform.icon);
+    setEditingIndex(index);
+    setCurrentPlatform({
+      icon: iconKey,
+      name: platform.name,
+      handle: platform.handle,
+      link: platform.link,
+      followers: platform.followers.toString(),
+    });
+    setIsPlatformDialogOpen(true);
+  };
+
+  const handleSavePlatform = () => {
+    if (currentPlatform.name.trim() && currentPlatform.handle.trim()) {
+      const followersCount = parseInt(currentPlatform.followers) || 0;
+      if (isNaN(followersCount) || followersCount < 0) {
+        toast({
+          title: "Invalid Followers Count",
+          description: "Please enter a valid number for followers.",
+          variant: "destructive",
+        });
+        return;
+      }
+      const IconComponent = iconMap[currentPlatform.icon as keyof typeof iconMap];
+      const updatedPlatform = {
+        icon: IconComponent,
+        name: currentPlatform.name,
+        handle: currentPlatform.handle,
+        link: currentPlatform.link || "#",
+        followers: followersCount,
+      };
       setCreatorData((prev: any) => ({
         ...prev,
-        platforms: [
-          ...prev.platforms,
-          {
-            icon: IconComponent,
-            name: newPlatform.name,
-            handle: newPlatform.handle,
-            link: newPlatform.link || "#",
-          },
-        ],
+        platforms: editingIndex === -1
+          ? [...prev.platforms, updatedPlatform]
+          : prev.platforms.map((p: any, i: number) => i === editingIndex ? updatedPlatform : p),
       }));
-      setNewPlatform({ icon: "Monitor", name: "", handle: "", link: "" });
-      setIsAddingPlatform(false);
+      setIsPlatformDialogOpen(false);
       toast({
-        title: "Platform Added",
-        description: "Your new platform has been added successfully.",
+        title: editingIndex === -1 ? "Platform Added" : "Platform Updated",
+        description: `Your platform has been ${editingIndex === -1 ? "added" : "updated"} successfully.`,
+      });
+    } else {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in the platform name and handle.",
+        variant: "destructive",
       });
     }
   };
@@ -384,11 +426,12 @@ export default function UserDetailsTab({
           {creatorData.platforms.map((platform: any, index: number) => (
             <li key={index} className="flex items-center gap-2">
               <platform.icon className="h-5 w-5 text-primary" />
-              <Input
-                type="text"
-                defaultValue={`${platform.name} - ${platform.handle}`}
-                className="flex-1 bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-2"
-              />
+              <div
+                onClick={() => handleOpenEditPlatform(index)}
+                className="flex-1 bg-muted rounded-lg p-2 text-foreground cursor-pointer"
+              >
+                {`${platform.name} - ${platform.handle} (${platform.followers} followers)`}
+              </div>
               <Link href={platform.link} className="text-primary hover:underline" prefetch={false}>
                 View
               </Link>
@@ -404,16 +447,18 @@ export default function UserDetailsTab({
           ))}
         </ul>
 
-        <Dialog open={isAddingPlatform} onOpenChange={setIsAddingPlatform}>
+        <Dialog open={isPlatformDialogOpen} onOpenChange={setIsPlatformDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80">
+            <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80" onClick={handleOpenAddPlatform}>
               <PlusCircle className="h-5 w-5 mr-2" /> Add New Platform
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
             <DialogHeader>
-              <DialogTitle>Add New Platform</DialogTitle>
-              <DialogDescription>Add a new social media platform to your profile.</DialogDescription>
+              <DialogTitle>{editingIndex === -1 ? "Add New Platform" : "Edit Platform"}</DialogTitle>
+              <DialogDescription>
+                {editingIndex === -1 ? "Add a new social media platform to your profile." : "Edit the social media platform details."}
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
@@ -421,8 +466,8 @@ export default function UserDetailsTab({
                   Icon
                 </Label>
                 <Select
-                  value={newPlatform.icon}
-                  onValueChange={(value) => setNewPlatform((prev) => ({ ...prev, icon: value }))}
+                  value={currentPlatform.icon}
+                  onValueChange={(value) => setCurrentPlatform((prev) => ({ ...prev, icon: value }))}
                 >
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Select an icon" />
@@ -442,8 +487,8 @@ export default function UserDetailsTab({
                 </Label>
                 <Input
                   id="platform-name"
-                  value={newPlatform.name}
-                  onChange={(e) => setNewPlatform((prev) => ({ ...prev, name: e.target.value }))}
+                  value={currentPlatform.name}
+                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, name: e.target.value }))}
                   className="col-span-3"
                   placeholder="Platform name"
                 />
@@ -454,10 +499,23 @@ export default function UserDetailsTab({
                 </Label>
                 <Input
                   id="platform-handle"
-                  value={newPlatform.handle}
-                  onChange={(e) => setNewPlatform((prev) => ({ ...prev, handle: e.target.value }))}
+                  value={currentPlatform.handle}
+                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, handle: e.target.value }))}
                   className="col-span-3"
                   placeholder="Platform handle (e.g., @johndoe)"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="platform-followers" className="text-right">
+                  Followers
+                </Label>
+                <Input
+                  id="platform-followers"
+                  type="number"
+                  value={currentPlatform.followers}
+                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, followers: e.target.value }))}
+                  className="col-span-3"
+                  placeholder="Number of followers (e.g., 10000)"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -466,8 +524,8 @@ export default function UserDetailsTab({
                 </Label>
                 <Input
                   id="platform-link"
-                  value={newPlatform.link}
-                  onChange={(e) => setNewPlatform((prev) => ({ ...prev, link: e.target.value }))}
+                  value={currentPlatform.link}
+                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, link: e.target.value }))}
                   className="col-span-3"
                   placeholder="Link to profile (optional)"
                 />
@@ -477,12 +535,12 @@ export default function UserDetailsTab({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setIsAddingPlatform(false)}
+                onClick={() => setIsPlatformDialogOpen(false)}
               >
                 Cancel
               </Button>
-              <Button type="button" onClick={handleAddPlatform}>
-                Add Platform
+              <Button type="button" onClick={handleSavePlatform}>
+                {editingIndex === -1 ? "Add Platform" : "Update Platform"}
               </Button>
             </DialogFooter>
           </DialogContent>
