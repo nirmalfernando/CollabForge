@@ -19,7 +19,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Monitor, Users, MapPin, Sparkles, Instagram, Youtube, Mail, Globe, PlusCircle } from "lucide-react";
 import {
   creatorApi,
   categoryApi,
@@ -43,18 +43,31 @@ export default function CreatorEditProfilePage() {
   const [isEditingBanner, setIsEditingBanner] = useState(false);
   const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
-    null
-  );
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
-  const [selectedProfilePicFile, setSelectedProfilePicFile] =
-    useState<File | null>(null);
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
-    string | null
-  >(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
+
+  // Map social media platforms to icons, consistent with profile page
+  const platformIconMap: { [key: string]: any } = {
+    TikTok: Monitor,
+    Instagram: Instagram,
+    YouTube: Youtube,
+    Email: Mail,
+    Website: Globe,
+  };
+
+  // Map details to icons, consistent with profile page
+  const detailsIconMap: { [key: string]: any } = {
+    Platform: Monitor,
+    Followers: Users,
+    "Based in": MapPin,
+    Vibe: Sparkles,
+    Custom: PlusCircle,
+  };
 
   const [creatorData, setCreatorData] = useState({
     name: "",
@@ -62,14 +75,15 @@ export default function CreatorEditProfilePage() {
     lastName: "",
     followerInfo: "",
     bio: "",
-    details: [] as any[],
-    platforms: [] as any[],
-    whatIDo: [""],
-    myPeople: [""],
-    myContent: [""],
-    workedWith: [""],
+    details: [] as { type: string; value: string; icon: any }[],
+    platforms: [] as { icon: any; name: string; handle: string; link: string }[],
+    whatIDo: [] as string[],
+    myPeople: [] as string[],
+    myContent: [] as string[],
+    workedWith: [] as string[],
     bannerImageUrl: null as string | null,
     profilePicUrl: null as string | null,
+    pastCollaborations: [] as any[],
   });
 
   useEffect(() => {
@@ -86,6 +100,7 @@ export default function CreatorEditProfilePage() {
         const profile = await creatorApi.getCreatorByUserId(auth.user.userId);
         setCreatorId(profile.creatorId);
 
+        // Transform data to match profile page structure
         setCreatorData({
           name: profile.firstName || "",
           nickname: profile.nickName || "",
@@ -94,49 +109,24 @@ export default function CreatorEditProfilePage() {
             ? `${profile.socialMedia[0].followers} Followers (${profile.socialMedia[0].platform})`
             : "",
           bio: profile.bio || "",
-          details:
-            profile.details?.map((d: any) => ({
-              type: d.label,
-              value: d.value,
-              icon:
-                (
-                  {
-                    Platform: Monitor,
-                    Followers: Users,
-                    "Based in": MapPin,
-                    Vibe: Sparkles,
-                    Custom: PlusCircle,
-                  } as {
-                    [key: string]: any;
-                  }
-                )[d.label] || PlusCircle,
-            })) || [],
-          platforms:
-            profile.socialMedia?.map((p: any) => ({
-              icon:
-                (
-                  {
-                    TikTok: Monitor,
-                    Instagram: Instagram,
-                    YouTube: Youtube,
-                    Email: Mail,
-                    Website: Globe,
-                  } as {
-                    [key: string]: any;
-                  }
-                )[p.platform] || Monitor,
-              name: p.platform,
-              handle: p.handle,
-              link: p.url,
-            })) || [],
+          details: profile.details?.map((d: any) => ({
+            type: d.label,
+            value: d.value,
+            icon: detailsIconMap[d.label] || PlusCircle,
+          })) || [],
+          platforms: profile.socialMedia?.map((p: any) => ({
+            icon: platformIconMap[p.platform] || Monitor,
+            name: p.platform,
+            handle: p.handle,
+            link: p.url,
+          })) || [],
           whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
           myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
           myContent: profile.myContent?.map((item: any) => item.title) || [""],
-          workedWith: profile.pastCollaborations?.map(
-            (item: any) => item.brand
-          ) || [""],
+          workedWith: profile.pastCollaborations?.map((item: any) => item.brand) || [""],
           bannerImageUrl: profile.backgroundImgUrl || null,
           profilePicUrl: profile.profilePicUrl || null,
+          pastCollaborations: profile.pastCollaborations || [],
         });
         setSelectedCategory(profile.categoryId || "");
         setSelectedCreatorType(profile.type || "");
@@ -194,39 +184,39 @@ export default function CreatorEditProfilePage() {
         lastName: creatorData.lastName,
         nickName: creatorData.nickname || undefined,
         bio: creatorData.bio || undefined,
-        details: creatorData.details.map((detail: any) => ({
+        details: creatorData.details.map((detail) => ({
           label: detail.type,
           value: detail.value,
         })),
-        socialMedia: creatorData.platforms.map((platform: any) => ({
+        socialMedia: creatorData.platforms.map((platform) => ({
           platform: platform.name,
           handle: platform.handle,
           url: platform.link,
           followers: 0,
         })),
         whatIDo: creatorData.whatIDo
-          .filter((item: string) => item.trim())
-          .map((item: string) => ({
+          .filter((item) => item.trim())
+          .map((item) => ({
             activity: item,
             experience: "",
           })),
         myPeople: creatorData.myPeople
-          .filter((item: string) => item.trim())
-          .map((item: string) => ({
+          .filter((item) => item.trim())
+          .map((item) => ({
             name: item,
             role: "",
             contact: "",
           })),
         myContent: creatorData.myContent
-          .filter((item: string) => item.trim())
-          .map((item: string) => ({
+          .filter((item) => item.trim())
+          .map((item) => ({
             title: item,
             url: "",
             views: 0,
           })),
         pastCollaborations: creatorData.workedWith
-          .filter((item: string) => item.trim())
-          .map((item: string) => ({
+          .filter((item) => item.trim())
+          .map((item) => ({
             brand: item,
             campaign: "",
             date: "",
@@ -360,7 +350,7 @@ export default function CreatorEditProfilePage() {
       }
       setSelectedProfilePicFile(file);
       if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
-      setBannerPreviewUrl(URL.createObjectURL(file));
+      setProfilePicPreviewUrl(URL.createObjectURL(file));
     } else {
       setSelectedProfilePicFile(null);
       setProfilePicPreviewUrl(null);
