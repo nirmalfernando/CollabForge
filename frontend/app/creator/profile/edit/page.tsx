@@ -1,7 +1,4 @@
-// creator/profile/edit/page.tsx (updated)
 "use client";
-
-import type React from "react";
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -32,7 +29,7 @@ import {
 import UserDetailsTab from "@/components/creator/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/past-works-tab";
-import { Label } from "@radix-ui/react-label";
+import { Label } from "@/components/ui/label";
 
 const MAX_FILE_SIZE_MB = 10;
 
@@ -46,10 +43,15 @@ export default function CreatorEditProfilePage() {
   const [isEditingBanner, setIsEditingBanner] = useState(false);
   const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
+    null
+  );
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
-  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] =
+    useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
+    string | null
+  >(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
@@ -96,15 +98,33 @@ export default function CreatorEditProfilePage() {
             profile.details?.map((d: any) => ({
               type: d.label,
               value: d.value,
-              icon: ({ Platform: Monitor, Followers: Users, "Based in": MapPin, Vibe: Sparkles, Custom: PlusCircle } as {
-                [key: string]: any;
-              })[d.label] || PlusCircle,
+              icon:
+                (
+                  {
+                    Platform: Monitor,
+                    Followers: Users,
+                    "Based in": MapPin,
+                    Vibe: Sparkles,
+                    Custom: PlusCircle,
+                  } as {
+                    [key: string]: any;
+                  }
+                )[d.label] || PlusCircle,
             })) || [],
           platforms:
             profile.socialMedia?.map((p: any) => ({
-              icon: ({ TikTok: Monitor, Instagram: Instagram, YouTube: Youtube, Email: Mail, Website: Globe } as {
-                [key: string]: any;
-              })[p.platform] || Monitor,
+              icon:
+                (
+                  {
+                    TikTok: Monitor,
+                    Instagram: Instagram,
+                    YouTube: Youtube,
+                    Email: Mail,
+                    Website: Globe,
+                  } as {
+                    [key: string]: any;
+                  }
+                )[p.platform] || Monitor,
               name: p.platform,
               handle: p.handle,
               link: p.url,
@@ -112,7 +132,9 @@ export default function CreatorEditProfilePage() {
           whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
           myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
           myContent: profile.myContent?.map((item: any) => item.title) || [""],
-          workedWith: profile.pastCollaborations?.map((item: any) => item.brand) || [""],
+          workedWith: profile.pastCollaborations?.map(
+            (item: any) => item.brand
+          ) || [""],
           bannerImageUrl: profile.backgroundImgUrl || null,
           profilePicUrl: profile.profilePicUrl || null,
         });
@@ -149,10 +171,16 @@ export default function CreatorEditProfilePage() {
   const handleUpdateSettings = async () => {
     if (!authData || !creatorId) return;
 
-    if (!creatorData.name.trim() || !creatorData.lastName.trim() || !selectedCategory || !selectedCreatorType) {
+    if (
+      !creatorData.name.trim() ||
+      !creatorData.lastName.trim() ||
+      !selectedCategory ||
+      !selectedCreatorType
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
+        description:
+          "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
         variant: "destructive",
       });
       return;
@@ -206,7 +234,10 @@ export default function CreatorEditProfilePage() {
         categoryId: selectedCategory,
         profilePicUrl: creatorData.profilePicUrl || undefined,
         backgroundImgUrl: creatorData.bannerImageUrl || undefined,
-        type: selectedCreatorType as "Content Creator" | "Model" | "Live Streamer",
+        type: selectedCreatorType as
+          | "Content Creator"
+          | "Model"
+          | "Live Streamer",
       };
 
       await creatorApi.updateCreator(creatorId, apiData);
@@ -221,7 +252,8 @@ export default function CreatorEditProfilePage() {
       console.error("Failed to update profile:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to update profile. Please try again.",
+        description:
+          error.message || "Failed to update profile. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -229,7 +261,9 @@ export default function CreatorEditProfilePage() {
     }
   };
 
-  const handleBannerFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBannerFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -265,7 +299,9 @@ export default function CreatorEditProfilePage() {
     if (selectedBannerFile) {
       try {
         setIsLoading(true);
-        const uploadedImage = await imageUploadApi.uploadImage(selectedBannerFile);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedBannerFile
+        );
         setCreatorData((prev) => ({
           ...prev,
           bannerImageUrl: uploadedImage.url,
@@ -281,7 +317,8 @@ export default function CreatorEditProfilePage() {
         console.error("Failed to upload banner image:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload banner image. Please try again.",
+          description:
+            error.message || "Failed to upload banner image. Please try again.",
           variant: "destructive",
         });
       } finally {
@@ -296,7 +333,9 @@ export default function CreatorEditProfilePage() {
     }
   };
 
-  const handleProfilePicFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePicFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -321,7 +360,7 @@ export default function CreatorEditProfilePage() {
       }
       setSelectedProfilePicFile(file);
       if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
-      setProfilePicPreviewUrl(URL.createObjectURL(file));
+      setBannerPreviewUrl(URL.createObjectURL(file));
     } else {
       setSelectedProfilePicFile(null);
       setProfilePicPreviewUrl(null);
@@ -332,7 +371,9 @@ export default function CreatorEditProfilePage() {
     if (selectedProfilePicFile) {
       try {
         setIsLoading(true);
-        const uploadedImage = await imageUploadApi.uploadImage(selectedProfilePicFile);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedProfilePicFile
+        );
         setCreatorData((prev) => ({
           ...prev,
           profilePicUrl: uploadedImage.url,
@@ -348,7 +389,9 @@ export default function CreatorEditProfilePage() {
         console.error("Failed to upload profile picture:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload profile picture. Please try again.",
+          description:
+            error.message ||
+            "Failed to upload profile picture. Please try again.",
           variant: "destructive",
         });
       } finally {
@@ -382,7 +425,10 @@ export default function CreatorEditProfilePage() {
       <main className="flex-1">
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src={creatorData.bannerImageUrl || "/placeholder.svg?height=400&width=1200"}
+            src={
+              creatorData.bannerImageUrl ||
+              "/placeholder.svg?height=400&width=1200"
+            }
             alt="Profile banner"
             layout="fill"
             objectFit="cover"
@@ -402,7 +448,9 @@ export default function CreatorEditProfilePage() {
             <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
               <DialogHeader>
                 <DialogTitle>Edit Banner Image</DialogTitle>
-                <DialogDescription>Upload a new image for your banner.</DialogDescription>
+                <DialogDescription>
+                  Upload a new image for your banner.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <Label htmlFor="banner-image-upload" className="text-right">
@@ -416,7 +464,9 @@ export default function CreatorEditProfilePage() {
                 />
                 {bannerPreviewUrl && (
                   <div className="mt-4">
-                    <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Preview:
+                    </p>
                     <Image
                       src={bannerPreviewUrl || "/placeholder.svg"}
                       alt="Banner preview"
@@ -452,11 +502,17 @@ export default function CreatorEditProfilePage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
-                <Dialog open={isEditingProfilePic} onOpenChange={setIsEditingProfilePic}>
+                <Dialog
+                  open={isEditingProfilePic}
+                  onOpenChange={setIsEditingProfilePic}
+                >
                   <DialogTrigger asChild>
                     <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg cursor-pointer group relative overflow-hidden">
                       <AvatarImage
-                        src={creatorData.profilePicUrl || "/placeholder.svg?height=200&width=200"}
+                        src={
+                          creatorData.profilePicUrl ||
+                          "/placeholder.svg?height=200&width=200"
+                        }
                         alt={`${creatorData.name} profile picture`}
                       />
                       <AvatarFallback className="bg-primary text-white flex items-center justify-center text-4xl font-bold">
@@ -472,10 +528,15 @@ export default function CreatorEditProfilePage() {
                   <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
                     <DialogHeader>
                       <DialogTitle>Edit Profile Picture</DialogTitle>
-                      <DialogDescription>Upload a new image for your profile picture.</DialogDescription>
+                      <DialogDescription>
+                        Upload a new image for your profile picture.
+                      </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                      <Label htmlFor="profile-pic-upload" className="text-right">
+                      <Label
+                        htmlFor="profile-pic-upload"
+                        className="text-right"
+                      >
                         Upload Image
                       </Label>
                       <Input
@@ -486,7 +547,9 @@ export default function CreatorEditProfilePage() {
                       />
                       {profilePicPreviewUrl && (
                         <div className="mt-4">
-                          <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Preview:
+                          </p>
                           <Image
                             src={profilePicPreviewUrl || "/placeholder.svg"}
                             alt="Profile picture preview"
@@ -537,7 +600,7 @@ export default function CreatorEditProfilePage() {
                     variant="outline"
                     className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
-                    {isLoading ? "Updating..." : "Update Settings"}
+                    {isLoading ? "Updating..." : "Save Settings"}
                   </Button>
                 </div>
               </div>
@@ -582,7 +645,10 @@ export default function CreatorEditProfilePage() {
               </TabsContent>
 
               <TabsContent value="past-works" className="mt-6 space-y-8">
-                <PastWorksTab />
+                <PastWorksTab
+                  creatorData={creatorData}
+                  setCreatorData={setCreatorData}
+                />
               </TabsContent>
             </Tabs>
           </div>

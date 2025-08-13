@@ -1,4 +1,3 @@
-// creator/profile/new/page.tsx (updated)
 "use client";
 
 import React from "react";
@@ -22,7 +21,12 @@ import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Pencil, Plus } from "lucide-react";
-import { creatorApi, categoryApi, getAuthData, imageUploadApi } from "@/lib/api";
+import {
+  creatorApi,
+  categoryApi,
+  getAuthData,
+  imageUploadApi,
+} from "@/lib/api";
 import UserDetailsTab from "@/components/creator/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/past-works-tab";
@@ -38,10 +42,15 @@ export default function CreatorNewProfilePage() {
   const [isEditingBanner, setIsEditingBanner] = useState(false);
   const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
+    null
+  );
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
-  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] =
+    useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
+    string | null
+  >(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
@@ -100,10 +109,16 @@ export default function CreatorNewProfilePage() {
   const handleCreateProfile = async () => {
     if (!authData) return;
 
-    if (!creatorData.name.trim() || !creatorData.lastName.trim() || !selectedCategory || !selectedCreatorType) {
+    if (
+      !creatorData.name.trim() ||
+      !creatorData.lastName.trim() ||
+      !selectedCategory ||
+      !selectedCreatorType
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
+        description:
+          "Please fill in all required fields (First Name, Last Name, Category, Creator Type).",
         variant: "destructive",
       });
       return;
@@ -158,7 +173,10 @@ export default function CreatorNewProfilePage() {
         categoryId: selectedCategory,
         profilePicUrl: creatorData.profilePicUrl || undefined,
         backgroundImgUrl: creatorData.bannerImageUrl || undefined,
-        type: selectedCreatorType as "Content Creator" | "Model" | "Live Streamer",
+        type: selectedCreatorType as
+          | "Content Creator"
+          | "Model"
+          | "Live Streamer",
       };
 
       await creatorApi.createCreator(apiData);
@@ -173,7 +191,8 @@ export default function CreatorNewProfilePage() {
       console.error("Failed to create profile:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to create profile. Please try again.",
+        description:
+          error.message || "Failed to create profile. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -181,7 +200,9 @@ export default function CreatorNewProfilePage() {
     }
   };
 
-  const handleBannerFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBannerFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -217,7 +238,9 @@ export default function CreatorNewProfilePage() {
     if (selectedBannerFile) {
       try {
         setIsLoading(true);
-        const uploadedImage = await imageUploadApi.uploadImage(selectedBannerFile);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedBannerFile
+        );
         setCreatorData((prev) => ({
           ...prev,
           bannerImageUrl: uploadedImage.url,
@@ -233,7 +256,8 @@ export default function CreatorNewProfilePage() {
         console.error("Failed to upload banner image:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload banner image. Please try again.",
+          description:
+            error.message || "Failed to upload banner image. Please try again.",
           variant: "destructive",
         });
       } finally {
@@ -248,7 +272,9 @@ export default function CreatorNewProfilePage() {
     }
   };
 
-  const handleProfilePicFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePicFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -284,7 +310,9 @@ export default function CreatorNewProfilePage() {
     if (selectedProfilePicFile) {
       try {
         setIsLoading(true);
-        const uploadedImage = await imageUploadApi.uploadImage(selectedProfilePicFile);
+        const uploadedImage = await imageUploadApi.uploadImage(
+          selectedProfilePicFile
+        );
         setCreatorData((prev) => ({
           ...prev,
           profilePicUrl: uploadedImage.url,
@@ -300,7 +328,9 @@ export default function CreatorNewProfilePage() {
         console.error("Failed to upload profile picture:", error);
         toast({
           title: "Upload Error",
-          description: error.message || "Failed to upload profile picture. Please try again.",
+          description:
+            error.message ||
+            "Failed to upload profile picture. Please try again.",
           variant: "destructive",
         });
       } finally {
@@ -326,7 +356,10 @@ export default function CreatorNewProfilePage() {
       <main className="flex-1">
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src={creatorData.bannerImageUrl || "/placeholder.svg?height=400&width=1200"}
+            src={
+              creatorData.bannerImageUrl ||
+              "/placeholder.svg?height=400&width=1200"
+            }
             alt="Profile banner"
             layout="fill"
             objectFit="cover"
@@ -346,7 +379,9 @@ export default function CreatorNewProfilePage() {
             <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
               <DialogHeader>
                 <DialogTitle>Upload Banner Image</DialogTitle>
-                <DialogDescription>Upload an image for your profile banner.</DialogDescription>
+                <DialogDescription>
+                  Upload an image for your profile banner.
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <Label htmlFor="banner-image-upload" className="text-right">
@@ -360,7 +395,9 @@ export default function CreatorNewProfilePage() {
                 />
                 {bannerPreviewUrl && (
                   <div className="mt-4">
-                    <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Preview:
+                    </p>
                     <Image
                       src={bannerPreviewUrl}
                       alt="Banner preview"
@@ -396,11 +433,17 @@ export default function CreatorNewProfilePage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
-                <Dialog open={isEditingProfilePic} onOpenChange={setIsEditingProfilePic}>
+                <Dialog
+                  open={isEditingProfilePic}
+                  onOpenChange={setIsEditingProfilePic}
+                >
                   <DialogTrigger asChild>
                     <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg cursor-pointer group relative overflow-hidden">
                       <AvatarImage
-                        src={creatorData.profilePicUrl || "/placeholder.svg?height=200&width=200"}
+                        src={
+                          creatorData.profilePicUrl ||
+                          "/placeholder.svg?height=200&width=200"
+                        }
                         alt="Profile picture"
                       />
                       <AvatarFallback className="bg-primary text-white flex items-center justify-center text-4xl font-bold">
@@ -416,10 +459,15 @@ export default function CreatorNewProfilePage() {
                   <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
                     <DialogHeader>
                       <DialogTitle>Upload Profile Picture</DialogTitle>
-                      <DialogDescription>Upload an image for your profile picture.</DialogDescription>
+                      <DialogDescription>
+                        Upload an image for your profile picture.
+                      </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                      <Label htmlFor="profile-pic-upload" className="text-right">
+                      <Label
+                        htmlFor="profile-pic-upload"
+                        className="text-right"
+                      >
                         Upload Image
                       </Label>
                       <Input
@@ -430,7 +478,9 @@ export default function CreatorNewProfilePage() {
                       />
                       {profilePicPreviewUrl && (
                         <div className="mt-4">
-                          <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Preview:
+                          </p>
                           <Image
                             src={profilePicPreviewUrl}
                             alt="Profile picture preview"
@@ -488,7 +538,7 @@ export default function CreatorNewProfilePage() {
             </div>
 
             <Tabs defaultValue="user-details" className="w-full mt-8">
-              <TabsList className="grid w-full grid-cols-3 bg-muted text-foreground">
+              <TabsList className="grid w-full grid-cols-2 bg-muted text-foreground">
                 <TabsTrigger
                   value="user-details"
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
@@ -501,12 +551,12 @@ export default function CreatorNewProfilePage() {
                 >
                   Accounts & Metrics
                 </TabsTrigger>
-                <TabsTrigger
+                {/* <TabsTrigger
                   value="past-works"
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
                   Past Works
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
 
               <TabsContent value="user-details" className="mt-6 space-y-8">
@@ -525,9 +575,9 @@ export default function CreatorNewProfilePage() {
                 <AccountsMetricsTab />
               </TabsContent>
 
-              <TabsContent value="past-works" className="mt-6 space-y-8">
+              {/* <TabsContent value="past-works" className="mt-6 space-y-8">
                 <PastWorksTab />
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           </div>
         </div>
