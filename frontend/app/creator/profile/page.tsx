@@ -188,10 +188,10 @@ export default function CreatorProfilePage() {
                   <div>
                     <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">
                       {creatorData.socialMedia?.find((sm: any) => sm.followers)
-                        ?.followers || "320,000"}
+                        ?.followers || "0"} Followers
                     </p>
                     <p className="text-lg text-muted-foreground">
-                      Followers ({creatorData.socialMedia?.[0]?.platform || "TikTok"})
+                      Platform ({creatorData.socialMedia?.[0]?.platform || "No platforms found"})
                     </p>
                   </div>
                   <Link href="/creator/profile/edit" prefetch={false}>
@@ -246,7 +246,12 @@ export default function CreatorProfilePage() {
                     {/* Bio */}
                     {creatorData.bio && (
                       <div className="mb-6">
-                        <p className="text-lg leading-relaxed text-foreground">{creatorData.bio}</p>
+                        <p
+                          className="text-lg leading-relaxed text-foreground"
+                          style={{ whiteSpace: "pre-wrap" }}
+                        >
+                          {creatorData.bio}
+                        </p>
                       </div>
                     )}
 
