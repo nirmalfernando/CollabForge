@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,7 +20,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Monitor, Users, MapPin, Sparkles, Instagram, Youtube, Mail, Globe, PlusCircle } from "lucide-react";
 import {
   creatorApi,
   categoryApi,
@@ -29,7 +29,6 @@ import {
 } from "@/lib/api";
 import UserDetailsTab from "@/components/creator/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
-import PastWorksTab from "@/components/creator/past-works-tab";
 import { Label } from "@radix-ui/react-label";
 
 const MAX_FILE_SIZE_MB = 10;
@@ -42,18 +41,31 @@ export default function CreatorNewProfilePage() {
   const [isEditingBanner, setIsEditingBanner] = useState(false);
   const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
-    null
-  );
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
-  const [selectedProfilePicFile, setSelectedProfilePicFile] =
-    useState<File | null>(null);
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
-    string | null
-  >(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
+
+  // Map social media platforms to icons, consistent with profile page
+  const platformIconMap: { [key: string]: any } = {
+    TikTok: Monitor,
+    Instagram: Instagram,
+    YouTube: Youtube,
+    Email: Mail,
+    Website: Globe,
+  };
+
+  // Map details to icons, consistent with profile page
+  const detailsIconMap: { [key: string]: any } = {
+    Platform: Monitor,
+    Followers: Users,
+    "Based in": MapPin,
+    Vibe: Sparkles,
+    Custom: PlusCircle,
+  };
 
   const [creatorData, setCreatorData] = useState({
     name: "",
@@ -61,8 +73,8 @@ export default function CreatorNewProfilePage() {
     lastName: "",
     followerInfo: "",
     bio: "",
-    details: [] as any[],
-    platforms: [] as any[],
+    details: [] as { type: string; value: string; icon: any }[],
+    platforms: [] as { icon: any; name: string; handle: string; link: string; followers: number }[],
     whatIDo: [""],
     myPeople: [""],
     myContent: [""],
@@ -72,7 +84,7 @@ export default function CreatorNewProfilePage() {
   });
 
   // Load categories on mount
-  React.useEffect(() => {
+  useEffect(() => {
     if (!authData || authData.user.role !== "influencer") {
       router.push("/login");
       return;
@@ -99,7 +111,7 @@ export default function CreatorNewProfilePage() {
   }, [router, authData]);
 
   // Cleanup preview URLs
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
       if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
@@ -133,15 +145,15 @@ export default function CreatorNewProfilePage() {
         lastName: creatorData.lastName,
         nickName: creatorData.nickname || undefined,
         bio: creatorData.bio || undefined,
-        details: creatorData.details.map((detail: any) => ({
+        details: creatorData.details.map((detail) => ({
           label: detail.type,
           value: detail.value,
         })),
-        socialMedia: creatorData.platforms.map((platform: any) => ({
+        socialMedia: creatorData.platforms.map((platform) => ({
           platform: platform.name,
           handle: platform.handle,
           url: platform.link,
-          followers: 0,
+          followers: platform.followers || 0,
         })),
         whatIDo: creatorData.whatIDo
           .filter((item: string) => item.trim())
@@ -512,19 +524,7 @@ export default function CreatorNewProfilePage() {
                 </Dialog>
               </div>
               <div className="flex-1 w-full pt-4 md:pt-0">
-                <div className="flex items-center justify-between w-full mb-4">
-                  <Input
-                    type="text"
-                    value={creatorData.followerInfo}
-                    onChange={(e) =>
-                      setCreatorData((prev) => ({
-                        ...prev,
-                        followerInfo: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., 320,000 Followers (TikTok)"
-                    className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
-                  />
+                <div className="flex justify-end w-full mb-4">
                   <Button
                     onClick={handleCreateProfile}
                     disabled={isLoading}
@@ -551,12 +551,6 @@ export default function CreatorNewProfilePage() {
                 >
                   Accounts & Metrics
                 </TabsTrigger>
-                {/* <TabsTrigger
-                  value="past-works"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  Past Works
-                </TabsTrigger> */}
               </TabsList>
 
               <TabsContent value="user-details" className="mt-6 space-y-8">
@@ -574,10 +568,6 @@ export default function CreatorNewProfilePage() {
               <TabsContent value="accounts-metrics" className="mt-6 space-y-8">
                 <AccountsMetricsTab />
               </TabsContent>
-
-              {/* <TabsContent value="past-works" className="mt-6 space-y-8">
-                <PastWorksTab />
-              </TabsContent> */}
             </Tabs>
           </div>
         </div>

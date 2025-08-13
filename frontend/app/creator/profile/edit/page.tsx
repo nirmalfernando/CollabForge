@@ -76,7 +76,7 @@ export default function CreatorEditProfilePage() {
     followerInfo: "",
     bio: "",
     details: [] as { type: string; value: string; icon: any }[],
-    platforms: [] as { icon: any; name: string; handle: string; link: string }[],
+    platforms: [] as { icon: any; name: string; handle: string; link: string; followers: number }[],
     whatIDo: [] as string[],
     myPeople: [] as string[],
     myContent: [] as string[],
@@ -119,6 +119,7 @@ export default function CreatorEditProfilePage() {
             name: p.platform,
             handle: p.handle,
             link: p.url,
+            followers: p.followers || 0,
           })) || [],
           whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
           myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
@@ -192,7 +193,7 @@ export default function CreatorEditProfilePage() {
           platform: platform.name,
           handle: platform.handle,
           url: platform.link,
-          followers: 0,
+          followers: platform.followers || 0,
         })),
         whatIDo: creatorData.whatIDo
           .filter((item) => item.trim())
@@ -571,19 +572,7 @@ export default function CreatorEditProfilePage() {
                 </Dialog>
               </div>
               <div className="flex-1 w-full pt-4 md:pt-0">
-                <div className="flex items-center justify-between w-full mb-4">
-                  <Input
-                    type="text"
-                    value={creatorData.followerInfo}
-                    onChange={(e) =>
-                      setCreatorData((prev) => ({
-                        ...prev,
-                        followerInfo: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., 320,000 Followers (TikTok)"
-                    className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
-                  />
+                <div className="flex justify-end w-full mb-4">
                   <Button
                     onClick={handleUpdateSettings}
                     disabled={isLoading}

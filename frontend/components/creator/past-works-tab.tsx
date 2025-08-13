@@ -254,8 +254,8 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pastWorks.map((work: any) => (
           <div key={work.id} className="relative">
-            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 overflow-hidden">
-              <div className="relative">
+            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 overflow-hidden h-[360px] flex flex-col">
+              <div className="relative flex-shrink-0">
                 <Image
                   src={work.thumbnail}
                   alt={work.title}
@@ -265,12 +265,14 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
               </div>
-              <CardContent className="p-4">
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+              <CardContent className="p-4 flex flex-col flex-grow">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
                   {work.title}
                 </h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{work.description}</p>
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[80px]">
+                  {work.description}
+                </div>
+                <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
                       <Eye className="h-4 w-4" />
@@ -302,8 +304,8 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
 
         <Dialog open={isAddingWork} onOpenChange={setIsAddingWork}>
           <DialogTrigger asChild>
-            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary">
-              <CardContent className="p-8 flex flex-col items-center justify-center h-64 text-center">
+            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[360px]">
+              <CardContent className="p-8 flex flex-col items-center justify-center h-full text-center">
                 <Plus className="h-12 w-12 text-muted-foreground group-hover:text-primary mb-4 transition-colors" />
                 <h3 className="font-medium text-lg mb-2 group-hover:text-primary transition-colors">
                   Add New Work
