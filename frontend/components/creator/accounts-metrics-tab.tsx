@@ -33,12 +33,12 @@ export default function AccountsMetricsTab() {
   const [followerInfo, setFollowerInfo] = useState("320,000 Followers (TikTok)");
 
   const socialPlatforms = [
-    { url: "https://img.icons8.com/?size=100&id=3tuajqTRBEqf&format=png&color=000000", name: "YouTube", color: "text-red-500" },
-    { url: "https://img.icons8.com/?size=100&id=EToCOnh3V4mw&format=png&color=000000", name: "Facebook", color: "text-blue-600" },
-    { url: "https://img.icons8.com/?size=100&id=7QPcOVZoGlmf&format=png&color=000000", name: "Instagram", color: "text-pink-500" },
-    { url: "https://img.icons8.com/?size=100&id=VGXl1VAFp8Xs&format=png&color=000000", name: "TikTok", color: "text-black" },
-    { url: "https://img.icons8.com/?size=100&id=8HtzWaaC5y60&format=png&color=000000", name: "Twitter", color: "text-blue-400" },
-    { url: "https://img.icons8.com/?size=100&id=F0VhNaQGnmzq&format=png&color=000000", name: "Twitch", color: "text-purple-500" },
+    { url: "https://img.icons8.com/?size=100&id=19318&format=png&color=000000", name: "YouTube", color: "text-red-500" },
+    { url: "https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000", name: "Facebook", color: "text-blue-600" },
+    { url: "https://img.icons8.com/?size=100&id=Xy10Jcu1L2Su&format=png&color=000000", name: "Instagram", color: "text-pink-500" },
+    { url: "https://img.icons8.com/?size=100&id=fdfLpA6fsXN2&format=png&color=000000", name: "TikTok", color: "text-black" },
+    { url: "https://img.icons8.com/?size=100&id=yoQabS8l0qpr&format=png&color=000000", name: "Twitter", color: "text-blue-400" },
+    { url: "https://img.icons8.com/?size=100&id=18103&format=png&color=000000", name: "Twitch", color: "text-purple-500" },
     { url: "https://play-lh.googleusercontent.com/vHm8BQc9VWIU9y6yFcbmTF2tw8kcj1qHleE_IJ_KLQ8E2hX9k0vGL39yUJWTzfgvDw", name: "Kick", color: "text-green-500" },
   ];
 
@@ -66,7 +66,7 @@ export default function AccountsMetricsTab() {
           {socialPlatforms.map((platform, index) => (
             <div
               key={index}
-              className="w-16 h-16 bg-white rounded-lg flex items-center justify-center hover:bg-muted/80 cursor-pointer transition-colors border"
+              className="w-16 h-16 bg-stone-300 rounded-lg flex items-center justify-center hover:bg-muted/80 cursor-pointer transition-colors border"
             >
               <img src={platform.url} alt={platform.name} className={`h-8 w-8 ${platform.color}`} />
             </div>
