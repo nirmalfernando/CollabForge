@@ -49,22 +49,20 @@ export default function CreatorNewProfilePage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
 
-  // Map social media platforms to icons, consistent with profile page
-  const platformIconMap: { [key: string]: any } = {
-    TikTok: Monitor,
-    Instagram: Instagram,
-    YouTube: Youtube,
-    Email: Mail,
-    Website: Globe,
+  const platformIconMap: { [key: string]: string } = {
+    TikTok: "Monitor",
+    Instagram: "Instagram",
+    YouTube: "Youtube",
+    Email: "Mail",
+    Website: "Globe",
   };
 
-  // Map details to icons, consistent with profile page
-  const detailsIconMap: { [key: string]: any } = {
-    Platform: Monitor,
-    Followers: Users,
-    "Based in": MapPin,
-    Vibe: Sparkles,
-    Custom: PlusCircle,
+  const detailsIconMap: { [key: string]: string } = {
+    Platform: "Monitor",
+    Followers: "Users",
+    "Based in": "MapPin",
+    Vibe: "Sparkles",
+    Custom: "PlusCircle",
   };
 
   const [creatorData, setCreatorData] = useState({
@@ -73,8 +71,8 @@ export default function CreatorNewProfilePage() {
     lastName: "",
     followerInfo: "",
     bio: "",
-    details: [] as { type: string; value: string; icon: any }[],
-    platforms: [] as { icon: any; name: string; handle: string; link: string; followers: number }[],
+    details: [] as { type: string; value: string; icon: string }[],
+    platforms: [] as { icon: string; name: string; handle: string; link: string; followers: number }[],
     whatIDo: [""],
     myPeople: [""],
     myContent: [""],
@@ -83,7 +81,6 @@ export default function CreatorNewProfilePage() {
     profilePicUrl: null as string | null,
   });
 
-  // Load categories on mount
   useEffect(() => {
     if (!authData || authData.user.role !== "influencer") {
       router.push("/login");
@@ -110,7 +107,6 @@ export default function CreatorNewProfilePage() {
     loadCategories();
   }, [router, authData]);
 
-  // Cleanup preview URLs
   useEffect(() => {
     return () => {
       if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
@@ -148,12 +144,14 @@ export default function CreatorNewProfilePage() {
         details: creatorData.details.map((detail) => ({
           label: detail.type,
           value: detail.value,
+          icon: detail.icon,
         })),
         socialMedia: creatorData.platforms.map((platform) => ({
           platform: platform.name,
           handle: platform.handle,
           url: platform.link,
           followers: platform.followers || 0,
+          icon: platform.icon,
         })),
         whatIDo: creatorData.whatIDo
           .filter((item: string) => item.trim())
@@ -358,7 +356,7 @@ export default function CreatorNewProfilePage() {
   };
 
   if (!authData || authData.user.role !== "influencer") {
-    return null; // Redirect handled in useEffect
+    return null;
   }
 
   return (

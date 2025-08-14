@@ -33,13 +33,13 @@ export default function AccountsMetricsTab() {
   const [followerInfo, setFollowerInfo] = useState("320,000 Followers (TikTok)");
 
   const socialPlatforms = [
-    { icon: Youtube, name: "YouTube", color: "text-red-500" },
-    { icon: Facebook, name: "Facebook", color: "text-blue-600" },
-    { icon: Instagram, name: "Instagram", color: "text-pink-500" },
-    { icon: TikTokIcon, name: "TikTok", color: "text-black" },
-    { icon: Twitter, name: "Twitter", color: "text-blue-400" },
-    { icon: Twitch, name: "Twitch", color: "text-purple-500" },
-    { icon: KickIcon, name: "Kick", color: "text-green-500" },
+    { url: "https://img.icons8.com/?size=100&id=3tuajqTRBEqf&format=png&color=000000", name: "YouTube", color: "text-red-500" },
+    { url: "https://img.icons8.com/?size=100&id=EToCOnh3V4mw&format=png&color=000000", name: "Facebook", color: "text-blue-600" },
+    { url: "https://img.icons8.com/?size=100&id=7QPcOVZoGlmf&format=png&color=000000", name: "Instagram", color: "text-pink-500" },
+    { url: "https://img.icons8.com/?size=100&id=VGXl1VAFp8Xs&format=png&color=000000", name: "TikTok", color: "text-black" },
+    { url: "https://img.icons8.com/?size=100&id=8HtzWaaC5y60&format=png&color=000000", name: "Twitter", color: "text-blue-400" },
+    { url: "https://img.icons8.com/?size=100&id=F0VhNaQGnmzq&format=png&color=000000", name: "Twitch", color: "text-purple-500" },
+    { url: "https://play-lh.googleusercontent.com/vHm8BQc9VWIU9y6yFcbmTF2tw8kcj1qHleE_IJ_KLQ8E2hX9k0vGL39yUJWTzfgvDw", name: "Kick", color: "text-green-500" },
   ];
 
   const trafficSources = [
@@ -57,7 +57,8 @@ export default function AccountsMetricsTab() {
       <div>
         <h2 className="text-2xl font-bold text-foreground mb-2">Add Accounts to Your Profile</h2>
         <p className="text-muted-foreground mb-6">
-          This information will not be shared outside of discord without your permission, and is used in accordance with Collab Forge.
+          This information will not be shared outside of discord without your permission, and is used in
+          accordance with Collab Forge.
         </p>
 
         {/* Social Media Platform Boxes */}
@@ -65,9 +66,9 @@ export default function AccountsMetricsTab() {
           {socialPlatforms.map((platform, index) => (
             <div
               key={index}
-              className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center hover:bg-muted/80 cursor-pointer transition-colors border"
+              className="w-16 h-16 bg-white rounded-lg flex items-center justify-center hover:bg-muted/80 cursor-pointer transition-colors border"
             >
-              <platform.icon className={`h-8 w-8 ${platform.color}`} />
+              <img src={platform.url} alt={platform.name} className={`h-8 w-8 ${platform.color}`} />
             </div>
           ))}
           <Button
@@ -141,17 +142,23 @@ export default function AccountsMetricsTab() {
           {/* Impressions Card */}
           <Card className="bg-card border">
             <CardContent className="p-6">
-              <h4 className="text-foreground font-semibold mb-4">Impressions and how they led to watch time</h4>
+              <h4 className="text-foreground font-semibold mb-4">
+                Impressions and how they led to watch time
+              </h4>
               <p className="text-xs text-muted-foreground mb-6">Last 28 days (28 Oct-24 Nov)</p>
 
               <div className="text-center mb-6">
                 <div className="text-3xl font-bold text-foreground mb-2">341</div>
                 <div className="text-sm text-muted-foreground mb-4">Impressions</div>
-                <div className="text-xs text-green-500 mb-2">+3.7% from YouTube recommending your content</div>
+                <div className="text-xs text-green-500 mb-2">
+                  +3.7% from YouTube recommending your content
+                </div>
                 <div className="text-xs text-muted-foreground mb-4">1.7% click-through rate</div>
                 <div className="text-xs text-muted-foreground mb-2">Views from impressions</div>
                 <div className="text-2xl font-bold text-foreground mb-4">6</div>
-                <div className="text-xs text-muted-foreground mb-2">Watch time from impressions (hours)</div>
+                <div className="text-xs text-muted-foreground mb-2">
+                  Watch time from impressions (hours)
+                </div>
                 <div className="text-xl font-bold text-foreground">0.08</div>
               </div>
             </CardContent>
@@ -186,7 +193,9 @@ export default function AccountsMetricsTab() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Progress value={source.percentage} className="w-24 h-2" />
-                    <span className="text-sm text-muted-foreground w-12 text-right">{source.percentage}%</span>
+                    <span className="text-sm text-muted-foreground w-12 text-right">
+                      {source.percentage}%
+                    </span>
                   </div>
                 </div>
               ))}
