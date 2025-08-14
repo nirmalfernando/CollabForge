@@ -105,13 +105,6 @@ export default function CreatorProfilePage() {
     );
   }
 
-  const totalFollowers =
-    creatorData.socialMedia?.reduce(
-      (sum: number, social: any) => sum + (social.followers || 0),
-      0
-    ) || 0;
-  const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "N/A";
-
   const formatFollowerCount = (count: number) => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -121,11 +114,8 @@ export default function CreatorProfilePage() {
     return count.toString();
   };
 
-  const creatorDetails = [
-    { icon: "Monitor", text: `Platform: ${primaryPlatform}` },
-    { icon: "Users", text: `Followers: ${formatFollowerCount(totalFollowers)}` },
-    { icon: "Sparkles", text: `Type: ${creatorData.type}` },
-  ];
+  // Build creator details without adding any data from socialMedia
+  const creatorDetails: { icon: string; text: string }[] = [];
 
   if (creatorData.details && creatorData.details.length > 0) {
     creatorData.details.forEach((detail: any) => {
@@ -135,6 +125,13 @@ export default function CreatorProfilePage() {
       });
     });
   }
+
+  const totalFollowers =
+    creatorData.socialMedia?.reduce(
+      (sum: number, social: any) => sum + (social.followers || 0),
+      0
+    ) || 0;
+  const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "N/A";
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">

@@ -1050,3 +1050,121 @@
 2025-08-08T14:00:44.830Z [CollabForge] info: Creator retrieved successfully for user
 2025-08-08T14:00:45.090Z [CollabForge] info: Creator retrieved successfully for user
 2025-08-08T14:09:39.829Z [CollabForge] info: User logged out successfully
+2025-08-14T11:15:04.824Z [CollabForge] info: User logged in successfully
+2025-08-14T11:15:07.691Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:07.916Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:08.424Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:08.776Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:16.809Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:16.865Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:17.127Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:17.133Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:18.089Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:18.222Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:38.942Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:39.235Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:39.241Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:15:39.878Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:39.880Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:15:39.975Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:15:39.977Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:15:40.171Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:19:15.613Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:19:16.369Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:19:16.379Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:19:16.954Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:19:18.311Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:19:21.093Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:27:55.525Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:55.531Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:27:55.541Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:55.561Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:27:55.577Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:55.607Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:59.469Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:59.472Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:59.479Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:28:15.480Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:28:15.497Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:28:15.734Z [CollabForge] info: All active creators retrieved successfully
+2025-08-14T11:28:15.768Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:28:18.328Z [CollabForge] info: All active creators retrieved successfully
+2025-08-14T11:29:33.984Z [CollabForge] error: Error during getting creator details
+2025-08-14T11:29:33.989Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.405Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.416Z [CollabForge] error: Error during getting creator details
+2025-08-14T11:29:45.423Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.439Z [CollabForge] error: Error during getting creator details
+2025-08-14T11:29:57.749Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:29:57.781Z [CollabForge] info: Creator details retrieved successfully
+2025-08-14T11:29:58.198Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:29:58.216Z [CollabForge] info: Category retrieved successfully
+2025-08-14T11:31:11.454Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:31:11.460Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:31:11.491Z [CollabForge] info: All active creators retrieved successfully
+2025-08-14T11:31:11.633Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:31:11.635Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:31:11.651Z [CollabForge] info: All active creators retrieved successfully
+2025-08-14T11:31:11.728Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:31:12.130Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:31:12.138Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:31:12.283Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:31:12.288Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:31:12.584Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:31:12.744Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:31:12.945Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:32:44.750Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:32:45.012Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:32:45.108Z [CollabForge] info: User details retrieved successfully
+2025-08-14T11:32:45.567Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:32:46.147Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:32:47.256Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T11:32:47.310Z [CollabForge] info: Categories retrieved successfully
+2025-08-14T11:32:49.965Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:12.663Z [CollabForge] info: User logged in successfully
+2025-08-14T12:16:13.136Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:16:13.263Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:16:13.360Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:13.477Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:28.940Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:28.941Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:16:29.042Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:29.142Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:16:29.235Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:16:29.335Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:21:44.541Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:21:44.544Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:21:44.701Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:22:17.631Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:22:17.778Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:22:18.070Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:30:15.295Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-14T12:30:15.297Z [CollabForge] info: User details retrieved successfully
+2025-08-14T12:30:15.459Z [CollabForge] info: Creator retrieved successfully for user

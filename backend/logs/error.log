@@ -71,3 +71,45 @@
 2025-08-13T12:48:09.567Z [CollabForge] error: Validation errors during get creator by user ID
 2025-08-13T18:04:49.442Z [CollabForge] error: Validation errors during user registration
 2025-08-13T18:05:28.216Z [CollabForge] error: Error during user login
+2025-08-14T11:27:55.525Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:55.531Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:27:55.541Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:55.561Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:27:55.577Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:55.607Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:59.469Z [CollabForge] error: Error during getting user details
+2025-08-14T11:27:59.472Z [CollabForge] error: SequelizeHostNotFoundError: getaddrinfo ENOTFOUND aws-0-ap-southeast-1.pooler.supabase.com
+    at Client._connectionCallback (F:\Project backup\next js\CollabForge\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:136:24)
+    at Client._handleErrorWhileConnecting (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (F:\Project backup\next js\CollabForge\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-08-14T11:27:59.479Z [CollabForge] error: Error during getting all creators
+2025-08-14T11:29:33.984Z [CollabForge] error: Error during getting creator details
+2025-08-14T11:29:33.989Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.405Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.416Z [CollabForge] error: Error during getting creator details
+2025-08-14T11:29:45.423Z [CollabForge] error: Error during getting user details
+2025-08-14T11:29:45.439Z [CollabForge] error: Error during getting creator details

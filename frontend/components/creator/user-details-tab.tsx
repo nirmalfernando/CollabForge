@@ -106,14 +106,18 @@ export default function UserDetailsTab({
 
   const handleAddDetail = () => {
     if (newDetail.value.trim()) {
-      const iconName = detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon;
+      const iconName =
+        detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon;
       setCreatorData((prev: any) => ({
         ...prev,
-        details: [...prev.details, { 
-          type: newDetail.type, 
-          value: newDetail.value, 
-          icon: iconName 
-        }],
+        details: [
+          ...prev.details,
+          {
+            type: newDetail.type,
+            value: newDetail.value,
+            icon: iconName,
+          },
+        ],
       }));
       setNewDetail({ type: "Custom", value: "" });
       setIsAddingDetail(false);
@@ -126,7 +130,13 @@ export default function UserDetailsTab({
 
   const handleOpenAddPlatform = () => {
     setEditingIndex(-1);
-    setCurrentPlatform({ icon: "Monitor", name: "", handle: "", link: "", followers: "" });
+    setCurrentPlatform({
+      icon: "Monitor",
+      name: "",
+      handle: "",
+      link: "",
+      followers: "",
+    });
     setIsPlatformDialogOpen(true);
   };
 
@@ -154,7 +164,7 @@ export default function UserDetailsTab({
         });
         return;
       }
-      
+
       const updatedPlatform = {
         icon: currentPlatform.icon,
         name: currentPlatform.name,
@@ -162,17 +172,22 @@ export default function UserDetailsTab({
         link: currentPlatform.link || "#",
         followers: followersCount,
       };
-      
+
       setCreatorData((prev: any) => ({
         ...prev,
-        platforms: editingIndex === -1
-          ? [...prev.platforms, updatedPlatform]
-          : prev.platforms.map((p: any, i: number) => i === editingIndex ? updatedPlatform : p),
+        platforms:
+          editingIndex === -1
+            ? [...prev.platforms, updatedPlatform]
+            : prev.platforms.map((p: any, i: number) =>
+                i === editingIndex ? updatedPlatform : p
+              ),
       }));
       setIsPlatformDialogOpen(false);
       toast({
         title: editingIndex === -1 ? "Platform Added" : "Platform Updated",
-        description: `Your platform has been ${editingIndex === -1 ? "added" : "updated"} successfully.`,
+        description: `Your platform has been ${
+          editingIndex === -1 ? "added" : "updated"
+        } successfully.`,
       });
     } else {
       toast({
@@ -208,7 +223,7 @@ export default function UserDetailsTab({
   return (
     <>
       <div>
-        <div className="flex flex-wrap items-center gap-2 mb-4">
+        <div className="flex flex-row items-center gap-2 mb-4 w-full">
           <Input
             type="text"
             value={creatorData.name}
@@ -219,9 +234,9 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="First Name"
-            className="flex-1 min-w-[100px] bg-muted border-none text-foreground text-4xl md:text-5xl font-bold p-2"
+            className="flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
           />
-          <span className="text-primary text-4xl md:text-5xl font-bold">&quot;</span>
+          <span className="text-primary text-2xl md:text-3xl font-bold">"</span>
           <Input
             type="text"
             value={creatorData.nickname}
@@ -232,9 +247,9 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="Nickname"
-            className="flex-1 min-w-[100px] bg-muted border-none text-primary text-4xl md:text-5xl font-bold p-2"
+            className="flex-1 min-w-[100px] bg-muted border-none text-primary text-2xl md:text-3xl font-bold p-2"
           />
-          <span className="text-primary text-4xl md:text-5xl font-bold">&quot;</span>
+          <span className="text-primary text-2xl md:text-3xl font-bold">"</span>
           <Input
             type="text"
             value={creatorData.lastName}
@@ -245,7 +260,7 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="Last Name"
-            className="flex-1 min-w-[100px] bg-muted border-none text-foreground text-4xl md:text-5xl font-bold p-2"
+            className="flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
           />
         </div>
         <Label htmlFor="bio" className="text-lg font-semibold mb-2 block">
@@ -267,7 +282,10 @@ export default function UserDetailsTab({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="category" className="text-lg font-semibold mb-2 block">
+          <Label
+            htmlFor="category"
+            className="text-lg font-semibold mb-2 block"
+          >
             Category/Niche *
           </Label>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -276,7 +294,11 @@ export default function UserDetailsTab({
             </SelectTrigger>
             <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
               {categories.map((category) => (
-                <SelectItem key={category.categoryId} value={category.categoryId} className="hover:bg-primary/20">
+                <SelectItem
+                  key={category.categoryId}
+                  value={category.categoryId}
+                  className="hover:bg-primary/20"
+                >
                   {category.categoryName}
                 </SelectItem>
               ))}
@@ -284,16 +306,26 @@ export default function UserDetailsTab({
           </Select>
         </div>
         <div>
-          <Label htmlFor="creator-type" className="text-lg font-semibold mb-2 block">
+          <Label
+            htmlFor="creator-type"
+            className="text-lg font-semibold mb-2 block"
+          >
             Creator Type *
           </Label>
-          <Select value={selectedCreatorType} onValueChange={setSelectedCreatorType}>
+          <Select
+            value={selectedCreatorType}
+            onValueChange={setSelectedCreatorType}
+          >
             <SelectTrigger className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
               <SelectValue placeholder="Select your creator type" />
             </SelectTrigger>
             <SelectContent className="bg-card text-foreground max-h-60 overflow-y-auto">
               {creatorTypeOptions.map((type) => (
-                <SelectItem key={type.id} value={type.id} className="hover:bg-primary/20">
+                <SelectItem
+                  key={type.id}
+                  value={type.id}
+                  className="hover:bg-primary/20"
+                >
                   {type.name}
                 </SelectItem>
               ))}
@@ -310,19 +342,28 @@ export default function UserDetailsTab({
           <Switch id="contacts-toggle" defaultChecked />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="display-activities-toggle" className="text-lg font-semibold">
+          <Label
+            htmlFor="display-activities-toggle"
+            className="text-lg font-semibold"
+          >
             Display In App Activities
           </Label>
           <Switch id="display-activities-toggle" defaultChecked />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="public-availability-toggle" className="text-lg font-semibold">
+          <Label
+            htmlFor="public-availability-toggle"
+            className="text-lg font-semibold"
+          >
             Public Availability
           </Label>
           <Switch id="public-availability-toggle" defaultChecked />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="notifications-toggle" className="text-lg font-semibold">
+          <Label
+            htmlFor="notifications-toggle"
+            className="text-lg font-semibold"
+          >
             Notifications
           </Label>
           <Switch id="notifications-toggle" defaultChecked />
@@ -368,14 +409,20 @@ export default function UserDetailsTab({
 
         <Dialog open={isAddingDetail} onOpenChange={setIsAddingDetail}>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80">
+            <Button
+              variant="ghost"
+              className="mt-4 text-primary hover:text-primary/80"
+            >
               <PlusCircle className="h-5 w-5 mr-2" /> Add New Detail
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
             <DialogHeader>
               <DialogTitle>Add New Detail</DialogTitle>
-              <DialogDescription>Add a new detail to your profile. Choose a type and enter the text.</DialogDescription>
+              <DialogDescription>
+                Add a new detail to your profile. Choose a type and enter the
+                text.
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
@@ -384,7 +431,13 @@ export default function UserDetailsTab({
                 </Label>
                 <Select
                   value={newDetail.type}
-                  onValueChange={(value) => setNewDetail((prev) => ({ ...prev, type: value, value: "" }))}
+                  onValueChange={(value) =>
+                    setNewDetail((prev) => ({
+                      ...prev,
+                      type: value,
+                      value: "",
+                    }))
+                  }
                 >
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Select detail type" />
@@ -405,9 +458,14 @@ export default function UserDetailsTab({
                 <Input
                   id="detail-value"
                   value={newDetail.value}
-                  onChange={(e) => setNewDetail((prev) => ({ ...prev, value: e.target.value }))}
+                  onChange={(e) =>
+                    setNewDetail((prev) => ({ ...prev, value: e.target.value }))
+                  }
                   className="col-span-3"
-                  placeholder={detailTypeMap[newDetail.type as keyof typeof detailTypeMap].placeholder}
+                  placeholder={
+                    detailTypeMap[newDetail.type as keyof typeof detailTypeMap]
+                      .placeholder
+                  }
                 />
               </div>
             </div>
@@ -441,7 +499,11 @@ export default function UserDetailsTab({
                 >
                   {`${platform.name} - ${platform.handle} (${platform.followers} followers)`}
                 </div>
-                <Link href={platform.link} className="text-primary hover:underline" prefetch={false}>
+                <Link
+                  href={platform.link}
+                  className="text-primary hover:underline"
+                  prefetch={false}
+                >
                   View
                 </Link>
                 <Button
@@ -457,17 +519,28 @@ export default function UserDetailsTab({
           })}
         </ul>
 
-        <Dialog open={isPlatformDialogOpen} onOpenChange={setIsPlatformDialogOpen}>
+        <Dialog
+          open={isPlatformDialogOpen}
+          onOpenChange={setIsPlatformDialogOpen}
+        >
           <DialogTrigger asChild>
-            <Button variant="ghost" className="mt-4 text-primary hover:text-primary/80" onClick={handleOpenAddPlatform}>
+            <Button
+              variant="ghost"
+              className="mt-4 text-primary hover:text-primary/80"
+              onClick={handleOpenAddPlatform}
+            >
               <PlusCircle className="h-5 w-5 mr-2" /> Add New Platform
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
             <DialogHeader>
-              <DialogTitle>{editingIndex === -1 ? "Add New Platform" : "Edit Platform"}</DialogTitle>
+              <DialogTitle>
+                {editingIndex === -1 ? "Add New Platform" : "Edit Platform"}
+              </DialogTitle>
               <DialogDescription>
-                {editingIndex === -1 ? "Add a new social media platform to your profile." : "Edit the social media platform details."}
+                {editingIndex === -1
+                  ? "Add a new social media platform to your profile."
+                  : "Edit the social media platform details."}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -477,7 +550,9 @@ export default function UserDetailsTab({
                 </Label>
                 <Select
                   value={currentPlatform.icon}
-                  onValueChange={(value) => setCurrentPlatform((prev) => ({ ...prev, icon: value }))}
+                  onValueChange={(value) =>
+                    setCurrentPlatform((prev) => ({ ...prev, icon: value }))
+                  }
                 >
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Select an icon" />
@@ -498,7 +573,12 @@ export default function UserDetailsTab({
                 <Input
                   id="platform-name"
                   value={currentPlatform.name}
-                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setCurrentPlatform((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
                   className="col-span-3"
                   placeholder="Platform name"
                 />
@@ -510,7 +590,12 @@ export default function UserDetailsTab({
                 <Input
                   id="platform-handle"
                   value={currentPlatform.handle}
-                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, handle: e.target.value }))}
+                  onChange={(e) =>
+                    setCurrentPlatform((prev) => ({
+                      ...prev,
+                      handle: e.target.value,
+                    }))
+                  }
                   className="col-span-3"
                   placeholder="Platform handle (e.g., @johndoe)"
                 />
@@ -523,7 +608,12 @@ export default function UserDetailsTab({
                   id="platform-followers"
                   type="number"
                   value={currentPlatform.followers}
-                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, followers: e.target.value }))}
+                  onChange={(e) =>
+                    setCurrentPlatform((prev) => ({
+                      ...prev,
+                      followers: e.target.value,
+                    }))
+                  }
                   className="col-span-3"
                   placeholder="Number of followers (e.g., 10000)"
                 />
@@ -535,7 +625,12 @@ export default function UserDetailsTab({
                 <Input
                   id="platform-link"
                   value={currentPlatform.link}
-                  onChange={(e) => setCurrentPlatform((prev) => ({ ...prev, link: e.target.value }))}
+                  onChange={(e) =>
+                    setCurrentPlatform((prev) => ({
+                      ...prev,
+                      link: e.target.value,
+                    }))
+                  }
                   className="col-span-3"
                   placeholder="Link to profile (optional)"
                 />
@@ -583,7 +678,9 @@ export default function UserDetailsTab({
               onClick={() =>
                 setCreatorData((prev: any) => ({
                   ...prev,
-                  whatIDo: prev.whatIDo.filter((_: any, i: number) => i !== index),
+                  whatIDo: prev.whatIDo.filter(
+                    (_: any, i: number) => i !== index
+                  ),
                 }))
               }
               className="text-red-500 hover:text-red-700"
@@ -632,7 +729,9 @@ export default function UserDetailsTab({
               onClick={() =>
                 setCreatorData((prev: any) => ({
                   ...prev,
-                  myPeople: prev.myPeople.filter((_: any, i: number) => i !== index),
+                  myPeople: prev.myPeople.filter(
+                    (_: any, i: number) => i !== index
+                  ),
                 }))
               }
               className="text-red-500 hover:text-red-700"
@@ -681,7 +780,9 @@ export default function UserDetailsTab({
               onClick={() =>
                 setCreatorData((prev: any) => ({
                   ...prev,
-                  myContent: prev.myContent.filter((_: any, i: number) => i !== index),
+                  myContent: prev.myContent.filter(
+                    (_: any, i: number) => i !== index
+                  ),
                 }))
               }
               className="text-red-500 hover:text-red-700"
@@ -730,7 +831,9 @@ export default function UserDetailsTab({
               onClick={() =>
                 setCreatorData((prev: any) => ({
                   ...prev,
-                  workedWith: prev.workedWith.filter((_: any, i: number) => i !== index),
+                  workedWith: prev.workedWith.filter(
+                    (_: any, i: number) => i !== index
+                  ),
                 }))
               }
               className="text-red-500 hover:text-red-700"
