@@ -51,22 +51,20 @@ export default function CreatorEditProfilePage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
 
-  // Map social media platforms to icons, consistent with profile page
-  const platformIconMap: { [key: string]: any } = {
-    TikTok: Monitor,
-    Instagram: Instagram,
-    YouTube: Youtube,
-    Email: Mail,
-    Website: Globe,
+  const platformIconMap: { [key: string]: string } = {
+    TikTok: "Monitor",
+    Instagram: "Instagram",
+    YouTube: "Youtube",
+    Email: "Mail",
+    Website: "Globe",
   };
 
-  // Map details to icons, consistent with profile page
-  const detailsIconMap: { [key: string]: any } = {
-    Platform: Monitor,
-    Followers: Users,
-    "Based in": MapPin,
-    Vibe: Sparkles,
-    Custom: PlusCircle,
+  const detailsIconMap: { [key: string]: string } = {
+    Platform: "Monitor",
+    Followers: "Users",
+    "Based in": "MapPin",
+    Vibe: "Sparkles",
+    Custom: "PlusCircle",
   };
 
   const [creatorData, setCreatorData] = useState({
@@ -75,8 +73,8 @@ export default function CreatorEditProfilePage() {
     lastName: "",
     followerInfo: "",
     bio: "",
-    details: [] as { type: string; value: string; icon: any }[],
-    platforms: [] as { icon: any; name: string; handle: string; link: string; followers: number }[],
+    details: [] as { type: string; value: string; icon: string }[],
+    platforms: [] as { icon: string; name: string; handle: string; link: string; followers: number }[],
     whatIDo: [] as string[],
     myPeople: [] as string[],
     myContent: [] as string[],
@@ -100,7 +98,6 @@ export default function CreatorEditProfilePage() {
         const profile = await creatorApi.getCreatorByUserId(auth.user.userId);
         setCreatorId(profile.creatorId);
 
-        // Transform data to match profile page structure
         setCreatorData({
           name: profile.firstName || "",
           nickname: profile.nickName || "",
@@ -112,10 +109,10 @@ export default function CreatorEditProfilePage() {
           details: profile.details?.map((d: any) => ({
             type: d.label,
             value: d.value,
-            icon: detailsIconMap[d.label] || PlusCircle,
+            icon: d.icon || detailsIconMap[d.label] || "PlusCircle",
           })) || [],
           platforms: profile.socialMedia?.map((p: any) => ({
-            icon: platformIconMap[p.platform] || Monitor,
+            icon: p.icon || platformIconMap[p.platform] || "Monitor",
             name: p.platform,
             handle: p.handle,
             link: p.url,
@@ -188,12 +185,14 @@ export default function CreatorEditProfilePage() {
         details: creatorData.details.map((detail) => ({
           label: detail.type,
           value: detail.value,
+          icon: detail.icon,
         })),
         socialMedia: creatorData.platforms.map((platform) => ({
           platform: platform.name,
           handle: platform.handle,
           url: platform.link,
           followers: platform.followers || 0,
+          icon: platform.icon,
         })),
         whatIDo: creatorData.whatIDo
           .filter((item) => item.trim())

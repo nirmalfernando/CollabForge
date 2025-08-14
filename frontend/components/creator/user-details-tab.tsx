@@ -49,6 +49,18 @@ interface UserDetailsTabProps {
   setSelectedCreatorType: React.Dispatch<React.SetStateAction<string>>;
 }
 
+const iconComponents: { [key: string]: any } = {
+  Monitor,
+  Instagram,
+  Youtube,
+  Mail,
+  Globe,
+  Users,
+  MapPin,
+  Sparkles,
+  PlusCircle,
+};
+
 export default function UserDetailsTab({
   creatorData,
   setCreatorData,
@@ -77,36 +89,31 @@ export default function UserDetailsTab({
   ];
 
   const detailTypeMap = {
-    Platform: { icon: Monitor, placeholder: "e.g., TikTok" },
-    Followers: { icon: Users, placeholder: "e.g., 320,000 strong" },
-    "Based in": { icon: MapPin, placeholder: "e.g., Austin, TX" },
-    Vibe: { icon: Sparkles, placeholder: "e.g., Bill Nye meets highlighter" },
-    Custom: { icon: PlusCircle, placeholder: "Enter custom detail" },
+    Platform: { icon: "Monitor", placeholder: "e.g., TikTok" },
+    Followers: { icon: "Users", placeholder: "e.g., 320,000 strong" },
+    "Based in": { icon: "MapPin", placeholder: "e.g., Austin, TX" },
+    Vibe: { icon: "Sparkles", placeholder: "e.g., Bill Nye meets highlighter" },
+    Custom: { icon: "PlusCircle", placeholder: "Enter custom detail" },
   };
 
-  const iconMap = {
-    Monitor,
-    Instagram,
-    Youtube,
-    Mail,
-    Globe,
-  };
-
-  const getIconKey = (iconComponent: any) => {
-    for (const [key, value] of Object.entries(iconMap)) {
-      if (value === iconComponent) {
-        return key;
-      }
-    }
-    return "Monitor"; // default
-  };
+  const platformIconOptions = [
+    { value: "Monitor", label: "TikTok" },
+    { value: "Instagram", label: "Instagram" },
+    { value: "Youtube", label: "YouTube" },
+    { value: "Mail", label: "Email" },
+    { value: "Globe", label: "Website" },
+  ];
 
   const handleAddDetail = () => {
     if (newDetail.value.trim()) {
-      const IconComponent = detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon;
+      const iconName = detailTypeMap[newDetail.type as keyof typeof detailTypeMap].icon;
       setCreatorData((prev: any) => ({
         ...prev,
-        details: [...prev.details, { type: newDetail.type, value: newDetail.value, icon: IconComponent }],
+        details: [...prev.details, { 
+          type: newDetail.type, 
+          value: newDetail.value, 
+          icon: iconName 
+        }],
       }));
       setNewDetail({ type: "Custom", value: "" });
       setIsAddingDetail(false);
@@ -125,10 +132,9 @@ export default function UserDetailsTab({
 
   const handleOpenEditPlatform = (index: number) => {
     const platform = creatorData.platforms[index];
-    const iconKey = getIconKey(platform.icon);
     setEditingIndex(index);
     setCurrentPlatform({
-      icon: iconKey,
+      icon: platform.icon,
       name: platform.name,
       handle: platform.handle,
       link: platform.link,
@@ -148,14 +154,15 @@ export default function UserDetailsTab({
         });
         return;
       }
-      const IconComponent = iconMap[currentPlatform.icon as keyof typeof iconMap];
+      
       const updatedPlatform = {
-        icon: IconComponent,
+        icon: currentPlatform.icon,
         name: currentPlatform.name,
         handle: currentPlatform.handle,
         link: currentPlatform.link || "#",
         followers: followersCount,
       };
+      
       setCreatorData((prev: any) => ({
         ...prev,
         platforms: editingIndex === -1
@@ -326,7 +333,7 @@ export default function UserDetailsTab({
         <h3 className="text-xl font-semibold mb-2">Details:</h3>
         <ul className="space-y-2">
           {creatorData.details.map((detail: any, index: number) => {
-            const IconComponent = detail.icon || PlusCircle;
+            const IconComponent = iconComponents[detail.icon] || PlusCircle;
             return (
               <li key={index} className="flex items-center gap-2">
                 <IconComponent className="h-5 w-5 text-primary" />
@@ -423,28 +430,31 @@ export default function UserDetailsTab({
       <div>
         <h3 className="text-xl font-semibold mb-2">Official Platforms:</h3>
         <ul className="space-y-2">
-          {creatorData.platforms.map((platform: any, index: number) => (
-            <li key={index} className="flex items-center gap-2">
-              <platform.icon className="h-5 w-5 text-primary" />
-              <div
-                onClick={() => handleOpenEditPlatform(index)}
-                className="flex-1 bg-muted rounded-lg p-2 text-foreground cursor-pointer"
-              >
-                {`${platform.name} - ${platform.handle} (${platform.followers} followers)`}
-              </div>
-              <Link href={platform.link} className="text-primary hover:underline" prefetch={false}>
-                View
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => removePlatform(index)}
-                className="text-red-500 hover:text-red-700"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </li>
-          ))}
+          {creatorData.platforms.map((platform: any, index: number) => {
+            const IconComponent = iconComponents[platform.icon] || Monitor;
+            return (
+              <li key={index} className="flex items-center gap-2">
+                <IconComponent className="h-5 w-5 text-primary" />
+                <div
+                  onClick={() => handleOpenEditPlatform(index)}
+                  className="flex-1 bg-muted rounded-lg p-2 text-foreground cursor-pointer"
+                >
+                  {`${platform.name} - ${platform.handle} (${platform.followers} followers)`}
+                </div>
+                <Link href={platform.link} className="text-primary hover:underline" prefetch={false}>
+                  View
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removePlatform(index)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </li>
+            );
+          })}
         </ul>
 
         <Dialog open={isPlatformDialogOpen} onOpenChange={setIsPlatformDialogOpen}>
@@ -473,11 +483,11 @@ export default function UserDetailsTab({
                     <SelectValue placeholder="Select an icon" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Monitor">TikTok</SelectItem>
-                    <SelectItem value="Instagram">Instagram</SelectItem>
-                    <SelectItem value="Youtube">YouTube</SelectItem>
-                    <SelectItem value="Mail">Email</SelectItem>
-                    <SelectItem value="Globe">Website</SelectItem>
+                    {platformIconOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

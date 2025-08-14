@@ -31,6 +31,18 @@ import { toast } from "@/hooks/use-toast";
 import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/past-works-tab";
 
+const iconComponents: { [key: string]: any } = {
+  Monitor,
+  Instagram,
+  Youtube,
+  Mail,
+  Globe,
+  Users,
+  MapPin,
+  Sparkles,
+  PlusCircle,
+};
+
 export default function CreatorProfilePage() {
   const router = useRouter();
   const [creatorData, setCreatorData] = useState<any>(null);
@@ -93,53 +105,6 @@ export default function CreatorProfilePage() {
     );
   }
 
-  // Map social media platforms to icons
-  const platformIconMap: { [key: string]: any } = {
-    TikTok: Monitor,
-    Instagram: Instagram,
-    YouTube: Youtube,
-    Email: Mail,
-    Website: Globe,
-  };
-
-  const detailsIconMap: { [key: string]: any } = {
-    Platform: Monitor,
-    Followers: Users,
-    "Based in": MapPin,
-    Vibe: Sparkles,
-    Custom: PlusCircle,
-  };
-
-  // Transform data for tabs
-  const transformedCreatorData = {
-    name: creatorData.firstName || "",
-    nickname: creatorData.nickName || "",
-    lastName: creatorData.lastName || "",
-    followerInfo: creatorData.socialMedia?.[0]?.followers
-      ? `${creatorData.socialMedia[0].followers} Followers (${creatorData.socialMedia[0].platform})`
-      : "",
-    bio: creatorData.bio || "",
-    details: creatorData.details?.map((d: any) => ({
-      type: d.label,
-      value: d.value,
-      icon: detailsIconMap[d.label] || PlusCircle,
-    })) || [],
-    platforms: creatorData.socialMedia?.map((p: any) => ({
-      icon: platformIconMap[p.platform] || Monitor,
-      name: p.platform,
-      handle: p.handle,
-      link: p.url,
-    })) || [],
-    whatIDo: creatorData.whatIDo?.map((item: any) => item.activity) || [],
-    myPeople: creatorData.myPeople?.map((item: any) => item.name) || [],
-    myContent: creatorData.myContent?.map((item: any) => item.title) || [],
-    workedWith: creatorData.pastCollaborations?.map((item: any) => item.brand) || [],
-    bannerImageUrl: creatorData.backgroundImgUrl || null,
-    profilePicUrl: creatorData.profilePicUrl || null,
-    pastCollaborations: creatorData.pastCollaborations || [],
-  };
-
-  // Calculate total followers
   const totalFollowers =
     creatorData.socialMedia?.reduce(
       (sum: number, social: any) => sum + (social.followers || 0),
@@ -147,7 +112,6 @@ export default function CreatorProfilePage() {
     ) || 0;
   const primaryPlatform = creatorData.socialMedia?.[0]?.platform || "N/A";
 
-  // Format follower count
   const formatFollowerCount = (count: number) => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -157,18 +121,16 @@ export default function CreatorProfilePage() {
     return count.toString();
   };
 
-  // Prepare details array
   const creatorDetails = [
-    { icon: Monitor, text: `Platform: ${primaryPlatform}` },
-    { icon: Users, text: `Followers: ${formatFollowerCount(totalFollowers)}` },
-    { icon: Sparkles, text: `Type: ${creatorData.type}` },
+    { icon: "Monitor", text: `Platform: ${primaryPlatform}` },
+    { icon: "Users", text: `Followers: ${formatFollowerCount(totalFollowers)}` },
+    { icon: "Sparkles", text: `Type: ${creatorData.type}` },
   ];
 
-  // Add custom details from backend
   if (creatorData.details && creatorData.details.length > 0) {
     creatorData.details.forEach((detail: any) => {
       creatorDetails.push({
-        icon: MapPin, // Default icon
+        icon: detail.icon || "MapPin",
         text: `${detail.label}: ${detail.value}`,
       });
     });
@@ -179,7 +141,6 @@ export default function CreatorProfilePage() {
       <Header isLoggedIn={true} userRole="influencer" />
 
       <main className="flex-1">
-        {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
           <Image
             src={
@@ -194,10 +155,8 @@ export default function CreatorProfilePage() {
           <div className="absolute inset-0 bg-black/20 z-5"></div>
         </section>
 
-        {/* Main content area */}
         <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
-            {/* Top section with Avatar, Stats, and Buttons */}
             <div className="flex flex-col md:flex-row items-start gap-6 relative -mt-16 z-10">
               <div className="flex-shrink-0">
                 <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-background shadow-xl bg-background">
@@ -237,7 +196,6 @@ export default function CreatorProfilePage() {
               </div>
             </div>
 
-            {/* Tabs Section */}
             <div className="mt-8">
               <Tabs defaultValue="user-details" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 bg-muted text-foreground mb-8">
@@ -262,7 +220,6 @@ export default function CreatorProfilePage() {
                 </TabsList>
 
                 <TabsContent value="user-details" className="space-y-8">
-                  {/* Name Section */}
                   <h1 className="text-3xl md:text-5xl font-bold">
                     {creatorData.firstName}
                     {creatorData.nickName && (
@@ -274,14 +231,12 @@ export default function CreatorProfilePage() {
                     {creatorData.lastName}
                   </h1>
 
-                  {/* Bio */}
                   {creatorData.bio && (
                     <p className="text-lg leading-relaxed whitespace-pre-line">
                       {creatorData.bio}
                     </p>
                   )}
 
-                  {/* Category and Type */}
                   <div className="flex flex-wrap gap-x-6 gap-y-2 text-lg">
                     {creatorData.category && (
                       <div className="flex items-center gap-2">
@@ -297,26 +252,27 @@ export default function CreatorProfilePage() {
                     )}
                   </div>
 
-                  {/* Creator Details */}
                   {creatorDetails.length > 0 && (
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold">Details:</h3>
-                      {creatorDetails.map((detail, index) => (
-                        <div key={index} className="flex items-center gap-3">
-                          <detail.icon className="h-5 w-5 text-primary flex-shrink-0" />
-                          <span className="text-lg">{detail.text}</span>
-                        </div>
-                      ))}
+                      {creatorDetails.map((detail, index) => {
+                        const IconComponent = iconComponents[detail.icon] || Monitor;
+                        return (
+                          <div key={index} className="flex items-center gap-3">
+                            <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                            <span className="text-lg">{detail.text}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
 
-                  {/* Official Platforms */}
                   {creatorData.socialMedia && creatorData.socialMedia.length > 0 && (
                     <div className="space-y-4">
                       <h3 className="text-xl font-semibold">Official Platforms:</h3>
                       <ul className="space-y-2 list-inside">
                         {creatorData.socialMedia.map((platform: any, index: number) => {
-                          const IconComponent = platformIconMap[platform.platform] || Monitor;
+                          const IconComponent = iconComponents[platform.icon] || Monitor;
                           return (
                             <li key={index} className="flex items-center gap-3">
                               <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
@@ -341,7 +297,6 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {/* What I Do Section */}
                   {creatorData.whatIDo && creatorData.whatIDo.length > 0 && (
                     <div className="space-y-4">
                       <h2 className="text-2xl md:text-3xl font-bold">
@@ -362,7 +317,6 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {/* My People Section */}
                   {creatorData.myPeople && creatorData.myPeople.length > 0 && (
                     <div className="space-y-4">
                       <h2 className="text-2xl md:text-3xl font-bold">
@@ -388,7 +342,6 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {/* My Content Section */}
                   {creatorData.myContent && creatorData.myContent.length > 0 && (
                     <div className="space-y-4">
                       <h2 className="text-2xl md:text-3xl font-bold">
@@ -420,7 +373,6 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {/* I've Worked With Section */}
                   {creatorData.pastCollaborations && creatorData.pastCollaborations.length > 0 && (
                     <div className="space-y-4">
                       <h2 className="text-2xl md:text-3xl font-bold">
@@ -451,8 +403,8 @@ export default function CreatorProfilePage() {
 
                 <TabsContent value="past-works">
                   <PastWorksTab
-                    creatorData={transformedCreatorData}
-                    setCreatorData={() => {}} // Read-only for profile view
+                    creatorData={creatorData}
+                    setCreatorData={() => {}}
                   />
                 </TabsContent>
               </Tabs>
@@ -460,7 +412,6 @@ export default function CreatorProfilePage() {
           </div>
         </div>
 
-        {/* Collabs Through Us Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted mt-16">
           <div className="container px-4 md:px-6 text-center">
             <h2 className="text-2xl md:text-4xl font-bold mb-8">
