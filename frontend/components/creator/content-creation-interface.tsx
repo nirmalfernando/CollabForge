@@ -73,7 +73,7 @@ export default function ContentCreationInterface({ onSave, onCancel, initialData
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Content Creation Area */}
           <div className="flex-1 overflow-auto p-6">
-            <Card className="h-full border-0 shadow-none">
+            <Card className="h-full border-0 shadow-none bg-white">
               <CardContent className="p-6 h-full">
                 {!selectedContentType ? (
                   <div className="h-full flex flex-col items-center justify-center">
@@ -109,7 +109,7 @@ export default function ContentCreationInterface({ onSave, onCancel, initialData
                         placeholder="Enter your work title..."
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="text-xl font-semibold border-0 border-b-2 border-[#c5c5c5] rounded-none px-0 focus:border-[#2196f3] bg-transparent"
+                        className="text-xl font-semibold border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                       />
                     </div>
 
@@ -119,7 +119,7 @@ export default function ContentCreationInterface({ onSave, onCancel, initialData
                         placeholder="Thumbnail URL (optional)"
                         value={thumbnail}
                         onChange={(e) => setThumbnail(e.target.value)}
-                        className="border border-[#c5c5c5] focus:border-[#2196f3]"
+                        className="border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                       />
                     </div>
 
@@ -140,25 +140,25 @@ export default function ContentCreationInterface({ onSave, onCancel, initialData
                           placeholder="Views (e.g., 2.1M)"
                           value={views}
                           onChange={(e) => setViews(e.target.value)}
-                          className="border border-[#c5c5c5] focus:border-[#2196f3]"
+                          className="border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                         />
                         <Input
                           placeholder="Likes (e.g., 45K)"
                           value={likes}
                           onChange={(e) => setLikes(e.target.value)}
-                          className="border border-[#c5c5c5] focus:border-[#2196f3]"
+                          className="border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                         />
                         <Input
                           placeholder="Comments (e.g., 1.2K)"
                           value={comments}
                           onChange={(e) => setComments(e.target.value)}
-                          className="border border-[#c5c5c5] focus:border-[#2196f3]"
+                          className="border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                         />
                         <Input
                           placeholder="Date (e.g., 2 weeks ago)"
                           value={date}
                           onChange={(e) => setDate(e.target.value)}
-                          className="border border-[#c5c5c5] focus:border-[#2196f3]"
+                          className="border-0 rounded-lg px-3 focus:ring-2 focus:ring-[#2196f3] bg-[#f5f5f5] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
