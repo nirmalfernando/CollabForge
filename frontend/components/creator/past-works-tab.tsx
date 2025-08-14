@@ -1,4 +1,3 @@
-// components/creator/past-works-tab.tsx
 "use client";
 
 import Image from "next/image";
@@ -18,7 +17,6 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
   const [showCreationModal, setShowCreationModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  // Sample past works data (replace with creatorData.pastCollaborations or API fetch in a real implementation)
   const pastWorks = creatorData.pastCollaborations?.map((collab: any, index: number) => ({
     id: index.toString(),
     title: collab.campaign || collab.brand || "Untitled Collaboration",
@@ -118,7 +116,7 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold mb-2">
@@ -153,7 +151,7 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
               </div>
               <CardContent className="p-4 flex flex-col flex-grow">
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
+                <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
                   {work.title}
                 </h3>
                 <div
@@ -211,7 +209,7 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
         >
           <CardContent className="p-8 flex flex-col items-center justify-center h-full text-center">
             <Plus className="h-12 w-12 text-muted-foreground group-hover:text-primary mb-4 transition-colors" />
-            <h3 className="font-medium text-lg mb-2 group-hover:text-primary transition-colors">
+            <h3 className="font-medium text-white text-lg mb-2 group-hover:text-primary transition-colors">
               Add New Work
             </h3>
             <p className="text-muted-foreground text-sm">Share your latest collaboration or project</p>

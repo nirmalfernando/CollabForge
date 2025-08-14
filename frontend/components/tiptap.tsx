@@ -85,7 +85,7 @@ export default function RichTextEditor({
   }
 
   return (
-    <div className="border border-[#c5c5c5] rounded-lg overflow-hidden bg-white">
+    <div className="border border-[#c5c5c5] rounded-lg overflow-hidden bg-white h-full flex flex-col">
       {/* Toolbar */}
       <div className="border-b border-[#c5c5c5] p-3 bg-[#f5f5f5] flex flex-wrap gap-1">
         <Button
@@ -262,8 +262,11 @@ export default function RichTextEditor({
       )}
 
       {/* Editor Content */}
-      <div className="min-h-[400px] p-4">
-        <EditorContent editor={editor} className="prose prose-sm max-w-none focus:outline-none" />
+      <div className="flex-1 overflow-auto p-4">
+        <EditorContent 
+          editor={editor} 
+          className="prose prose-sm max-w-none focus:outline-none h-full" 
+        />
       </div>
     </div>
   )
