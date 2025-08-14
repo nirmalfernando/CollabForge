@@ -1,24 +1,13 @@
+// components/creator/past-works-tab.tsx
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Eye, Heart, MessageCircle, X } from "lucide-react";
-import { Label } from "@radix-ui/react-label";
+import { Plus, Eye, Heart, MessageCircle, X, Pencil } from "lucide-react";
+import ContentCreationInterface from "@/components/creator/content-creation-interface";
 
 interface PastWorksTabProps {
   creatorData: any;
@@ -26,16 +15,8 @@ interface PastWorksTabProps {
 }
 
 export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksTabProps) {
-  const [isAddingWork, setIsAddingWork] = useState(false);
-  const [newWork, setNewWork] = useState({
-    title: "",
-    description: "",
-    thumbnail: "",
-    views: "",
-    likes: "",
-    comments: "",
-    date: "",
-  });
+  const [showCreationModal, setShowCreationModal] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   // Sample past works data (replace with creatorData.pastCollaborations or API fetch in a real implementation)
   const pastWorks = creatorData.pastCollaborations?.map((collab: any, index: number) => ({
@@ -80,45 +61,49 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
     },
   ];
 
-  const handleAddWork = () => {
-    if (newWork.title.trim() && newWork.description.trim()) {
+  const handleSaveWork = (data: {
+    title: string;
+    content: string;
+    thumbnail?: string;
+    contentType: string;
+    views: string;
+    likes: string;
+    comments: string;
+    date: string;
+  }) => {
+    const newCollab = {
+      brand: data.title,
+      campaign: data.title,
+      description: data.content,
+      thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=300",
+      views: data.views || "0",
+      likes: data.likes || "0",
+      comments: data.comments || "0",
+      date: data.date || new Date().toISOString().split("T")[0],
+    };
+
+    if (editingIndex !== null) {
+      setCreatorData((prev: any) => {
+        const updated = [...prev.pastCollaborations];
+        updated[editingIndex] = newCollab;
+        return { ...prev, pastCollaborations: updated };
+      });
+      toast({
+        title: "Collaboration Updated",
+        description: "Your collaboration has been updated successfully.",
+      });
+    } else {
       setCreatorData((prev: any) => ({
         ...prev,
-        pastCollaborations: [
-          ...prev.pastCollaborations,
-          {
-            brand: newWork.title,
-            campaign: newWork.title,
-            description: newWork.description,
-            thumbnail: newWork.thumbnail || "/placeholder.svg?height=200&width=300",
-            views: newWork.views || "0",
-            likes: newWork.likes || "0",
-            comments: newWork.comments || "0",
-            date: newWork.date || new Date().toISOString().split("T")[0],
-          },
-        ],
+        pastCollaborations: [...prev.pastCollaborations, newCollab],
       }));
-      setNewWork({
-        title: "",
-        description: "",
-        thumbnail: "",
-        views: "",
-        likes: "",
-        comments: "",
-        date: "",
-      });
-      setIsAddingWork(false);
       toast({
         title: "Collaboration Added",
         description: "Your new collaboration has been added successfully.",
       });
-    } else {
-      toast({
-        title: "Missing Information",
-        description: "Please provide at least a title and description.",
-        variant: "destructive",
-      });
     }
+    setShowCreationModal(false);
+    setEditingIndex(null);
   };
 
   const handleRemoveWork = (index: number) => {
@@ -141,118 +126,20 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
           </h2>
           <p className="text-muted-foreground">Showcase your previous collaborations and content.</p>
         </div>
-        <Dialog open={isAddingWork} onOpenChange={setIsAddingWork}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Collaboration
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-card text-foreground">
-            <DialogHeader>
-              <DialogTitle>Add New Collaboration</DialogTitle>
-              <DialogDescription>Enter details for your new collaboration.</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-title" className="text-right">
-                  Title
-                </Label>
-                <Input
-                  id="work-title"
-                  value={newWork.title}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, title: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="e.g., Saturday Night Festival"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-description" className="text-right">
-                  Description
-                </Label>
-                <Textarea
-                  id="work-description"
-                  value={newWork.description}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, description: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="Describe the collaboration..."
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-thumbnail" className="text-right">
-                  Thumbnail URL
-                </Label>
-                <Input
-                  id="work-thumbnail"
-                  value={newWork.thumbnail}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, thumbnail: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="Enter image URL (optional)"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-views" className="text-right">
-                  Views
-                </Label>
-                <Input
-                  id="work-views"
-                  value={newWork.views}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, views: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="e.g., 2.1M (optional)"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-likes" className="text-right">
-                  Likes
-                </Label>
-                <Input
-                  id="work-likes"
-                  value={newWork.likes}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, likes: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="e.g., 45K (optional)"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-comments" className="text-right">
-                  Comments
-                </Label>
-                <Input
-                  id="work-comments"
-                  value={newWork.comments}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, comments: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="e.g., 1.2K (optional)"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="work-date" className="text-right">
-                  Date
-                </Label>
-                <Input
-                  id="work-date"
-                  value={newWork.date}
-                  onChange={(e) => setNewWork((prev) => ({ ...prev, date: e.target.value }))}
-                  className="col-span-3"
-                  placeholder="e.g., 2 weeks ago (optional)"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsAddingWork(false)}>
-                Cancel
-              </Button>
-              <Button type="button" onClick={handleAddWork}>
-                Add Collaboration
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <Button
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          onClick={() => {
+            setEditingIndex(null);
+            setShowCreationModal(true);
+          }}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add Collaboration
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pastWorks.map((work: any) => (
+        {pastWorks.map((work: any, index: number) => (
           <div key={work.id} className="relative">
             <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 overflow-hidden h-[360px] flex flex-col">
               <div className="relative flex-shrink-0">
@@ -269,9 +156,10 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
                   {work.title}
                 </h3>
-                <div className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[80px]">
-                  {work.description}
-                </div>
+                <div
+                  className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[80px]"
+                  dangerouslySetInnerHTML={{ __html: work.description }}
+                />
                 <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
@@ -291,31 +179,68 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                 </div>
               </CardContent>
             </Card>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleRemoveWork(parseInt(work.id))}
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <div className="absolute top-2 right-2 flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setEditingIndex(index);
+                  setShowCreationModal(true);
+                }}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleRemoveWork(index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         ))}
-
-        <Dialog open={isAddingWork} onOpenChange={setIsAddingWork}>
-          <DialogTrigger asChild>
-            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[360px]">
-              <CardContent className="p-8 flex flex-col items-center justify-center h-full text-center">
-                <Plus className="h-12 w-12 text-muted-foreground group-hover:text-primary mb-4 transition-colors" />
-                <h3 className="font-medium text-lg mb-2 group-hover:text-primary transition-colors">
-                  Add New Work
-                </h3>
-                <p className="text-muted-foreground text-sm">Share your latest collaboration or project</p>
-              </CardContent>
-            </Card>
-          </DialogTrigger>
-        </Dialog>
+        <Card
+          className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[360px]"
+          onClick={() => {
+            setEditingIndex(null);
+            setShowCreationModal(true);
+          }}
+        >
+          <CardContent className="p-8 flex flex-col items-center justify-center h-full text-center">
+            <Plus className="h-12 w-12 text-muted-foreground group-hover:text-primary mb-4 transition-colors" />
+            <h3 className="font-medium text-lg mb-2 group-hover:text-primary transition-colors">
+              Add New Work
+            </h3>
+            <p className="text-muted-foreground text-sm">Share your latest collaboration or project</p>
+          </CardContent>
+        </Card>
       </div>
+
+      {showCreationModal && (
+        <ContentCreationInterface
+          onSave={handleSaveWork}
+          onCancel={() => {
+            setShowCreationModal(false);
+            setEditingIndex(null);
+          }}
+          initialData={
+            editingIndex !== null
+              ? {
+                  title: pastWorks[editingIndex].title,
+                  content: pastWorks[editingIndex].description,
+                  thumbnail: pastWorks[editingIndex].thumbnail,
+                  views: pastWorks[editingIndex].views,
+                  likes: pastWorks[editingIndex].likes,
+                  comments: pastWorks[editingIndex].comments,
+                  date: pastWorks[editingIndex].date,
+                }
+              : undefined
+          }
+        />
+      )}
     </div>
   );
 }
