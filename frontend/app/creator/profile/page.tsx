@@ -177,7 +177,7 @@ export default function CreatorProfilePage() {
                     {formatFollowerCount(totalFollowers)}
                   </p>
                   <p className="text-lg text-muted-foreground">
-                    Followers ({primaryPlatform})
+                    Followers
                   </p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">

@@ -9,6 +9,7 @@ import Footer from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { brandApi, getAuthData } from "@/lib/api"
 import { toast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function BrandProfilePage() {
   const router = useRouter()
@@ -32,7 +33,6 @@ export default function BrandProfilePage() {
       } catch (error: any) {
         console.error("Failed to load brand profile:", error)
         if (error.status === 404) {
-          // Profile doesn't exist, redirect to create new profile
           router.push("/brand/profile/new")
         } else {
           toast({
@@ -52,7 +52,7 @@ export default function BrandProfilePage() {
   if (isLoading) {
     return (
       <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <Header isLoggedIn={true} userRole="brand-manager" />
+        <Header isLoggedIn={true} userRole="brand" />
         <main className="flex-1 flex items-center justify-center">
           <div>Loading profile...</div>
         </main>
@@ -64,7 +64,7 @@ export default function BrandProfilePage() {
   if (!brandData) {
     return (
       <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <Header isLoggedIn={true} userRole="brand-manager" />
+        <Header isLoggedIn={true} userRole="brand" />
         <main className="flex-1 flex items-center justify-center">
           <div>Profile not found</div>
         </main>
@@ -75,17 +75,18 @@ export default function BrandProfilePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header isLoggedIn={true} userRole="brand-manager" />
+      <Header isLoggedIn={true} userRole="brand" />
 
       <main className="flex-1">
-        {/* Banner Section (empty as per screenshot) */}
-        <section className="relative w-full h-64 md:h-80 lg:h-96 bg-background overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex space-x-8">
-              <div className="w-48 h-24 sm:w-64 sm:h-32 bg-white rounded-b-full" />
-              <div className="w-48 h-24 sm:w-64 sm:h-32 bg-white rounded-b-full" />
-            </div>
-          </div>
+        {/* Banner Section */}
+        <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
+          <Image
+            src={brandData.backgroundImageUrl || "/placeholder.svg?height=400&width=1200"}
+            alt="Brand banner"
+            layout="fill"
+            objectFit="cover"
+            className="z-0"
+          />
         </section>
 
         {/* Main content area with dark background */}
