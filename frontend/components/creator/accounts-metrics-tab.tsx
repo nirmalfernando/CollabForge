@@ -39,7 +39,7 @@ export default function AccountsMetricsTab() {
     { url: "https://img.icons8.com/?size=100&id=fdfLpA6fsXN2&format=png&color=000000", name: "TikTok", color: "text-black" },
     { url: "https://img.icons8.com/?size=100&id=yoQabS8l0qpr&format=png&color=000000", name: "Twitter", color: "text-blue-400" },
     { url: "https://img.icons8.com/?size=100&id=18103&format=png&color=000000", name: "Twitch", color: "text-purple-500" },
-    { url: "https://play-lh.googleusercontent.com/vHm8BQc9VWIU9y6yFcbmTF2tw8kcj1qHleE_IJ_KLQ8E2hX9k0vGL39yUJWTzfgvDw", name: "Kick", color: "text-green-500" },
+    { url: "https://images.squarespace-cdn.com/content/v1/616460e27b59e64c426f4ea6/1680396290087-CH2J4ETBRUICX4ONUIRT/Kick+Stream+Logo.png", name: "Kick", color: "text-green-500" },
   ];
 
   const trafficSources = [
