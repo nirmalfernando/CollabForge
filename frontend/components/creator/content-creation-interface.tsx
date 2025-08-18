@@ -666,6 +666,8 @@ export default function ContentCreationInterface({
                   id="visibility"
                   checked={isVisible}
                   onCheckedChange={setIsVisible}
+                  className="data-[state=checked]:to-blue-400 data-[state=unchecked]:bg-gray-300"
+                  thumbClassName="bg-gray-50"
                 />
               </div>
             </div>
