@@ -6,6 +6,7 @@ import Proposal from "./Proposal.js";
 import Contract from "./Contract.js";
 import Review from "./Review.js";
 import Campaign from "./Campaign.js";
+import CreatorWork from "./CreatorWork.js"; 
 
 // Define associations between models
 
@@ -152,6 +153,18 @@ Review.belongsTo(Campaign, {
   targetKey: "campaignId",
 });
 
+// A Creator can have many Works, and each Work belongs to one Creator
+Creator.hasMany(CreatorWork, {
+  foreignKey: "creatorId",
+  sourceKey: "creatorId",
+  as: "works",
+});
+CreatorWork.belongsTo(Creator, {
+  foreignKey: "creatorId",
+  targetKey: "creatorId",
+  as: "creator",
+});
+
 export default {
   User,
   Category,
@@ -161,4 +174,5 @@ export default {
   Proposal,
   Contract,
   Review,
+  CreatorWork, 
 };

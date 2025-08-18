@@ -1230,3 +1230,45 @@
 2025-08-16T13:40:55.957Z [CollabForge] info: User details retrieved successfully
 2025-08-16T13:40:55.996Z [CollabForge] info: Creator retrieved successfully for user
 2025-08-16T13:40:56.096Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T02:59:04.371Z [CollabForge] info: User registered successfully
+2025-08-18T02:59:21.555Z [CollabForge] info: User logged in successfully
+2025-08-18T02:59:21.696Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:21.754Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:21.806Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:21.864Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:27.680Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:27.694Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:27.731Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:27.753Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:27.811Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:27.870Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:30.441Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:30.442Z [CollabForge] info: Categories retrieved successfully
+2025-08-18T02:59:30.497Z [CollabForge] info: User details retrieved successfully
+2025-08-18T02:59:30.507Z [CollabForge] info: Categories retrieved successfully
+2025-08-18T02:59:30.540Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T02:59:30.592Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T03:06:54.399Z [CollabForge] info: User details retrieved successfully
+2025-08-18T03:06:54.406Z [CollabForge] info: Categories retrieved successfully
+2025-08-18T03:06:54.448Z [CollabForge] info: User details retrieved successfully
+2025-08-18T03:06:54.455Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T03:06:54.492Z [CollabForge] info: Categories retrieved successfully
+2025-08-18T03:06:54.519Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-08-18T03:07:35.726Z [CollabForge] info: Creator created successfully
+2025-08-18T03:07:36.127Z [CollabForge] info: User details retrieved successfully
+2025-08-18T03:07:36.175Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T03:07:36.219Z [CollabForge] info: User details retrieved successfully
+2025-08-18T03:07:36.264Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T03:07:36.313Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T03:07:36.365Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:06.450Z [CollabForge] info: User logged in successfully
+2025-08-18T14:12:07.581Z [CollabForge] info: User details retrieved successfully
+2025-08-18T14:12:07.638Z [CollabForge] info: User details retrieved successfully
+2025-08-18T14:12:07.682Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:07.735Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:15.590Z [CollabForge] info: User details retrieved successfully
+2025-08-18T14:12:15.600Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:15.643Z [CollabForge] info: User details retrieved successfully
+2025-08-18T14:12:15.652Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:15.708Z [CollabForge] info: Creator retrieved successfully for user
+2025-08-18T14:12:15.760Z [CollabForge] info: Creator retrieved successfully for user

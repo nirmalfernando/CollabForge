@@ -112,7 +112,6 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   }
 }
 
-
 // Auth API functions
 export const authApi = {
   register: async (userData: {
@@ -545,6 +544,138 @@ export const contractApi = {
   },
 };
 
+// NEW: Creator Work API functions
+export const creatorWorkApi = {
+  createWork: async (workData: {
+    creatorId: string;
+    title: string;
+    content?: string;
+    contentType: "image" | "text" | "grid" | "video" | "embed";
+    thumbnailUrl?: string;
+    mediaUrls?: string[];
+    metrics?: {
+      views?: number | string;
+      likes?: number | string;
+      comments?: number | string;
+      shares?: number | string;
+    };
+    publishedDate?: string;
+    collaborationBrand?: string;
+    campaignName?: string;
+    tags?: string[];
+    isVisible?: boolean;
+  }) => {
+    console.log("Creator Work API: Creating work with data:", workData);
+
+    try {
+      const response = await apiRequest("/creator-works", {
+        method: "POST",
+        body: JSON.stringify(workData),
+      });
+      console.log("Creator Work API: Successfully created work:", response);
+      return response;
+    } catch (error) {
+      console.error("Creator Work API: Error creating work:", error);
+      throw error;
+    }
+  },
+
+  updateWork: async (workId: string, workData: any) => {
+    return apiRequest(`/creator-works/${workId}`, {
+      method: "PUT",
+      body: JSON.stringify(workData),
+    });
+  },
+
+  getWorkById: async (workId: string) => {
+    return apiRequest(`/creator-works/${workId}`);
+  },
+
+  getWorksByCreatorId: async (
+    creatorId: string,
+    options?: {
+      isVisible?: boolean;
+      contentType?: string;
+      page?: number;
+      limit?: number;
+    }
+  ) => {
+    const params = new URLSearchParams();
+
+    if (options?.isVisible !== undefined) {
+      params.append("isVisible", options.isVisible.toString());
+    }
+    if (options?.contentType) {
+      params.append("contentType", options.contentType);
+    }
+    if (options?.page) {
+      params.append("page", options.page.toString());
+    }
+    if (options?.limit) {
+      params.append("limit", options.limit.toString());
+    }
+
+    const queryString = params.toString();
+    const url = `/creator-works/creator/${creatorId}${
+      queryString ? `?${queryString}` : ""
+    }`;
+
+    return apiRequest(url);
+  },
+
+  getAllWorks: async (options?: {
+    contentType?: string;
+    isVisible?: boolean;
+    creatorId?: string;
+    collaborationBrand?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) => {
+    const params = new URLSearchParams();
+
+    if (options?.contentType) {
+      params.append("contentType", options.contentType);
+    }
+    if (options?.isVisible !== undefined) {
+      params.append("isVisible", options.isVisible.toString());
+    }
+    if (options?.creatorId) {
+      params.append("creatorId", options.creatorId);
+    }
+    if (options?.collaborationBrand) {
+      params.append("collaborationBrand", options.collaborationBrand);
+    }
+    if (options?.search) {
+      params.append("search", options.search);
+    }
+    if (options?.page) {
+      params.append("page", options.page.toString());
+    }
+    if (options?.limit) {
+      params.append("limit", options.limit.toString());
+    }
+
+    const queryString = params.toString();
+    const url = `/creator-works${queryString ? `?${queryString}` : ""}`;
+
+    return apiRequest(url);
+  },
+
+  toggleWorkVisibility: async (workId: string, isVisible: boolean) => {
+    return apiRequest(`/creator-works/${workId}/visibility`, {
+      method: "PATCH",
+      body: JSON.stringify({ isVisible }),
+    });
+  },
+
+  deleteWork: async (workId: string) => {
+    return apiRequest(`/creator-works/${workId}`, {
+      method: "DELETE",
+    });
+  },
+};
+
 // Categories API functions
 export const categoryApi = {
   getAllCategories: async () => {
@@ -637,25 +768,22 @@ export const imageUploadApi = {
       throw new ApiError(500, "Network error occurred during image upload");
     }
   },
+
+  // Batch upload multiple images
+  uploadImages: async (files: File[]): Promise<{ urls: string[] }> => {
+    try {
+      const uploadPromises = files.map((file) =>
+        imageUploadApi.uploadImage(file)
+      );
+      const results = await Promise.all(uploadPromises);
+      const urls = results.map((result) => result.url);
+      return { urls };
+    } catch (error) {
+      console.error("Error uploading multiple images:", error);
+      throw error;
+    }
+  },
 };
-
-// Helper function to generate Cloudinary signature
-async function generateSignature(
-  paramsToSign: string,
-  apiSecret: string
-): Promise<string> {
-  // Use Web Crypto API to generate SHA-1 signature
-  const encoder = new TextEncoder();
-  const data = encoder.encode(paramsToSign + apiSecret);
-
-  const hashBuffer = await crypto.subtle.digest("SHA-1", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-
-  return hashHex;
-}
 
 // Helper function to get user role from token
 export function getUserFromToken(token: string) {
@@ -694,4 +822,22 @@ export function getAuthData() {
   }
 
   return null;
+}
+
+// Helper function to generate Cloudinary signature
+async function generateSignature(
+  paramsToSign: string,
+  apiSecret: string
+): Promise<string> {
+  // Use Web Crypto API to generate SHA-1 signature
+  const encoder = new TextEncoder();
+  const data = encoder.encode(paramsToSign + apiSecret);
+
+  const hashBuffer = await crypto.subtle.digest("SHA-1", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return hashHex;
 }
