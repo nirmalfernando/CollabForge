@@ -455,7 +455,7 @@ export default function ContentCreationInterface({
                             variant="outline"
                             onClick={() => thumbnailInputRef.current?.click()}
                             disabled={isUploadingThumbnail}
-                            className="border-blue-500 text-blue-500 hover:bg-blue-50"
+                            className="border-blue-500 bg-gray-50 text-blue-500 hover:bg-blue-50"
                           >
                             {isUploadingThumbnail ? (
                               <>
@@ -473,7 +473,7 @@ export default function ContentCreationInterface({
                             placeholder="Or paste image URL"
                             value={thumbnailUrl}
                             onChange={(e) => setThumbnailUrl(e.target.value)}
-                            className="flex-1 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="flex-1 border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                       </div>
@@ -488,7 +488,7 @@ export default function ContentCreationInterface({
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="Tell the story of your work, collaboration, or creative process..."
-                        className="min-h-[200px] border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        className="min-h-[200px] bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                       />
                     </div>
 
@@ -496,7 +496,7 @@ export default function ContentCreationInterface({
                     <Button
                       variant="outline"
                       onClick={() => setSelectedContentType("")}
-                      className="border-gray-300 text-gray-600 hover:bg-gray-50 w-fit"
+                      className="border-gray-300 bg-gray-50 text-gray-600 hover:bg-gray-50 w-fit"
                     >
                       ← Back to Content Types
                     </Button>
@@ -529,7 +529,7 @@ export default function ContentCreationInterface({
                     placeholder="e.g., 2.1M"
                     value={views}
                     onChange={(e) => setViews(e.target.value)}
-                    className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -544,7 +544,7 @@ export default function ContentCreationInterface({
                     placeholder="e.g., 45K"
                     value={likes}
                     onChange={(e) => setLikes(e.target.value)}
-                    className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -559,7 +559,7 @@ export default function ContentCreationInterface({
                     placeholder="e.g., 1.2K"
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
-                    className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="text-sm border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -574,7 +574,7 @@ export default function ContentCreationInterface({
                     placeholder="e.g., 500"
                     value={shares}
                     onChange={(e) => setShares(e.target.value)}
-                    className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -600,7 +600,7 @@ export default function ContentCreationInterface({
                   placeholder="Brand you collaborated with"
                   value={collaborationBrand}
                   onChange={(e) => setCollaborationBrand(e.target.value)}
-                  className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
@@ -615,7 +615,7 @@ export default function ContentCreationInterface({
                   placeholder="Campaign or project name"
                   value={campaignName}
                   onChange={(e) => setCampaignName(e.target.value)}
-                  className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
@@ -630,7 +630,7 @@ export default function ContentCreationInterface({
                   type="date"
                   value={publishedDate}
                   onChange={(e) => setPublishedDate(e.target.value)}
-                  className="text-sm border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -655,7 +655,7 @@ export default function ContentCreationInterface({
                   placeholder="fashion, lifestyle, brand collaboration"
                   value={tagsInput}
                   onChange={(e) => setTagsInput(e.target.value)}
-                  className="text-sm min-h-[60px] border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm min-h-[60px] bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div className="flex items-center justify-between">
