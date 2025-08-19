@@ -387,7 +387,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("bold")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -401,7 +401,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("italic")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -415,7 +415,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("underline")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -429,7 +429,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("strike")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -498,7 +498,7 @@ export default function RichTextEditor({
               variant="ghost"
               size="sm"
               onClick={() => setShowColorPicker(!showColorPicker)}
-              className="h-8 w-8 p-0 hover:bg-gray-200"
+              className="h-10 w-10 p-0 hover:bg-gray-200"
               title="Text Color"
             >
               <Type className="h-4 w-4" />
@@ -536,7 +536,7 @@ export default function RichTextEditor({
               variant="ghost"
               size="sm"
               onClick={() => setShowHighlightPicker(!showHighlightPicker)}
-              className={`h-8 w-8 p-0 ${
+              className={`h-10 w-10 p-0 ${
                 editor.isActive("highlight")
                   ? "bg-blue-500 text-white"
                   : "hover:bg-gray-200"
@@ -580,7 +580,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive({ textAlign: "left" })
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -594,7 +594,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive({ textAlign: "center" })
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -608,7 +608,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive({ textAlign: "right" })
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -622,7 +622,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive({ textAlign: "justify" })
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -639,7 +639,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("bulletList")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -653,7 +653,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("orderedList")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -667,7 +667,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("blockquote")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -684,7 +684,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("code")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -698,7 +698,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("codeBlock")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -712,7 +712,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleSubscript().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("subscript")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -726,7 +726,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleSuperscript().run()}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("superscript")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -744,7 +744,7 @@ export default function RichTextEditor({
             size="sm"
             onClick={triggerFileUpload}
             disabled={isUploading}
-            className="h-8 w-8 p-0 hover:bg-gray-200 disabled:opacity-50"
+            className="h-10 w-10 p-0 hover:bg-gray-200 disabled:opacity-50"
             title="Upload Image"
           >
             {isUploading ? (
@@ -758,7 +758,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => setShowImageDialog(true)}
-            className="h-8 w-8 p-0 hover:bg-gray-200"
+            className="h-10 w-10 p-0 hover:bg-gray-200"
             title="Insert Image URL"
           >
             <ImageIcon className="h-4 w-4" />
@@ -768,7 +768,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => setShowLinkDialog(true)}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("link")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -782,7 +782,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={insertTable}
-            className={`h-8 w-8 p-0 ${
+            className={`h-10 w-10 p-0 ${
               editor.isActive("table")
                 ? "bg-blue-500 text-white"
                 : "hover:bg-gray-200"
@@ -799,7 +799,7 @@ export default function RichTextEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            className="h-8 w-8 p-0 hover:bg-gray-200"
+            className="h-10 w-10 p-0 hover:bg-gray-200"
             title="Horizontal Rule"
           >
             <Minus className="h-4 w-4" />
@@ -810,7 +810,7 @@ export default function RichTextEditor({
             size="sm"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
-            className="h-8 w-8 p-0 hover:bg-gray-200 disabled:opacity-50"
+            className="h-10 w-10 p-0 hover:bg-gray-200 disabled:opacity-50"
             title="Undo"
           >
             <Undo className="h-4 w-4" />
@@ -821,7 +821,7 @@ export default function RichTextEditor({
             size="sm"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
-            className="h-8 w-8 p-0 hover:bg-gray-200 disabled:opacity-50"
+            className="h-10 w-10 p-0 hover:bg-gray-200 disabled:opacity-50"
             title="Redo"
           >
             <Redo className="h-4 w-4" />
