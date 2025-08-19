@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../connect.js";
 
-// Define the Review model
-const Review = sequelize.define(
-  "Review",
+// Define the Brand Review Model
+const BrandReview = sequelize.define(
+  "BrandReview",
   {
     reviewId: {
       type: DataTypes.STRING,
@@ -18,20 +18,20 @@ const Review = sequelize.define(
         },
       },
     },
-    campaignId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: "campaigns", // Reference to the Campaign model
-        key: "campaign_id",
-      },
-    },
     creatorId: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: "creators", // Reference to the Creator model
         key: "creator_id",
+      },
+    },
+    brandId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: "brands", // Reference to the Brand model
+        key: "brand_id",
       },
     },
     rating: {
@@ -55,10 +55,10 @@ const Review = sequelize.define(
     },
   },
   {
-    tableName: "creator_reviews",
+    tableName: "brand_reviews",
     timestamps: true,
     underscored: true,
   }
 );
 
-export default Review;
+export default BrandReview;

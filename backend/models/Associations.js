@@ -5,8 +5,9 @@ import Brand from "./Brand.js";
 import Proposal from "./Proposal.js";
 import Contract from "./Contract.js";
 import Review from "./Review.js";
+import BrandReview from "./BrandReview.js";
 import Campaign from "./Campaign.js";
-import CreatorWork from "./CreatorWork.js"; 
+import CreatorWork from "./CreatorWork.js";
 
 // Define associations between models
 
@@ -153,6 +154,32 @@ Review.belongsTo(Campaign, {
   targetKey: "campaignId",
 });
 
+// BrandReview to Creator (Many-to-One)
+// A BrandReview belongs to one Creator, and a Creator can have many BrandReviews
+Creator.hasMany(BrandReview, {
+  foreignKey: "creatorId",
+  sourceKey: "creatorId",
+  as: "brandReviews", // Alias to distinguish from regular reviews
+});
+BrandReview.belongsTo(Creator, {
+  foreignKey: "creatorId",
+  targetKey: "creatorId",
+  as: "creator",
+});
+
+// BrandReview to Brand (Many-to-One)
+// A BrandReview belongs to one Brand, and a Brand can have many BrandReviews
+Brand.hasMany(BrandReview, {
+  foreignKey: "brandId",
+  sourceKey: "brandId",
+  as: "reviewsGiven", // Alias to indicate reviews given by this brand
+});
+BrandReview.belongsTo(Brand, {
+  foreignKey: "brandId",
+  targetKey: "brandId",
+  as: "brand",
+});
+
 // A Creator can have many Works, and each Work belongs to one Creator
 Creator.hasMany(CreatorWork, {
   foreignKey: "creatorId",
@@ -174,5 +201,6 @@ export default {
   Proposal,
   Contract,
   Review,
-  CreatorWork, 
+  BrandReview,
+  CreatorWork,
 };
