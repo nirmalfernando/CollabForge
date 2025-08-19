@@ -544,7 +544,7 @@ export const contractApi = {
   },
 };
 
-// NEW: Creator Work API functions
+// Creator Work API functions
 export const creatorWorkApi = {
   createWork: async (workData: {
     creatorId: string;
@@ -841,3 +841,127 @@ async function generateSignature(
 
   return hashHex;
 }
+
+// Review API functions (Creator reviews Brand/Campaign)
+export const reviewApi = {
+  createReview: async (reviewData: {
+    campaignId: string;
+    creatorId: string;
+    rating: number;
+    comment?: string;
+  }) => {
+    console.log("Review API: Creating review with data:", reviewData);
+
+    try {
+      const response = await apiRequest("/reviews", {
+        method: "POST",
+        body: JSON.stringify(reviewData),
+      });
+      console.log("Review API: Successfully created review:", response);
+      return response;
+    } catch (error) {
+      console.error("Review API: Error creating review:", error);
+      throw error;
+    }
+  },
+
+  getReviewById: async (reviewId: string) => {
+    return apiRequest(`/reviews/${reviewId}`);
+  },
+
+  getAllReviews: async () => {
+    return apiRequest("/reviews");
+  },
+
+  getReviewsByCampaign: async (campaignId: string) => {
+    return apiRequest(`/reviews/campaign/${campaignId}`);
+  },
+
+  getReviewsByCreator: async (creatorId: string) => {
+    return apiRequest(`/reviews/creator/${creatorId}`);
+  },
+
+  updateReview: async (
+    reviewId: string,
+    reviewData: {
+      rating?: number;
+      comment?: string;
+    }
+  ) => {
+    return apiRequest(`/reviews/${reviewId}`, {
+      method: "PUT",
+      body: JSON.stringify(reviewData),
+    });
+  },
+
+  deleteReview: async (reviewId: string) => {
+    return apiRequest(`/reviews/${reviewId}`, {
+      method: "DELETE",
+    });
+  },
+};
+
+// Brand Review API functions (Brand reviews Creator)
+export const brandReviewApi = {
+  createBrandReview: async (reviewData: {
+    creatorId: string;
+    brandId: string;
+    rating: number;
+    comment?: string;
+  }) => {
+    console.log(
+      "Brand Review API: Creating brand review with data:",
+      reviewData
+    );
+
+    try {
+      const response = await apiRequest("/brand-reviews", {
+        method: "POST",
+        body: JSON.stringify(reviewData),
+      });
+      console.log(
+        "Brand Review API: Successfully created brand review:",
+        response
+      );
+      return response;
+    } catch (error) {
+      console.error("Brand Review API: Error creating brand review:", error);
+      throw error;
+    }
+  },
+
+  getBrandReviewById: async (reviewId: string) => {
+    return apiRequest(`/brand-reviews/${reviewId}`);
+  },
+
+  getAllBrandReviews: async () => {
+    return apiRequest("/brand-reviews");
+  },
+
+  getBrandReviewsByCreator: async (creatorId: string) => {
+    return apiRequest(`/brand-reviews/creator/${creatorId}`);
+  },
+
+  getBrandReviewsByBrand: async (brandId: string) => {
+    return apiRequest(`/brand-reviews/brand/${brandId}`);
+  },
+
+  updateBrandReview: async (
+    reviewId: string,
+    reviewData: {
+      rating?: number;
+      comment?: string;
+    }
+  ) => {
+    return apiRequest(`/brand-reviews/${reviewId}`, {
+      method: "PUT",
+      body: JSON.stringify(reviewData),
+    });
+  },
+
+  deleteBrandReview: async (reviewId: string) => {
+    return apiRequest(`/brand-reviews/${reviewId}`, {
+      method: "DELETE",
+    });
+  },
+};

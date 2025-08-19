@@ -2,10 +2,19 @@
 
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ReviewModal from "@/components/review-modal";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { useState, useEffect, use } from "react";
-import { contractApi, campaignApi, creatorApi, getAuthData } from "@/lib/api";
+import { Star } from "lucide-react";
+import {
+  contractApi,
+  campaignApi,
+  creatorApi,
+  brandApi,
+  getAuthData,
+  brandReviewApi,
+} from "@/lib/api";
 
 interface ContractDetails {
   contractId: string;
@@ -31,6 +40,7 @@ interface EnrichedContractData {
   digitalSignature: string | null;
   creatorSuggestions: string | null;
   currentStatus: string;
+  rawStatus: string; // Keep original status for comparison
 }
 
 export default function BrandContractViewPage({
@@ -44,6 +54,10 @@ export default function BrandContractViewPage({
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Review modal states
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
 
   useEffect(() => {
     const fetchContractDetails = async () => {
@@ -98,6 +112,7 @@ export default function BrandContractViewPage({
             contract.contractStatus === "Completed"
               ? "Complete"
               : contract.contractStatus,
+          rawStatus: contract.contractStatus, // Keep original for comparison
         };
 
         setContractData(enrichedData);
@@ -129,6 +144,82 @@ export default function BrandContractViewPage({
       description: "Redirecting to chat with the creator...",
     });
     // In a real app, this would navigate to a chat interface
+  };
+
+  const handleReviewSubmit = async (review: {
+    rating: number;
+    categories: string[];
+    text: string;
+  }) => {
+    if (!contractData) return;
+
+    try {
+      console.log("📝 Brand review submitted:", review);
+
+      // Get current user data for brandId
+      const authData = getAuthData();
+      if (!authData) {
+        toast({
+          title: "Authentication Error",
+          description: "Please log in to submit a review.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // You'll need to get the brandId from the current user
+      // This might require fetching brand data by userId
+      let brandId: string;
+      try {
+        const brandData = await brandApi.getBrandByUserId(authData.user.userId);
+        brandId = brandData.brandId;
+      } catch (error) {
+        throw new Error("Could not find brand data for current user");
+      }
+
+      // Create the brand review via API
+      await brandReviewApi.createBrandReview({
+        creatorId: contractData.creatorId, // From contract data
+        brandId: brandId, // Current brand's ID
+        rating: review.rating,
+        comment: review.text, // Map 'text' to 'comment' as per backend expectation
+      });
+
+      setHasReviewed(true);
+
+      toast({
+        title: "Review Submitted",
+        description: "Thank you for reviewing the creator!",
+      });
+    } catch (error) {
+      console.error("❌ Error submitting brand review:", error);
+
+      let errorMessage = "Failed to submit review. Please try again.";
+
+      if (error instanceof ApiError) {
+        if (error.status === 400) {
+          errorMessage = error.message || "Review validation failed.";
+        } else if (error.status === 401) {
+          errorMessage = "You don't have permission to submit this review.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      toast({
+        title: "Error Submitting Review",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleOpenReviewModal = () => {
+    setShowReviewModal(true);
+  };
+
+  const handleCloseReviewModal = () => {
+    setShowReviewModal(false);
   };
 
   if (loading) {
@@ -179,6 +270,8 @@ export default function BrandContractViewPage({
       </div>
     );
   }
+
+  const isContractCompleted = contractData.rawStatus === "Completed";
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -231,6 +324,47 @@ export default function BrandContractViewPage({
             </p>
           </div>
 
+          {/* Review Section - Show only when contract is completed */}
+          {isContractCompleted && (
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-primary">
+                Review Creator
+              </h2>
+              <div className="bg-muted rounded-lg p-6">
+                {hasReviewed ? (
+                  <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                      <Star className="h-8 w-8 text-yellow-500 fill-current" />
+                    </div>
+                    <p className="text-lg text-foreground font-medium mb-2">
+                      Thank you for your review!
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Your feedback has been submitted successfully.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-lg text-foreground font-medium mb-4">
+                      How was your experience working with this creator?
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      Your feedback helps other brands and improves the
+                      platform.
+                    </p>
+                    <Button
+                      onClick={handleOpenReviewModal}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full"
+                    >
+                      <Star className="h-5 w-5 mr-2" />
+                      Review Creator
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-col gap-4 pt-8">
             <Button
               variant="outline"
@@ -244,6 +378,23 @@ export default function BrandContractViewPage({
       </main>
 
       <Footer />
+
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={showReviewModal}
+        onClose={handleCloseReviewModal}
+        onSubmit={handleReviewSubmit}
+        reviewType="brand_to_creator"
+        title="Review Creator"
+        placeholder="Share your experience working with this creator..."
+        categories={[
+          "Delivered On Time",
+          "Great Quality",
+          "Worth The Price",
+          "Highly Recommended",
+          "Amazing Creative Work",
+        ]}
+      />
     </div>
   );
 }

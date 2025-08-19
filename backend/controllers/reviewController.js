@@ -8,12 +8,12 @@ const reviewValidation = [
   body("campaignId")
     .notEmpty()
     .withMessage("Campaign ID is required")
-    .isUUID()
+    .isUUID(4)
     .withMessage("Campaign ID must be a valid UUID"),
   body("creatorId")
     .notEmpty()
     .withMessage("Creator ID is required")
-    .isUUID()
+    .isUUID(4)
     .withMessage("Creator ID must be a valid UUID"),
   body("rating")
     .notEmpty()
@@ -36,7 +36,10 @@ export const createReview = async (req, res) => {
       errors: errors.array(),
       reviewData: req.body,
     });
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: errors.array(),
+    });
   }
 
   const { campaignId, creatorId, rating, comment } = req.body;
@@ -53,7 +56,7 @@ export const createReview = async (req, res) => {
         creatorId,
       });
       return res.status(400).json({
-        message: "Review already exists for this campaign and creator",
+        message: "You have already reviewed this campaign",
       });
     }
 
@@ -79,8 +82,31 @@ export const createReview = async (req, res) => {
   } catch (error) {
     logger.error("Error during review creation", {
       error: error.message,
+      stack: error.stack,
       reviewData: req.body,
     });
+
+    // Handle Sequelize validation errors
+    if (error.name === "SequelizeValidationError") {
+      const validationErrors = error.errors.map((err) => ({
+        field: err.path,
+        message: err.message,
+        value: err.value,
+      }));
+
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: validationErrors,
+      });
+    }
+
+    // Handle unique constraint errors
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res.status(400).json({
+        message: "Review already exists for this campaign and creator",
+      });
+    }
+
     return res.status(500).json({
       message: "Internal server error during review creation",
       error: error.message,
@@ -121,12 +147,10 @@ export const getAllReviews = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    if (reviews.length === 0) {
-      logger.info("No reviews found");
-      return res.status(404).json({ message: "No reviews found" });
-    }
+    logger.info("All reviews retrieved successfully", {
+      count: reviews.length,
+    });
 
-    logger.info("All reviews retrieved successfully");
     return res.status(200).json(reviews);
   } catch (error) {
     logger.error("Error during getting all reviews", {
@@ -149,14 +173,11 @@ export const getReviewsByCampaign = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    if (reviews.length === 0) {
-      logger.info("No reviews found for campaign", { campaignId });
-      return res
-        .status(404)
-        .json({ message: "No reviews found for this campaign" });
-    }
+    logger.info("Reviews retrieved successfully for campaign", {
+      campaignId,
+      count: reviews.length,
+    });
 
-    logger.info("Reviews retrieved successfully for campaign", { campaignId });
     return res.status(200).json(reviews);
   } catch (error) {
     logger.error("Error during getting reviews by campaign", {
@@ -180,14 +201,11 @@ export const getReviewsByCreator = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    if (reviews.length === 0) {
-      logger.info("No reviews found for creator", { creatorId });
-      return res
-        .status(404)
-        .json({ message: "No reviews found for this creator" });
-    }
+    logger.info("Reviews retrieved successfully for creator", {
+      creatorId,
+      count: reviews.length,
+    });
 
-    logger.info("Reviews retrieved successfully for creator", { creatorId });
     return res.status(200).json(reviews);
   } catch (error) {
     logger.error("Error during getting reviews by creator", {
@@ -214,26 +232,28 @@ export const updateReview = async (req, res) => {
       return res.status(404).json({ message: "Review not found" });
     }
 
-    // Update the fields if they are provided
+    // Prepare update data
+    const updateData = {};
     if (rating !== undefined) {
-      if (rating < 1 || rating > 5) {
+      if (rating < 1 || rating > 5 || !Number.isInteger(rating)) {
         return res
           .status(400)
-          .json({ message: "Rating must be between 1 and 5" });
+          .json({ message: "Rating must be an integer between 1 and 5" });
       }
-      review.rating = rating;
+      updateData.rating = rating;
     }
 
     if (comment !== undefined) {
-      if (comment.length > 1000) {
+      if (comment && comment.length > 1000) {
         return res
           .status(400)
           .json({ message: "Comment must be up to 1000 characters long" });
       }
-      review.comment = comment;
+      updateData.comment = comment;
     }
 
-    await review.save();
+    // Update the review
+    await review.update(updateData);
 
     logger.info("Review updated successfully", { reviewId });
     return res.status(200).json({
@@ -246,6 +266,21 @@ export const updateReview = async (req, res) => {
       reviewId,
       reviewData: req.body,
     });
+
+    // Handle Sequelize validation errors
+    if (error.name === "SequelizeValidationError") {
+      const validationErrors = error.errors.map((err) => ({
+        field: err.path,
+        message: err.message,
+        value: err.value,
+      }));
+
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: validationErrors,
+      });
+    }
+
     return res.status(500).json({
       message: "Internal server error during review update",
       error: error.message,
