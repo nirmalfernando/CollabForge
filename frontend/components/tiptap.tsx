@@ -130,7 +130,6 @@ export default function RichTextEditor({
   content = "",
   onChange,
   onImageUpload,
-  placeholder = "Start writing your content...",
   height = "400px",
 }: RichTextEditorProps) {
   // Dialog states
@@ -912,11 +911,6 @@ export default function RichTextEditor({
           editor={editor}
           className="prose prose-sm max-w-none focus:outline-none h-full"
         />
-        {!content && (
-          <div className="text-gray-400 text-sm pointer-events-none absolute top-4 left-4">
-            {placeholder}
-          </div>
-        )}
       </div>
     </div>
   );

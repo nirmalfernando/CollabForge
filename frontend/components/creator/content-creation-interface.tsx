@@ -500,17 +500,16 @@ export default function ContentCreationInterface({
             <h1 className="text-2xl font-semibold text-gray-900">
               {initialData?.workId ? "Edit Your Work" : "Share Your Past Work"}
             </h1>
-            {/* Debug info */}
-            {creatorId && (
-              <div className="mt-2 text-sm text-green-600">
-                Creator ID: {creatorId}
-              </div>
-            )}
-            {error && (
-              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 text-red-500" />
-                <span className="text-red-700 text-sm">{error}</span>
-              </div>
+            {!selectedContentType ? (
+              <></>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setSelectedContentType("")}
+                className="border-gray-300 bg-gray-50 text-gray-600 hover:bg-gray-50 w-fit"
+              >
+                ← Back to Content Types
+              </Button>
             )}
           </div>
 
@@ -634,19 +633,9 @@ export default function ContentCreationInterface({
                         onImageUpload={(urls) =>
                           setUploadedImageUrls((prev) => [...prev, ...urls])
                         }
-                        placeholder="Tell the story of your work, collaboration, or creative process..."
                         height="300px"
                       />
                     </div>
-
-                    {/* Back to Content Types */}
-                    <Button
-                      variant="outline"
-                      onClick={() => setSelectedContentType("")}
-                      className="border-gray-300 bg-gray-50 text-gray-600 hover:bg-gray-50 w-fit"
-                    >
-                      ← Back to Content Types
-                    </Button>
                   </div>
                 )}
               </CardContent>
@@ -656,78 +645,6 @@ export default function ContentCreationInterface({
 
         {/* Right Sidebar */}
         <div className="w-96 bg-white border-l border-gray-200 flex flex-col overflow-hidden">
-          {/* Performance Metrics Section */}
-          <div className="p-6 border-b border-gray-200 overflow-auto">
-            <h3 className="text-sm font-medium text-gray-600 mb-4 flex items-center gap-2">
-              <Heart className="h-4 w-4" />
-              Performance Metrics
-            </h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label
-                    htmlFor="views"
-                    className="text-xs text-gray-600 mb-1 block"
-                  >
-                    Views
-                  </Label>
-                  <Input
-                    id="views"
-                    placeholder="e.g., 2.1M"
-                    value={views}
-                    onChange={(e) => setViews(e.target.value)}
-                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="likes"
-                    className="text-xs text-gray-600 mb-1 block"
-                  >
-                    Likes
-                  </Label>
-                  <Input
-                    id="likes"
-                    placeholder="e.g., 45K"
-                    value={likes}
-                    onChange={(e) => setLikes(e.target.value)}
-                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="comments"
-                    className="text-xs text-gray-600 mb-1 block"
-                  >
-                    Comments
-                  </Label>
-                  <Input
-                    id="comments"
-                    placeholder="e.g., 1.2K"
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    className="text-sm border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="shares"
-                    className="text-xs text-gray-600 mb-1 block"
-                  >
-                    Shares
-                  </Label>
-                  <Input
-                    id="shares"
-                    placeholder="e.g., 500"
-                    value={shares}
-                    onChange={(e) => setShares(e.target.value)}
-                    className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Collaboration Details */}
           <div className="p-6 border-b border-gray-200 overflow-auto">
             <h3 className="text-sm font-medium text-gray-600 mb-4 flex items-center gap-2">
@@ -747,7 +664,7 @@ export default function ContentCreationInterface({
                   placeholder="Brand you collaborated with"
                   value={collaborationBrand}
                   onChange={(e) => setCollaborationBrand(e.target.value)}
-                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-600"
                 />
               </div>
               <div>
@@ -762,7 +679,7 @@ export default function ContentCreationInterface({
                   placeholder="Campaign or project name"
                   value={campaignName}
                   onChange={(e) => setCampaignName(e.target.value)}
-                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-600"
                 />
               </div>
               <div>
@@ -777,7 +694,7 @@ export default function ContentCreationInterface({
                   type="date"
                   value={publishedDate}
                   onChange={(e) => setPublishedDate(e.target.value)}
-                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-600"
                 />
               </div>
             </div>
@@ -802,7 +719,7 @@ export default function ContentCreationInterface({
                   placeholder="fashion, lifestyle, brand collaboration"
                   value={tagsInput}
                   onChange={(e) => setTagsInput(e.target.value)}
-                  className="text-sm min-h-[60px] bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="text-sm min-h-[60px] bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-600"
                 />
               </div>
               <div className="flex items-center justify-between">
