@@ -1,12 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import {
   ImageIcon,
   Type,
@@ -22,6 +16,137 @@ import {
   Building,
   Tag,
 } from "lucide-react";
+import RichTextEditor from "../tiptap";
+
+// UI Components
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "ghost" | "outline";
+  size?: "default" | "sm" | "lg";
+  children: React.ReactNode;
+}
+
+const Button = ({
+  variant = "default",
+  size = "default",
+  className = "",
+  children,
+  ...props
+}: ButtonProps) => {
+  const baseStyles =
+    "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background";
+
+  const variants = {
+    default: "bg-blue-500 text-white hover:bg-blue-600",
+    ghost: "hover:bg-accent hover:text-accent-foreground",
+    outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+  };
+
+  const sizes = {
+    default: "h-10 py-2 px-4",
+    sm: "h-9 px-3 rounded-md",
+    lg: "h-11 px-8 rounded-md",
+  };
+
+  return (
+    <button
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Input = ({ className = "", ...props }: InputProps) => {
+  return (
+    <input
+      className={`flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      {...props}
+    />
+  );
+};
+
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+const Textarea = ({ className = "", ...props }: TextareaProps) => {
+  return (
+    <textarea
+      className={`flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      {...props}
+    />
+  );
+};
+
+interface SwitchProps {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  id?: string;
+  className?: string;
+}
+
+const Switch = ({
+  checked,
+  onCheckedChange,
+  id,
+  className = "",
+}: SwitchProps) => {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      id={id}
+      onClick={() => onCheckedChange(!checked)}
+      className={`peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${
+        checked ? "bg-blue-500" : "bg-gray-300"
+      } ${className}`}
+    >
+      <span
+        className={`pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
+          checked ? "translate-x-5" : "translate-x-0"
+        }`}
+      />
+    </button>
+  );
+};
+
+interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+
+const Label = ({ className = "", ...props }: LabelProps) => {
+  return (
+    <label
+      className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
+      {...props}
+    />
+  );
+};
+
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Card = ({ children, className = "" }: CardProps) => {
+  return (
+    <div
+      className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}
+    >
+      {children}
+    </div>
+  );
+};
+
+interface CardContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const CardContent = ({ children, className = "" }: CardContentProps) => {
+  return <div className={`p-6 pt-0 ${className}`}>{children}</div>;
+};
 
 interface ContentCreationInterfaceProps {
   onSave?: (workData: any) => void;
@@ -104,17 +229,26 @@ export default function ContentCreationInterface({
     { id: "embed", label: "Embed", icon: Code, color: "#2196f3" },
   ];
 
-  // Get creator ID from localStorage following your pattern
+  // Get creator ID from localStorage - use userId as creatorId
   useEffect(() => {
     if (!creatorId) {
       try {
         const user = localStorage.getItem("user");
         if (user) {
           const userData = JSON.parse(user);
-          // Following your pattern from the browse creators page
-          if (userData?.creatorId) {
-            setCreatorId(userData.creatorId);
+
+          // Use userId as creatorId since they should be the same based on your associations
+          if (userData?.userId) {
+            setCreatorId(userData.userId);
+            console.log("Setting creatorId from userId:", userData.userId);
+          } else {
+            console.error(
+              "No userId found in localStorage user data:",
+              userData
+            );
           }
+        } else {
+          console.error("No user data found in localStorage");
         }
       } catch (error) {
         console.error("Error getting creator ID from localStorage:", error);
@@ -275,7 +409,7 @@ export default function ContentCreationInterface({
 
       // Prepare work data matching your backend structure
       const workData = {
-        creatorId,
+        creatorId, // This is now userId from localStorage
         title: title.trim(),
         content, // HTML content from TipTap
         contentType: selectedContentType as
@@ -294,7 +428,11 @@ export default function ContentCreationInterface({
         isVisible,
       };
 
-      console.log("Saving work data:", workData);
+      console.log(
+        "Saving work data with creatorId:",
+        workData.creatorId,
+        workData
+      );
 
       // Make API call to your backend
       const API_BASE_URL =
@@ -362,6 +500,12 @@ export default function ContentCreationInterface({
             <h1 className="text-2xl font-semibold text-gray-900">
               {initialData?.workId ? "Edit Your Work" : "Share Your Past Work"}
             </h1>
+            {/* Debug info */}
+            {creatorId && (
+              <div className="mt-2 text-sm text-green-600">
+                Creator ID: {creatorId}
+              </div>
+            )}
             {error && (
               <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-red-500" />
@@ -479,16 +623,19 @@ export default function ContentCreationInterface({
                       </div>
                     </div>
 
-                    {/* Content Textarea */}
+                    {/* Rich Text Editor */}
                     <div className="flex-1 min-h-0">
                       <Label className="text-sm font-medium text-gray-900 mb-2 block">
                         Content Description
                       </Label>
-                      <Textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                      <RichTextEditor
+                        content={content}
+                        onChange={setContent}
+                        onImageUpload={(urls) =>
+                          setUploadedImageUrls((prev) => [...prev, ...urls])
+                        }
                         placeholder="Tell the story of your work, collaboration, or creative process..."
-                        className="min-h-[200px] bg-gray-50 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        height="300px"
                       />
                     </div>
 
@@ -667,7 +814,6 @@ export default function ContentCreationInterface({
                   checked={isVisible}
                   onCheckedChange={setIsVisible}
                   className="data-[state=checked]:to-blue-400 data-[state=unchecked]:bg-gray-300"
-                  thumbClassName="bg-gray-50"
                 />
               </div>
             </div>
