@@ -123,3 +123,9 @@
     at async model.save (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\model.js:2426:7)
     at async Review.create (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\model.js:1362:12)
     at async createReview (file:///C:/Users/ferna/Downloads/playground/CollabForge/backend/controllers/reviewController.js:64:23)
+2025-08-20T06:44:53.508Z [CollabForge] error: Validation errors during brand review creation
+2025-08-20T07:09:03.335Z [CollabForge] error: Validation errors during user login
+2025-08-20T07:09:47.217Z [CollabForge] error: Validation errors during user login
+2025-08-20T07:19:10.491Z [CollabForge] error: Error during brand review creation
+2025-08-20T07:24:43.264Z [CollabForge] error: Error during brand review creation
+2025-08-20T07:31:29.713Z [CollabForge] error: Error during brand review creation

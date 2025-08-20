@@ -12,10 +12,7 @@ const BrandReview = sequelize.define(
       unique: true,
       defaultValue: DataTypes.UUIDV4,
       validate: {
-        isUUID: {
-          args: 4,
-          msg: "Review ID must be a valid UUID",
-        },
+        isUUID: 4,
       },
     },
     creatorId: {
@@ -40,17 +37,13 @@ const BrandReview = sequelize.define(
       validate: {
         min: 1,
         max: 5,
-        msg: "Rating must be between 1 and 5",
       },
     },
     comment: {
       type: DataTypes.TEXT,
       allowNull: true,
       validate: {
-        len: {
-          args: [0, 1000],
-          msg: "Comment must be up to 1000 characters long",
-        },
+        len: [0, 1000],
       },
     },
   },

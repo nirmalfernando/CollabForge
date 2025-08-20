@@ -42,6 +42,7 @@ interface EnrichedContractData {
   creatorSuggestions: string | null;
   currentStatus: string;
   rawStatus: string; // Keep original status for comparison
+  creatorId: string; // Add this field to preserve creator ID
 }
 
 export default function BrandContractViewPage({
@@ -75,7 +76,9 @@ export default function BrandContractViewPage({
         const contract: ContractDetails = await contractApi.getContractById(
           resolvedParams.id
         );
-        console.log("Contract details:", contract);
+        console.log("Raw contract details from API:", contract);
+        console.log("Contract creatorId specifically:", contract.creatorId);
+        console.log("Type of creatorId:", typeof contract.creatorId);
 
         // Fetch campaign details
         const campaign = await campaignApi.getCampaignById(contract.campaignId);
@@ -114,7 +117,12 @@ export default function BrandContractViewPage({
               ? "Complete"
               : contract.contractStatus,
           rawStatus: contract.contractStatus, // Keep original for comparison
+          creatorId: contract.creatorId, // Use the original creatorId from contract
         };
+
+        console.log("Final enriched contract data:", enrichedData);
+        console.log("Final enriched creatorId:", enrichedData.creatorId);
+        console.log("Type of final creatorId:", typeof enrichedData.creatorId);
 
         setContractData(enrichedData);
       } catch (err) {
@@ -152,10 +160,14 @@ export default function BrandContractViewPage({
     categories: string[];
     text: string;
   }) => {
-    if (!contractData) return;
+    if (!contractData) {
+      console.error("No contract data available for review submission");
+      return;
+    }
 
     try {
       console.log("📝 Brand review submitted:", review);
+      console.log("📋 Contract data:", contractData);
 
       // Get current user data for brandId
       const authData = getAuthData();
@@ -168,20 +180,33 @@ export default function BrandContractViewPage({
         return;
       }
 
-      // You'll need to get the brandId from the current user
-      // This might require fetching brand data by userId
+      // Get the brandId from the current user
       let brandId: string;
       try {
         const brandData = await brandApi.getBrandByUserId(authData.user.userId);
         brandId = brandData.brandId;
+        console.log("🏢 Brand ID found:", brandId);
       } catch (error) {
+        console.error("Error fetching brand data:", error);
         throw new Error("Could not find brand data for current user");
       }
 
+      // Ensure we have a valid creatorId
+      if (!contractData.creatorId) {
+        throw new Error("Creator ID is missing from contract data");
+      }
+
+      console.log("📋 Submitting review with:", {
+        creatorId: contractData.creatorId,
+        brandId: brandId,
+        rating: review.rating,
+        comment: review.text,
+      });
+
       // Create the brand review via API
       await brandReviewApi.createBrandReview({
-        creatorId: contractData.creatorId, // From contract data
-        brandId: brandId, // Current brand's ID
+        creatorId: contractData.creatorId,
+        brandId: brandId,
         rating: review.rating,
         comment: review.text, // Map 'text' to 'comment' as per backend expectation
       });
@@ -205,6 +230,8 @@ export default function BrandContractViewPage({
         } else {
           errorMessage = error.message;
         }
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
       }
 
       toast({
