@@ -236,7 +236,7 @@ export default function PastWorksTab({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="h-[360px] animate-pulse">
+            <Card key={i} className="h-[400px] animate-pulse">
               <div className="bg-gray-300 h-48 w-full"></div>
               <CardContent className="p-4">
                 <div className="bg-gray-300 h-4 w-3/4 mb-2 rounded"></div>
@@ -301,14 +301,15 @@ export default function PastWorksTab({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pastWorks.map((work: any, index: number) => (
           <div key={work.id} className="relative">
-            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 overflow-hidden h-[360px] flex flex-col">
-              <div className="relative flex-shrink-0">
+            <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 overflow-hidden h-[400px] flex flex-col">
+              {/* Fixed Image Section */}
+              <div className="relative flex-shrink-0 h-48">
                 <Image
                   src={work.thumbnail}
                   alt={work.title}
                   width={300}
                   height={200}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                   onError={(e) => {
                     // Fallback to placeholder if image fails to load
                     e.currentTarget.src =
@@ -324,75 +325,90 @@ export default function PastWorksTab({
                   </span>
                 </div>
               </div>
-              <CardContent className="p-4 flex flex-col flex-grow">
-                <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
-                  {work.title}
-                </h3>
 
-                {/* Collaboration info */}
-                {work.collaborationBrand && (
-                  <p className="text-primary text-sm mb-2">
-                    {work.collaborationBrand}
-                    {work.campaignName && ` • ${work.campaignName}`}
-                  </p>
-                )}
+              {/* Fixed Content Section */}
+              <CardContent className="p-4 flex flex-col flex-grow h-[152px]">
+                {/* Title - Fixed height */}
+                <div className="h-12 mb-2">
+                  <h3 className="font-semibold text-white text-lg group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
+                    {work.title}
+                  </h3>
+                </div>
 
-                <div
-                  className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[60px]"
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      work.description.length > 100
-                        ? work.description.substring(0, 100) + "..."
-                        : work.description,
-                  }}
-                />
+                {/* Collaboration info - Fixed height */}
+                <div className="h-5 mb-2">
+                  {work.collaborationBrand && (
+                    <p className="text-primary text-sm truncate">
+                      {work.collaborationBrand}
+                      {work.campaignName && ` • ${work.campaignName}`}
+                    </p>
+                  )}
+                </div>
 
-                {/* Tags */}
-                {work.tags && work.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {work.tags
-                      .slice(0, 3)
-                      .map((tag: string, tagIndex: number) => (
-                        <span
-                          key={tagIndex}
-                          className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded-full"
-                        >
-                          #{tag}
+                {/* Description - Fixed height with scroll */}
+                <div className="h-12 mb-3 flex-shrink-0">
+                  <div
+                    className="text-muted-foreground text-sm line-clamp-2 overflow-hidden"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        work.description.length > 80
+                          ? work.description.substring(0, 80) + "..."
+                          : work.description,
+                    }}
+                  />
+                </div>
+
+                {/* Tags - Fixed height */}
+                <div className="h-6 mb-3 flex-shrink-0">
+                  {work.tags && work.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {work.tags
+                        .slice(0, 2)
+                        .map((tag: string, tagIndex: number) => (
+                          <span
+                            key={tagIndex}
+                            className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded-full"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      {work.tags.length > 2 && (
+                        <span className="text-muted-foreground text-xs py-1">
+                          +{work.tags.length - 2}
                         </span>
-                      ))}
-                    {work.tags.length > 3 && (
-                      <span className="text-muted-foreground text-xs">
-                        +{work.tags.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                )}
+                      )}
+                    </div>
+                  )}
+                </div>
 
+                {/* Metrics and Date - Fixed at bottom */}
                 <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
-                      <span>{work.views}</span>
+                      <Eye className="h-3 w-3" />
+                      <span className="text-xs">{work.views}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Heart className="h-4 w-4" />
-                      <span>{work.likes}</span>
+                      <Heart className="h-3 w-3" />
+                      <span className="text-xs">{work.likes}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <MessageCircle className="h-4 w-4" />
-                      <span>{work.comments}</span>
+                      <MessageCircle className="h-3 w-3" />
+                      <span className="text-xs">{work.comments}</span>
                     </div>
                   </div>
-                  <span>{work.date}</span>
+                  <span className="text-xs">{work.date}</span>
                 </div>
               </CardContent>
             </Card>
+            
+            {/* Action buttons - Positioned outside card */}
             <div className="absolute top-2 right-2 flex gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => handleEditWork(index)}
-                className="text-blue-500 hover:text-blue-700 bg-white/80 hover:bg-white/90"
+                className="text-blue-500 hover:text-blue-700 bg-white/80 hover:bg-white/90 h-8 w-8 p-0"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -400,7 +416,7 @@ export default function PastWorksTab({
                 variant="ghost"
                 size="sm"
                 onClick={() => handleRemoveWork(index)}
-                className="text-red-500 hover:text-red-700 bg-white/80 hover:bg-white/90"
+                className="text-red-500 hover:text-red-700 bg-white/80 hover:bg-white/90 h-8 w-8 p-0"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -408,9 +424,9 @@ export default function PastWorksTab({
           </div>
         ))}
 
-        {/* Add new work card */}
+        {/* Add new work card - Same height as other cards */}
         <Card
-          className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[360px]"
+          className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[400px]"
           onClick={() => {
             setEditingIndex(null);
             setShowCreationModal(true);
