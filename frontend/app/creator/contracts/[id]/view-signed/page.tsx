@@ -2,6 +2,7 @@
 import { useState, useEffect, use } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ReviewModal from "@/components/review-modal";
 import { toast } from "@/hooks/use-toast";
 import {
   Select,
@@ -12,8 +13,14 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
-import { contractApi, campaignApi, getAuthData, ApiError } from "@/lib/api";
+import { Loader2, Star } from "lucide-react";
+import {
+  contractApi,
+  campaignApi,
+  getAuthData,
+  ApiError,
+  reviewApi,
+} from "@/lib/api";
 
 interface ContractData {
   contractId: string;
@@ -39,6 +46,11 @@ export default function CreatorSignedContractViewPage({
   const [contractStatus, setContractStatus] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+
+  // Review modal states
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [canShowReviewPrompt, setCanShowReviewPrompt] = useState(false);
 
   // Unwrap the params Promise
   const { id } = use(params);
@@ -172,6 +184,11 @@ export default function CreatorSignedContractViewPage({
 
         setContractData(enrichedContractData);
         setContractStatus(contract.contractStatus);
+
+        // Check if contract is already completed to show review button
+        if (contract.contractStatus === "Completed") {
+          setCanShowReviewPrompt(true);
+        }
       } catch (error) {
         console.error("❌ Error fetching signed contract data:", error);
 
@@ -206,6 +223,7 @@ export default function CreatorSignedContractViewPage({
   const handleUpdateStatus = async (newStatus: string) => {
     if (!contractData) return;
 
+    const previousStatus = contractStatus;
     setIsUpdatingStatus(true);
 
     try {
@@ -237,6 +255,22 @@ export default function CreatorSignedContractViewPage({
             }
           : null
       );
+
+      // Show review modal if status changed to "Completed" and user hasn't reviewed yet
+      if (
+        newStatus === "Completed" &&
+        previousStatus !== "Completed" &&
+        !hasReviewed
+      ) {
+        setShowReviewModal(true);
+      }
+
+      // Set review prompt availability for completed contracts
+      if (newStatus === "Completed") {
+        setCanShowReviewPrompt(true);
+      } else {
+        setCanShowReviewPrompt(false);
+      }
     } catch (error) {
       console.error("❌ Error updating contract status:", error);
 
@@ -262,6 +296,84 @@ export default function CreatorSignedContractViewPage({
     } finally {
       setIsUpdatingStatus(false);
     }
+  };
+
+  const handleReviewSubmit = async (review: {
+    rating: number;
+    categories: string[];
+    text: string;
+  }) => {
+    if (!contractData) return;
+
+    try {
+      console.log("📝 Creator review submitted:", review);
+
+      // Get current user data for creatorId
+      const authData = getAuthData();
+      if (!authData) {
+        toast({
+          title: "Authentication Error",
+          description: "Please log in to submit a review.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create the review via API
+      const reviewPayload = {
+        campaignId: contractData.campaignId,
+        creatorId: contractData.creatorId, // This should be the current user's creator ID
+        rating: review.rating,
+        comment: review.text, // Map 'text' to 'comment' as per backend expectation
+      };
+
+      console.log("📤 Sending review payload:", reviewPayload);
+
+      await reviewApi.createReview(reviewPayload);
+
+      setHasReviewed(true);
+
+      toast({
+        title: "Review Submitted",
+        description: "Thank you for your feedback!",
+      });
+    } catch (error) {
+      console.error("❌ Error submitting review:", error);
+
+      let errorMessage = "Failed to submit review. Please try again.";
+
+      if (error instanceof ApiError) {
+        if (error.status === 400) {
+          // Handle validation errors
+          if (error.details && error.details.errors) {
+            const validationErrors = error.details.errors
+              .map((err: any) => err.message || err.msg)
+              .join("; ");
+            errorMessage = `Validation failed: ${validationErrors}`;
+          } else {
+            errorMessage = error.message || "Review validation failed.";
+          }
+        } else if (error.status === 401) {
+          errorMessage = "You don't have permission to submit this review.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      toast({
+        title: "Error Submitting Review",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleOpenReviewModal = () => {
+    setShowReviewModal(true);
+  };
+
+  const handleCloseReviewModal = () => {
+    setShowReviewModal(false);
   };
 
   // Loading state
@@ -410,10 +522,68 @@ export default function CreatorSignedContractViewPage({
               </div>
             )}
           </div>
+
+          {/* Review Section - Show only when contract is completed */}
+          {canShowReviewPrompt && (
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-primary">
+                Review Experience
+              </h2>
+              <div className="bg-muted rounded-lg p-6">
+                {hasReviewed ? (
+                  <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                      <Star className="h-8 w-8 text-yellow-500 fill-current" />
+                    </div>
+                    <p className="text-lg text-foreground font-medium mb-2">
+                      Thank you for your review!
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Your feedback has been submitted successfully.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-lg text-foreground font-medium mb-4">
+                      How was your experience working with this brand?
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      Your feedback helps other creators and improves the
+                      platform.
+                    </p>
+                    <Button
+                      onClick={handleOpenReviewModal}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full"
+                    >
+                      <Star className="h-5 w-5 mr-2" />
+                      Review Brand
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
       <Footer />
+
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={showReviewModal}
+        onClose={handleCloseReviewModal}
+        onSubmit={handleReviewSubmit}
+        reviewType="creator_to_brand"
+        title="Review Brand"
+        placeholder="Share your experience working with this brand..."
+        categories={[
+          "Delivered On Time",
+          "Great Communication",
+          "Fair Payment",
+          "Highly Recommended",
+          "Professional Experience",
+        ]}
+      />
     </div>
   );
 }

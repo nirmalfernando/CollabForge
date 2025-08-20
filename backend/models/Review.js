@@ -12,25 +12,40 @@ const Review = sequelize.define(
       unique: true,
       defaultValue: DataTypes.UUIDV4,
       validate: {
-        isUUID: {
-          args: 4,
-          msg: "Review ID must be a valid UUID",
-        },
+        isUUID: 4,
       },
     },
     campaignId: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+        customCampaignId(value) {
+          if (!value) {
+            throw new Error("Campaign ID is required");
+          }
+        },
+      },
       references: {
-        model: "campaigns", // Reference to the Campaign model
+        model: "campaigns",
         key: "campaign_id",
       },
     },
     creatorId: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+        customCreatorId(value) {
+          if (!value) {
+            throw new Error("Creator ID is required");
+          }
+        },
+      },
       references: {
-        model: "creators", // Reference to the Creator model
+        model: "creators",
         key: "creator_id",
       },
     },
@@ -38,24 +53,28 @@ const Review = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 1,
-        max: 5,
-        msg: "Rating must be between 1 and 5",
+        isInt: true,
+        customRating(value) {
+          if (value < 1 || value > 5) {
+            throw new Error("Rating must be between 1 and 5");
+          }
+        },
       },
     },
     comment: {
       type: DataTypes.TEXT,
       allowNull: true,
       validate: {
-        len: {
-          args: [0, 1000],
-          msg: "Comment must be up to 1000 characters long",
+        customComment(value) {
+          if (value && value.length > 1000) {
+            throw new Error("Comment must be up to 1000 characters long");
+          }
         },
       },
     },
   },
   {
-    tableName: "reviews",
+    tableName: "creator_reviews",
     timestamps: true,
     underscored: true,
   }

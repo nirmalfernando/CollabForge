@@ -1,65 +1,117 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Eye, Heart, MessageCircle, X, Pencil } from "lucide-react";
+import {
+  Plus,
+  Eye,
+  Heart,
+  MessageCircle,
+  X,
+  Pencil,
+  Loader2,
+} from "lucide-react";
 import ContentCreationInterface from "@/components/creator/content-creation-interface";
+import { creatorWorkApi } from "@/lib/api";
 
 interface PastWorksTabProps {
   creatorData: any;
   setCreatorData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksTabProps) {
+interface CreatorWork {
+  workId: string;
+  title: string;
+  content: string;
+  contentType: string;
+  thumbnailUrl: string | null;
+  mediaUrls: string[];
+  metrics: {
+    views: number | string;
+    likes: number | string;
+    comments: number | string;
+    shares: number | string;
+  };
+  publishedDate: string | null;
+  collaborationBrand: string | null;
+  campaignName: string | null;
+  tags: string[];
+  isVisible: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export default function PastWorksTab({
+  creatorData,
+  setCreatorData,
+}: PastWorksTabProps) {
   const [showCreationModal, setShowCreationModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [creatorWorks, setCreatorWorks] = useState<CreatorWork[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const pastWorks = creatorData.pastCollaborations?.map((collab: any, index: number) => ({
-    id: index.toString(),
-    title: collab.campaign || collab.brand || "Untitled Collaboration",
-    description: collab.description || "No description provided.",
-    thumbnail: collab.thumbnail || "/placeholder.svg?height=200&width=300",
-    views: collab.views || "0",
-    likes: collab.likes || "0",
-    comments: collab.comments || "0",
-    date: collab.date || "Unknown date",
-  })) || [
-    {
-      id: "1",
-      title: "Saturday Night Festival",
-      description: "An incredible music festival collaboration in Colombo featuring 20+ artists...",
-      thumbnail: "/placeholder.svg?height=200&width=300",
-      views: "2.1M",
-      likes: "45K",
-      comments: "1.2K",
-      date: "2 weeks ago",
-    },
-    {
-      id: "2",
-      title: "Tech Product Launch",
-      description: "Behind-the-scenes content creation for a major tech product launch event...",
-      thumbnail: "/placeholder.svg?height=200&width=300",
-      views: "890K",
-      likes: "23K",
-      comments: "567",
-      date: "1 month ago",
-    },
-    {
-      id: "3",
-      title: "Fashion Week Coverage",
-      description: "Exclusive coverage of Colombo Fashion Week with interviews and runway highlights...",
-      thumbnail: "/placeholder.svg?height=200&width=300",
-      views: "1.5M",
-      likes: "67K",
-      comments: "2.1K",
-      date: "2 months ago",
-    },
-  ];
+  // Fetch creator works from backend
+  useEffect(() => {
+    const fetchCreatorWorks = async () => {
+      if (!creatorData?.creatorId) {
+        setLoading(false);
+        return;
+      }
 
-  const handleSaveWork = (data: {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await creatorWorkApi.getWorksByCreatorId(
+          creatorData.creatorId,
+          {
+            isVisible: true, // Only fetch visible works
+            page: 1,
+            limit: 50, // Adjust as needed
+          }
+        );
+
+        if (response && response.works) {
+          setCreatorWorks(response.works);
+        } else {
+          setCreatorWorks([]);
+        }
+      } catch (err) {
+        console.error("Error fetching creator works:", err);
+        setError("Failed to load works. Please try again.");
+        setCreatorWorks([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCreatorWorks();
+  }, [creatorData?.creatorId]);
+
+  // Transform backend data to match the expected format
+  const pastWorks = creatorWorks.map((work, index) => ({
+    id: work.workId,
+    title: work.title || "Untitled Work",
+    description: work.content || "No description provided.",
+    thumbnail: work.thumbnailUrl || "/placeholder.svg?height=200&width=300",
+    views: work.metrics?.views?.toString() || "0",
+    likes: work.metrics?.likes?.toString() || "0",
+    comments: work.metrics?.comments?.toString() || "0",
+    date: work.publishedDate
+      ? new Date(work.publishedDate).toLocaleDateString()
+      : new Date(work.createdAt).toLocaleDateString(),
+    contentType: work.contentType,
+    collaborationBrand: work.collaborationBrand,
+    campaignName: work.campaignName,
+    tags: work.tags,
+    originalWork: work, // Keep reference to original work data
+  }));
+
+  const handleSaveWork = async (data: {
     title: string;
     content: string;
     thumbnail?: string;
@@ -68,52 +120,160 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
     likes: string;
     comments: string;
     date: string;
+    collaborationBrand?: string;
+    campaignName?: string;
+    tags?: string[];
   }) => {
-    const newCollab = {
-      brand: data.title,
-      campaign: data.title,
-      description: data.content,
-      thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=300",
-      views: data.views || "0",
-      likes: data.likes || "0",
-      comments: data.comments || "0",
-      date: data.date || new Date().toISOString().split("T")[0],
-    };
+    try {
+      const workData = {
+        creatorId: creatorData.creatorId,
+        title: data.title,
+        content: data.content,
+        contentType: data.contentType as
+          | "image"
+          | "text"
+          | "grid"
+          | "video"
+          | "embed",
+        thumbnailUrl: data.thumbnail,
+        metrics: {
+          views: parseInt(data.views) || 0,
+          likes: parseInt(data.likes) || 0,
+          comments: parseInt(data.comments) || 0,
+          shares: 0,
+        },
+        publishedDate: data.date || new Date().toISOString(),
+        collaborationBrand: data.collaborationBrand,
+        campaignName: data.campaignName,
+        tags: data.tags || [],
+        isVisible: true,
+      };
 
-    if (editingIndex !== null) {
-      setCreatorData((prev: any) => {
-        const updated = [...prev.pastCollaborations];
-        updated[editingIndex] = newCollab;
-        return { ...prev, pastCollaborations: updated };
-      });
+      if (editingIndex !== null) {
+        // Update existing work
+        const workToEdit = creatorWorks[editingIndex];
+        const updatedWork = await creatorWorkApi.updateWork(
+          workToEdit.workId,
+          workData
+        );
+
+        // Update local state
+        const updatedWorks = [...creatorWorks];
+        updatedWorks[editingIndex] = { ...updatedWork };
+        setCreatorWorks(updatedWorks);
+
+        toast({
+          title: "Work Updated",
+          description: "Your work has been updated successfully.",
+        });
+      } else {
+        // Create new work
+        const newWork = await creatorWorkApi.createWork(workData);
+        setCreatorWorks((prev) => [newWork, ...prev]);
+
+        toast({
+          title: "Work Added",
+          description: "Your new work has been added successfully.",
+        });
+      }
+
+      setShowCreationModal(false);
+      setEditingIndex(null);
+    } catch (error) {
+      console.error("Error saving work:", error);
       toast({
-        title: "Collaboration Updated",
-        description: "Your collaboration has been updated successfully.",
-      });
-    } else {
-      setCreatorData((prev: any) => ({
-        ...prev,
-        pastCollaborations: [...prev.pastCollaborations, newCollab],
-      }));
-      toast({
-        title: "Collaboration Added",
-        description: "Your new collaboration has been added successfully.",
+        title: "Error",
+        description: "Failed to save work. Please try again.",
+        variant: "destructive",
       });
     }
-    setShowCreationModal(false);
-    setEditingIndex(null);
   };
 
-  const handleRemoveWork = (index: number) => {
-    setCreatorData((prev: any) => ({
-      ...prev,
-      pastCollaborations: prev.pastCollaborations.filter((_: any, i: number) => i !== index),
-    }));
-    toast({
-      title: "Collaboration Removed",
-      description: "The collaboration has been removed from your profile.",
-    });
+  const handleRemoveWork = async (index: number) => {
+    try {
+      const workToRemove = creatorWorks[index];
+      await creatorWorkApi.deleteWork(workToRemove.workId);
+
+      // Update local state
+      setCreatorWorks((prev) => prev.filter((_, i) => i !== index));
+
+      toast({
+        title: "Work Removed",
+        description: "The work has been removed from your profile.",
+      });
+    } catch (error) {
+      console.error("Error removing work:", error);
+      toast({
+        title: "Error",
+        description: "Failed to remove work. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
+
+  const handleEditWork = (index: number) => {
+    setEditingIndex(index);
+    setShowCreationModal(true);
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">
+              Past <span className="text-primary">Works</span>
+            </h2>
+            <p className="text-muted-foreground">
+              Showcase your previous collaborations and content.
+            </p>
+          </div>
+          <Button disabled>
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            Loading...
+          </Button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="h-[360px] animate-pulse">
+              <div className="bg-gray-300 h-48 w-full"></div>
+              <CardContent className="p-4">
+                <div className="bg-gray-300 h-4 w-3/4 mb-2 rounded"></div>
+                <div className="bg-gray-300 h-3 w-full mb-1 rounded"></div>
+                <div className="bg-gray-300 h-3 w-2/3 rounded"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">
+              Past <span className="text-primary">Works</span>
+            </h2>
+            <p className="text-muted-foreground">
+              Showcase your previous collaborations and content.
+            </p>
+          </div>
+          <Button onClick={() => window.location.reload()} variant="outline">
+            Retry
+          </Button>
+        </div>
+        <div className="text-center py-12">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 relative">
@@ -122,7 +282,9 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
           <h2 className="text-3xl font-bold mb-2">
             Past <span className="text-primary">Works</span>
           </h2>
-          <p className="text-muted-foreground">Showcase your previous collaborations and content.</p>
+          <p className="text-muted-foreground">
+            Showcase your previous collaborations and content.
+          </p>
         </div>
         <Button
           className="bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -132,7 +294,7 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
           }}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add Collaboration
+          Add Work
         </Button>
       </div>
 
@@ -147,17 +309,65 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                   width={300}
                   height={200}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    e.currentTarget.src =
+                      "/placeholder.svg?height=200&width=300";
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
+
+                {/* Content type badge */}
+                <div className="absolute top-2 left-2">
+                  <span className="bg-primary/80 text-primary-foreground text-xs px-2 py-1 rounded-full capitalize">
+                    {work.contentType}
+                  </span>
+                </div>
               </div>
               <CardContent className="p-4 flex flex-col flex-grow">
                 <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2 overflow-hidden">
                   {work.title}
                 </h3>
+
+                {/* Collaboration info */}
+                {work.collaborationBrand && (
+                  <p className="text-primary text-sm mb-2">
+                    {work.collaborationBrand}
+                    {work.campaignName && ` • ${work.campaignName}`}
+                  </p>
+                )}
+
                 <div
-                  className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[80px]"
-                  dangerouslySetInnerHTML={{ __html: work.description }}
+                  className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-[60px]"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      work.description.length > 100
+                        ? work.description.substring(0, 100) + "..."
+                        : work.description,
+                  }}
                 />
+
+                {/* Tags */}
+                {work.tags && work.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {work.tags
+                      .slice(0, 3)
+                      .map((tag: string, tagIndex: number) => (
+                        <span
+                          key={tagIndex}
+                          className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded-full"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    {work.tags.length > 3 && (
+                      <span className="text-muted-foreground text-xs">
+                        +{work.tags.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
@@ -181,11 +391,8 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  setEditingIndex(index);
-                  setShowCreationModal(true);
-                }}
-                className="text-blue-500 hover:text-blue-700"
+                onClick={() => handleEditWork(index)}
+                className="text-blue-500 hover:text-blue-700 bg-white/80 hover:bg-white/90"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -193,13 +400,15 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                 variant="ghost"
                 size="sm"
                 onClick={() => handleRemoveWork(index)}
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 bg-white/80 hover:bg-white/90"
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
           </div>
         ))}
+
+        {/* Add new work card */}
         <Card
           className="group cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted hover:border-primary h-[360px]"
           onClick={() => {
@@ -212,10 +421,31 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
             <h3 className="font-medium text-white text-lg mb-2 group-hover:text-primary transition-colors">
               Add New Work
             </h3>
-            <p className="text-muted-foreground text-sm">Share your latest collaboration or project</p>
+            <p className="text-muted-foreground text-sm">
+              Share your latest collaboration or project
+            </p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Show empty state if no works */}
+      {pastWorks.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <h3 className="text-xl font-semibold mb-2">No works yet</h3>
+          <p className="text-muted-foreground mb-4">
+            Start showcasing your work by adding your first project.
+          </p>
+          <Button
+            onClick={() => {
+              setEditingIndex(null);
+              setShowCreationModal(true);
+            }}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Your First Work
+          </Button>
+        </div>
+      )}
 
       {showCreationModal && (
         <ContentCreationInterface
@@ -233,7 +463,14 @@ export default function PastWorksTab({ creatorData, setCreatorData }: PastWorksT
                   views: pastWorks[editingIndex].views,
                   likes: pastWorks[editingIndex].likes,
                   comments: pastWorks[editingIndex].comments,
-                  date: pastWorks[editingIndex].date,
+                  date:
+                    pastWorks[editingIndex].originalWork.publishedDate ||
+                    pastWorks[editingIndex].originalWork.createdAt,
+                  contentType: pastWorks[editingIndex].contentType,
+                  collaborationBrand:
+                    pastWorks[editingIndex].collaborationBrand,
+                  campaignName: pastWorks[editingIndex].campaignName,
+                  tags: pastWorks[editingIndex].tags,
                 }
               : undefined
           }

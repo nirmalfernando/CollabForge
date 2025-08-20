@@ -269,12 +269,6 @@ export default function CreatorCampaignsPage() {
                     <p className="text-primary font-medium">
                       Budget: {formatBudget(campaign.budget)}
                     </p>
-                    {/* Debug info - Remove in production */}
-                    {process.env.NODE_ENV === "development" && (
-                      <p className="text-xs text-gray-500">
-                        ID: {campaignId || "undefined"}
-                      </p>
-                    )}
                   </div>
 
                   {/* Only render Link if campaign ID exists */}

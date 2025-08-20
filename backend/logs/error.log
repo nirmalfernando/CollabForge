@@ -113,3 +113,21 @@
 2025-08-14T11:29:45.416Z [CollabForge] error: Error during getting creator details
 2025-08-14T11:29:45.423Z [CollabForge] error: Error during getting user details
 2025-08-14T11:29:45.439Z [CollabForge] error: Error during getting creator details
+2025-08-19T05:13:37.056Z [CollabForge] error: Error during user login
+2025-08-19T19:05:59.857Z [CollabForge] error: Error during review creation
+2025-08-19T19:13:04.108Z [CollabForge] error: SequelizeValidationError: Validation error: Invalid validator function: msg
+    at InstanceValidator._validate (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\instance-validator.js:50:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async InstanceValidator._validateAndRunHooks (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\instance-validator.js:60:7)
+    at async InstanceValidator.validate (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\instance-validator.js:54:12)
+    at async model.save (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\model.js:2426:7)
+    at async Review.create (C:\Users\ferna\Downloads\playground\CollabForge\backend\node_modules\sequelize\lib\model.js:1362:12)
+    at async createReview (file:///C:/Users/ferna/Downloads/playground/CollabForge/backend/controllers/reviewController.js:64:23)
+2025-08-20T06:44:53.508Z [CollabForge] error: Validation errors during brand review creation
+2025-08-20T07:09:03.335Z [CollabForge] error: Validation errors during user login
+2025-08-20T07:09:47.217Z [CollabForge] error: Validation errors during user login
+2025-08-20T07:19:10.491Z [CollabForge] error: Error during brand review creation
+2025-08-20T07:24:43.264Z [CollabForge] error: Error during brand review creation
+2025-08-20T07:31:29.713Z [CollabForge] error: Error during brand review creation
+2025-08-20T08:38:06.489Z [CollabForge] error: Validation errors during creator work creation
+2025-08-20T08:39:13.594Z [CollabForge] error: Validation errors during creator work creation
