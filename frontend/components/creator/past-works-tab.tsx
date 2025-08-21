@@ -13,8 +13,10 @@ import {
   X,
   Pencil,
   Loader2,
+  ExternalLink,
 } from "lucide-react";
 import ContentCreationInterface from "@/components/creator/content-creation-interface";
+import WorkDetailModal from "@/components/creator/work-detail-modal";
 import { creatorWorkApi } from "@/lib/api";
 
 interface PastWorksTabProps {
@@ -53,6 +55,10 @@ export default function PastWorksTab({
   const [creatorWorks, setCreatorWorks] = useState<CreatorWork[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Modal states for work detail view
+  const [selectedWorkId, setSelectedWorkId] = useState<string | null>(null);
+  const [showWorkDetail, setShowWorkDetail] = useState(false);
 
   // Fetch creator works from backend
   useEffect(() => {
@@ -110,6 +116,19 @@ export default function PastWorksTab({
     tags: work.tags,
     originalWork: work, // Keep reference to original work data
   }));
+
+  // Function to get optimized Cloudinary image URL
+  const getOptimizedThumbnail = (url: string) => {
+    if (!url || url.includes("placeholder.svg")) return url;
+
+    // Check if it's a Cloudinary URL
+    if (url.includes("cloudinary.com")) {
+      // Insert transformation parameters for thumbnails
+      return url.replace("/upload/", "/upload/w_300,h_200,c_fill,q_80,f_auto/");
+    }
+
+    return url;
+  };
 
   const handleSaveWork = async (data: {
     title: string;
@@ -216,6 +235,16 @@ export default function PastWorksTab({
     setShowCreationModal(true);
   };
 
+  const handleViewWork = (workId: string) => {
+    setSelectedWorkId(workId);
+    setShowWorkDetail(true);
+  };
+
+  const handleCloseWorkDetail = () => {
+    setShowWorkDetail(false);
+    setSelectedWorkId(null);
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -305,7 +334,7 @@ export default function PastWorksTab({
               {/* Fixed Image Section */}
               <div className="relative flex-shrink-0 h-48">
                 <Image
-                  src={work.thumbnail}
+                  src={getOptimizedThumbnail(work.thumbnail)}
                   alt={work.title}
                   width={300}
                   height={200}
@@ -323,6 +352,21 @@ export default function PastWorksTab({
                   <span className="bg-primary/80 text-primary-foreground text-xs px-2 py-1 rounded-full capitalize">
                     {work.contentType}
                   </span>
+                </div>
+
+                {/* View overlay on hover */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleViewWork(work.id);
+                    }}
+                    size="sm"
+                    className="bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    View Details
+                  </Button>
                 </div>
               </div>
 
@@ -401,22 +445,42 @@ export default function PastWorksTab({
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Action buttons - Positioned outside card */}
             <div className="absolute top-2 right-2 flex gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleEditWork(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleViewWork(work.id);
+                }}
                 className="text-blue-500 hover:text-blue-700 bg-white/80 hover:bg-white/90 h-8 w-8 p-0"
+                title="View Details"
+              >
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditWork(index);
+                }}
+                className="text-blue-500 hover:text-blue-700 bg-white/80 hover:bg-white/90 h-8 w-8 p-0"
+                title="Edit Work"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleRemoveWork(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveWork(index);
+                }}
                 className="text-red-500 hover:text-red-700 bg-white/80 hover:bg-white/90 h-8 w-8 p-0"
+                title="Remove Work"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -463,6 +527,7 @@ export default function PastWorksTab({
         </div>
       )}
 
+      {/* Content Creation Modal */}
       {showCreationModal && (
         <ContentCreationInterface
           onSave={handleSaveWork}
@@ -490,6 +555,15 @@ export default function PastWorksTab({
                 }
               : undefined
           }
+        />
+      )}
+
+      {/* Work Detail Modal */}
+      {showWorkDetail && selectedWorkId && (
+        <WorkDetailModal
+          workId={selectedWorkId}
+          isOpen={showWorkDetail}
+          onClose={handleCloseWorkDetail}
         />
       )}
     </div>
