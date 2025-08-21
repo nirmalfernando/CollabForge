@@ -588,7 +588,16 @@ export const creatorWorkApi = {
   },
 
   getWorkById: async (workId: string) => {
-    return apiRequest(`/creator-works/${workId}`);
+    console.log("Creator Work API: Fetching work by ID:", workId);
+
+    try {
+      const response = await apiRequest(`/creator-works/${workId}`);
+      console.log("Creator Work API: Successfully fetched work:", response);
+      return response;
+    } catch (error) {
+      console.error("Creator Work API: Error fetching work:", error);
+      throw error;
+    }
   },
 
   getWorksByCreatorId: async (
