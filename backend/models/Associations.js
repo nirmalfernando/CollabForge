@@ -8,6 +8,8 @@ import Review from "./Review.js";
 import BrandReview from "./BrandReview.js";
 import Campaign from "./Campaign.js";
 import CreatorWork from "./CreatorWork.js";
+import Chat from "./Chat.js";
+import Conversation from "./Conversation.js";
 
 // Define associations between models
 
@@ -192,6 +194,48 @@ CreatorWork.belongsTo(Creator, {
   as: "creator",
 });
 
+// Chat associations
+User.hasMany(Chat, { foreignKey: "senderId", as: "sentMessages" });
+Chat.belongsTo(User, { foreignKey: "senderId", as: "sender" });
+
+User.hasMany(Chat, { foreignKey: "receiverId", as: "receivedMessages" });
+Chat.belongsTo(User, { foreignKey: "receiverId", as: "receiver" });
+
+Conversation.hasMany(Chat, { foreignKey: "conversationId", as: "messages" });
+Chat.belongsTo(Conversation, {
+  foreignKey: "conversationId",
+  as: "conversation",
+});
+
+// Conversation associations
+User.hasMany(Conversation, {
+  foreignKey: "participant1Id",
+  as: "conversationsAsParticipant1",
+});
+Conversation.belongsTo(User, {
+  foreignKey: "participant1Id",
+  as: "participant1",
+});
+
+User.hasMany(Conversation, {
+  foreignKey: "participant2Id",
+  as: "conversationsAsParticipant2",
+});
+Conversation.belongsTo(User, {
+  foreignKey: "participant2Id",
+  as: "participant2",
+});
+
+// Optional: Association for last message in conversation
+Chat.hasMany(Conversation, {
+  foreignKey: "lastMessageId",
+  as: "conversationsAsLastMessage",
+});
+Conversation.belongsTo(Chat, {
+  foreignKey: "lastMessageId",
+  as: "lastMessage",
+});
+
 export default {
   User,
   Category,
@@ -203,4 +247,6 @@ export default {
   Review,
   BrandReview,
   CreatorWork,
+  Chat,
+  Conversation,
 };

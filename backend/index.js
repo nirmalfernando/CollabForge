@@ -7,7 +7,11 @@ import cors from "cors";
 import logger from "./middlewares/logger.js";
 import bodyParser from "body-parser";
 import globalRateLimiter from "./middlewares/rateLimit.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import "./models/Associations.js";
+
+// Import routes
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import creatorRoute from "./routes/creatorRoute.js";
@@ -18,6 +22,10 @@ import contractRoute from "./routes/contractRoute.js";
 import creatorWorkRoute from "./routes/creatorWorkRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import brandReviewRoute from "./routes/brandReviewRoute.js";
+import chatRoute from "./routes/chatRoute.js";
+
+// Import socket handler
+import { initializeSocket } from "./socket/socketHandler.js";
 
 dotenv.config();
 
@@ -40,6 +48,32 @@ initializeDatabase();
 
 const app = express();
 const PORT = process.env.PORT;
+
+// Create HTTP server
+const server = createServer(app);
+
+// Initialize Socket.IO with CORS configuration
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "https://helpful-begonia-22aec6.netlify.app",
+      "https://*.netlify.app", // For Netlify deploy previews
+      "http://localhost:3000", // For local development
+      "https://www.collabforge.xyz",
+      "https://collabforge.xyz",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"], // Enable both transports
+  allowEIO3: true, // Enable compatibility with older clients
+});
+
+// Initialize socket handlers
+initializeSocket(io);
+
+// Make io available to routes if needed
+app.set("io", io);
 
 // Middleware to log errors
 app.use((err, req, res, next) => {
@@ -86,6 +120,16 @@ app.use(
   })
 );
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+    socketConnections: io.engine.clientsCount,
+  });
+});
+
 // Setup the routes
 app.use("/api/users", userRoute);
 app.use("/api/categories", categoryRoute);
@@ -97,8 +141,45 @@ app.use("/api/contracts", contractRoute);
 app.use("/api/creator-works", creatorWorkRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/brand-reviews", brandReviewRoute);
+app.use("/api/chat", chatRoute);
+
+// Socket.IO connection info endpoint (for debugging)
+app.get("/api/socket/info", (req, res) => {
+  res.json({
+    connectedClients: io.engine.clientsCount,
+    rooms: Array.from(io.sockets.adapter.rooms.keys()),
+  });
+});
+
+// Global error handler for unhandled routes
+app.use("*", (req, res) => {
+  res.status(404).json({
+    message: "Route not found",
+    path: req.originalUrl,
+  });
+});
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Socket.IO server is ready for connections`);
 });
+
+// Handle graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down gracefully");
+  server.close(() => {
+    console.log("Process terminated");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT received, shutting down gracefully");
+  server.close(() => {
+    console.log("Process terminated");
+    process.exit(0);
+  });
+});
+
+export default app;
