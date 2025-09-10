@@ -17,7 +17,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-interface BrandViewAccountsMetricsTabProps {
+interface ViewAccountsMetricsTabProps {
   creatorData: {
     socialMedia?: Array<{
       platform: string;
@@ -28,9 +28,9 @@ interface BrandViewAccountsMetricsTabProps {
   };
 }
 
-export default function BrandViewAccountsMetricsTab({
+export default function ViewAccountsMetricsTab({
   creatorData,
-}: BrandViewAccountsMetricsTabProps) {
+}: ViewAccountsMetricsTabProps) {
   // Mock analytics data - in real app, this would come from API or creator's connected accounts
   const analyticsData = {
     totalFollowers:
@@ -124,7 +124,7 @@ export default function BrandViewAccountsMetricsTab({
                       <span className="text-sm font-medium text-foreground">
                         {formatNumber(platform.followers || 0)} followers
                       </span>
-                      <Button variant="ghost" size="sm" asChild>
+                      <Button asChild>
                         <a
                           href={platform.url}
                           target="_blank"
