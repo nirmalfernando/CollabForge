@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Monitor,
   Users,
@@ -47,9 +46,6 @@ interface ViewUserDetailsTabProps {
     status: boolean;
   };
   category?: { categoryName: string };
-  onContact: () => void;
-  onFollow: () => void;
-  onHire: () => void;
 }
 
 const iconComponents: { [key: string]: any } = {
@@ -98,9 +94,6 @@ const formatFollowerCount = (followers?: number) => {
 export default function ViewUserDetailsTab({
   creatorData,
   category,
-  onContact,
-  onFollow,
-  onHire,
 }: ViewUserDetailsTabProps) {
   // Prepare details array with icons
   const creatorDetails = creatorData.details?.map((detail) => ({
@@ -136,33 +129,6 @@ export default function ViewUserDetailsTab({
           <Users className="h-5 w-5 text-primary" />
           <span>Type: {creatorData.type}</span>
         </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex gap-2">
-        <Button
-          onClick={onContact}
-          variant="outline"
-          className="flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
-        >
-          <MessageCircle className="h-4 w-4 mr-2" />
-          Contact
-        </Button>
-        <Button
-          onClick={onFollow}
-          variant="outline"
-          className="flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
-        >
-          <UserPlus className="h-4 w-4 mr-2" />
-          Follow
-        </Button>
-        <Button
-          onClick={onHire}
-          className="flex-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
-        >
-          <Heart className="h-4 w-4 mr-2" />
-          Hire Creator
-        </Button>
       </div>
 
       {/* Creator Details */}
