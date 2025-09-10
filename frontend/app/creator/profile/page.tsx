@@ -28,8 +28,8 @@ import {
 } from "lucide-react";
 import { creatorApi, getAuthData } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
-import PastWorksTab from "@/components/creator/past-works-tab";
+import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
+import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
 
 const iconComponents: { [key: string]: any } = {
   Monitor,
