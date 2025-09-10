@@ -8,9 +8,9 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { toast } from "@/hooks/use-toast";
 import { creatorApi, categoryApi } from "@/lib/api";
-import ViewUserDetailsTab from "@/components/brand/creator-profile-tabs/ViewUserDetailsTab";
-import ViewAccountsMetricsTab from "@/components/brand/creator-profile-tabs/ViewAccountsMetricsTab";
-import ViewPastWorksTab from "@/components/brand/creator-profile-tabs/ViewPastWorksTab";
+import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
+import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
+import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
 
 export default function BrandViewCreatorProfile({
   params,

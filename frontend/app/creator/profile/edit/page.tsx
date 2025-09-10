@@ -26,9 +26,9 @@ import {
   getAuthData,
   imageUploadApi,
 } from "@/lib/api";
-import UserDetailsTab from "@/components/creator/user-details-tab";
-import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
-import PastWorksTab from "@/components/creator/past-works-tab";
+import UserDetailsTab from "@/components/creator/edit-tabs/user-details-tab";
+import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
+import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
 import { Label } from "@/components/ui/label";
 
 const MAX_FILE_SIZE_MB = 10;
