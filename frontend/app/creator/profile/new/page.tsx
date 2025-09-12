@@ -30,11 +30,57 @@ import {
 import UserDetailsTab from "@/components/creator/edit-tabs/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
 import { Label } from "@radix-ui/react-label";
+import { TourProvider, useTour } from '@reactour/tour';
+import type { StepType } from "@reactour/tour";
 
 const MAX_FILE_SIZE_MB = 10;
 
-export default function CreatorNewProfilePage() {
+const tourSteps: StepType[] = [
+  {
+    selector: '.first-name-input',
+    content: 'Start by entering your first name here. This will be displayed on your profile.',
+    position: 'bottom',
+  },
+  {
+    selector: '.nickname-input',
+    content: 'Add your nickname or handle that you use across platforms. This helps brands recognize you.',
+    position: 'bottom',
+  },
+  {
+    selector: '.last-name-input',
+    content: 'Enter your last name to complete your profile identity.',
+    position: 'bottom',
+  },
+  {
+    selector: '.profile-picture',
+    content: 'Upload your profile picture here!',
+    position: 'right',
+  },
+  {
+    selector: '.bio-textarea',
+    content: 'Write a compelling bio that describes who you are and what you do. Keep it engaging!',
+    position: 'bottom',
+  },
+  {
+    selector: '.category-select',
+    content: 'Select your main category or niche. This helps brands find creators in specific domains.',
+    position: 'bottom',
+  },
+  {
+    selector: '.creator-type-select',
+    content: 'Choose your creator type - Content Creator, Model, or Live Streamer.',
+    position: 'left',
+  },
+  {
+    selector: '.create-profile-button',
+    content: "Once you've filled in all details, click here to create your profile and start attracting brands!",
+    position: 'left',
+  },
+];
+
+function CreatorNewProfileContent() {
   const router = useRouter();
+  const { setIsOpen, setCurrentStep, setSteps } = useTour();
   const [authData] = useState(getAuthData());
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,11 +154,17 @@ export default function CreatorNewProfilePage() {
   }, [router, authData]);
 
   useEffect(() => {
+    // Start the tour when the component mounts
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+    }, 1000);
+
     return () => {
+      clearTimeout(timer);
       if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
       if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
     };
-  }, [bannerPreviewUrl, profilePicPreviewUrl]);
+  }, [bannerPreviewUrl, profilePicPreviewUrl, setIsOpen]);
 
   const handleCreateProfile = async () => {
     if (!authData) return;
@@ -442,7 +494,7 @@ export default function CreatorNewProfilePage() {
         <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
-              <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
+              <div className="profile-picture relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
                 <Dialog
                   open={isEditingProfilePic}
                   onOpenChange={setIsEditingProfilePic}
@@ -527,7 +579,7 @@ export default function CreatorNewProfilePage() {
                     onClick={handleCreateProfile}
                     disabled={isLoading}
                     variant="outline"
-                    className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
+                    className="create-profile-button rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-lg bg-transparent"
                   >
                     {isLoading ? "Creating..." : "Create Profile"}
                   </Button>
@@ -573,5 +625,41 @@ export default function CreatorNewProfilePage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function CreatorNewProfilePage() {
+  return (
+    <TourProvider 
+      steps={tourSteps}
+      styles={{
+        popover: (base) => ({
+          ...base,
+          backgroundColor: '#fff',
+          color: '#333',
+          borderRadius: '20px',
+          padding: '30px',
+        }),
+        badge: (base) => ({
+          ...base,
+          backgroundColor: '#007aff',
+          color: '#fff',
+        }),
+        controls: (base) => ({
+          ...base,
+          marginTop: '20px',
+        }),
+        close: (base) => ({
+          ...base,
+          color: '#333',
+        }),
+      }}
+      position="bottom"
+      padding={15}
+      disableInteraction={false}
+      onClickMask={() => {}}
+    >
+      <CreatorNewProfileContent />
+    </TourProvider>
   );
 }
