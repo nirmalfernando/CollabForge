@@ -303,7 +303,14 @@ export default function Header({ isLoggedIn, userRole }: HeaderProps) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer hover:bg-primary/20">
-                <Link href="#" className="w-full" prefetch={false}>
+                <Link href={
+                  userRole === "influencer"
+                    ? "/creator/chat"
+                    : "/brand/chat"
+                } 
+                className="w-full" 
+                prefetch={false}
+                >
                   Chats
                 </Link>
               </DropdownMenuItem>
