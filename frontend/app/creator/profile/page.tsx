@@ -428,7 +428,7 @@ export default function CreatorProfilePage() {
                         {reviews.map((review) => (
                           <div
                             key={review.id}
-                            className="border rounded-lg p-4 bg-muted/50"
+                            className="rounded-lg p-4 bg-muted/50"
                           >
                             <div className="flex items-center gap-2 mb-2">
                               {[...Array(5)].map((_, i) => (

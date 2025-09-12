@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useTour } from "@reactour/tour"; // Import Reactour hook
 
 interface UserDetailsTabProps {
   creatorData: any;
@@ -47,6 +48,7 @@ interface UserDetailsTabProps {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   selectedCreatorType: string;
   setSelectedCreatorType: React.Dispatch<React.SetStateAction<string>>;
+  isNewProfile?: boolean; // Prop to indicate if this is the new profile page
 }
 
 const iconComponents: { [key: string]: any } = {
@@ -69,7 +71,9 @@ export default function UserDetailsTab({
   setSelectedCategory,
   selectedCreatorType,
   setSelectedCreatorType,
+  isNewProfile = false, // Default to false for other pages
 }: UserDetailsTabProps) {
+  const { setIsOpen, setCurrentStep } = useTour();
   const [isAddingDetail, setIsAddingDetail] = useState(false);
   const [newDetail, setNewDetail] = useState({ type: "Custom", value: "" });
   const [isPlatformDialogOpen, setIsPlatformDialogOpen] = useState(false);
@@ -103,6 +107,18 @@ export default function UserDetailsTab({
     { value: "Mail", label: "Email" },
     { value: "Globe", label: "Website" },
   ];
+
+  // Start the tour if this is the new profile page
+  useEffect(() => {
+    if (isNewProfile) {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+        setCurrentStep(0);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isNewProfile, setIsOpen, setCurrentStep]);
 
   const handleAddDetail = () => {
     if (newDetail.value.trim()) {
@@ -234,7 +250,7 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="First Name"
-            className="flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
+            className="first-name-input flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
           />
           <span className="text-primary text-2xl md:text-3xl font-bold">"</span>
           <Input
@@ -247,7 +263,7 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="Nickname"
-            className="flex-1 min-w-[100px] bg-muted border-none text-primary text-2xl md:text-3xl font-bold p-2"
+            className="nickname-input flex-1 min-w-[100px] bg-muted border-none text-primary text-2xl md:text-3xl font-bold p-2"
           />
           <span className="text-primary text-2xl md:text-3xl font-bold">"</span>
           <Input
@@ -260,10 +276,11 @@ export default function UserDetailsTab({
               }))
             }
             placeholder="Last Name"
-            className="flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
+            className="last-name-input flex-1 min-w-[120px] bg-muted border-none text-foreground text-2xl md:text-3xl font-bold p-2"
           />
         </div>
-        <Label htmlFor="bio" className="text-lg font-semibold mb-2 block">
+        <div className="bio-textarea">
+          <Label htmlFor="bio" className="text-lg font-semibold mb-2 block">
           Bio
         </Label>
         <Textarea
@@ -276,19 +293,23 @@ export default function UserDetailsTab({
               bio: e.target.value,
             }))
           }
-          className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
+          className="bio-textarea w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
         />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+        <div className="category-select">
           <Label
             htmlFor="category"
             className="text-lg font-semibold mb-2 block"
           >
             Category/Niche *
           </Label>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <Select
+            value={selectedCategory}
+            onValueChange={setSelectedCategory}
+          >
             <SelectTrigger className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3">
               <SelectValue placeholder="Select your category/niche" />
             </SelectTrigger>
@@ -305,7 +326,7 @@ export default function UserDetailsTab({
             </SelectContent>
           </Select>
         </div>
-        <div>
+        <div className="creator-type-select">
           <Label
             htmlFor="creator-type"
             className="text-lg font-semibold mb-2 block"

@@ -87,8 +87,6 @@ export default function PastWorksTab({
           setCreatorWorks([]);
         }
       } catch (err) {
-        console.error("Error fetching creator works:", err);
-        setError("Failed to load works. Please try again.");
         setCreatorWorks([]);
       } finally {
         setLoading(false);
