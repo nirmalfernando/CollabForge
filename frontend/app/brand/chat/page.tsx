@@ -1,26 +1,27 @@
-import React from 'react';
+"use client";
+
+import React from "react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+
+import { FiSearch } from "react-icons/fi";
+import { LuSend } from "react-icons/lu";
+import { IoMdAttach } from "react-icons/io";
+
 
 const ChatsPage: React.FC = () => {
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-700">
-        <div className="text-xl font-bold">CollabForge</div>
-        <div className="flex space-x-6">
-          <a href="#" className="hover:underline">Home</a>
-          <a href="#" className="hover:underline">About Us</a>
-          <a href="#" className="hover:underline">Contact Us</a>
-          <a href="#" className="hover:underline">Pricing</a>
-        </div>
-        <div className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white font-bold">L</div>
-      </nav>
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      {/* Header */}
+      <Header isLoggedIn={true} userRole="brand-manager" />
 
-      <div className="flex flex-1 overflow-hidden">
+      {/* Main Chat Layout */}
+      <main className="flex flex-1 overflow-hidden">
         {/* Sidebar - Chat List */}
         <aside className="w-80 border-r border-gray-700 overflow-y-auto">
-          <div className="px-6 py-4 text-lg font-semibold">Chats</div>
+          <div className="px-6 py-4 text-lg font-semibold border-b border-gray-700">Chats</div>
           <ul>
-            {/* Chat Item 1: Jenna Miles */}
+            {/* Chat Item 1 */}
             <li className="flex items-start px-6 py-3 hover:bg-gray-800 cursor-pointer">
               <img src="https://via.placeholder.com/40?text=J" alt="Jenna Miles" className="w-10 h-10 rounded-full" />
               <div className="ml-3 flex-1">
@@ -32,7 +33,7 @@ const ChatsPage: React.FC = () => {
               </div>
             </li>
 
-            {/* Chat Item 2: Avi Patel (Selected) */}
+            {/* Chat Item 2 (Selected) */}
             <li className="flex items-start px-6 py-3 bg-gray-800 cursor-pointer">
               <img src="https://via.placeholder.com/40?text=A" alt="Avi Patel" className="w-10 h-10 rounded-full" />
               <div className="ml-3 flex-1">
@@ -44,7 +45,7 @@ const ChatsPage: React.FC = () => {
               </div>
             </li>
 
-            {/* Chat Item 3: Maya Benson */}
+            {/* Chat Item 3 */}
             <li className="flex items-start px-6 py-3 hover:bg-gray-800 cursor-pointer">
               <img src="https://via.placeholder.com/40?text=M" alt="Maya Benson" className="w-10 h-10 rounded-full" />
               <div className="ml-3 flex-1">
@@ -56,7 +57,7 @@ const ChatsPage: React.FC = () => {
               </div>
             </li>
 
-            {/* Chat Item 4: Kai Romero */}
+            {/* Chat Item 4 */}
             <li className="flex items-start px-6 py-3 hover:bg-gray-800 cursor-pointer">
               <img src="https://via.placeholder.com/40?text=K" alt="Kai Romero" className="w-10 h-10 rounded-full" />
               <div className="ml-3 flex-1">
@@ -68,7 +69,7 @@ const ChatsPage: React.FC = () => {
               </div>
             </li>
 
-            {/* Chat Item 5: Nina Alvi */}
+            {/* Chat Item 5 */}
             <li className="flex items-start px-6 py-3 hover:bg-gray-800 cursor-pointer">
               <img src="https://via.placeholder.com/40?text=N" alt="Nina Alvi" className="w-10 h-10 rounded-full" />
               <div className="ml-3 flex-1">
@@ -83,7 +84,7 @@ const ChatsPage: React.FC = () => {
         </aside>
 
         {/* Main Chat Area */}
-        <main className="flex flex-col flex-1">
+        <section className="flex flex-col flex-1">
           {/* Chat Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
             <div className="flex items-center">
@@ -93,12 +94,11 @@ const ChatsPage: React.FC = () => {
                 <span className="block text-sm text-green-500">Online</span>
               </div>
             </div>
-            <div className="text-gray-400">🔍</div> {/* Search icon placeholder */}
+            <FiSearch className="text-gray-100 cursor-pointer" size={20}/>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-            {/* Message from Avi */}
             <div className="flex justify-start">
               <div className="bg-gray-800 rounded-lg px-4 py-2 max-w-md">
                 <p>Bro 😂 that meeting was way too long.</p>
@@ -106,14 +106,12 @@ const ChatsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Message from User */}
             <div className="flex justify-end">
               <div className="bg-blue-600 rounded-lg px-4 py-2 max-w-md">
                 <p>So, did you hear about Karen&apos;s &quot;urgent&quot; email? The one about the color of the staplers?</p>
               </div>
             </div>
 
-            {/* Message from Avi */}
             <div className="flex justify-start">
               <div className="bg-gray-800 rounded-lg px-4 py-2 max-w-md">
                 <p>Oh please. I live for Karen&apos;s crises. Next week it&apos;ll be &quot;the suspicious angle of the blinds.&quot;</p>
@@ -121,7 +119,6 @@ const ChatsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Message from User */}
             <div className="flex justify-end">
               <div className="bg-blue-600 rounded-lg px-4 py-2 max-w-md">
                 <p>Plot twist: she scheduled a 30-minute meeting to discuss it.</p>
@@ -129,7 +126,6 @@ const ChatsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Message from User */}
             <div className="flex justify-end">
               <div className="bg-blue-600 rounded-lg px-4 py-2 max-w-md">
                 <p>30 minutes?! For staplers?! Did she bring a PowerPoint?</p>
@@ -137,7 +133,6 @@ const ChatsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Message from User */}
             <div className="flex justify-end">
               <div className="bg-blue-600 rounded-lg px-4 py-2 max-w-md">
                 <p>Of course. Slides 1-5: &quot;Stapler colors & their impact on morale.&quot;</p>
@@ -148,16 +143,21 @@ const ChatsPage: React.FC = () => {
 
           {/* Message Input */}
           <div className="flex items-center px-6 py-4 border-t border-gray-700">
-            <div className="text-gray-400 mr-3">😊</div> {/* Emoji icon placeholder */}
+            <div className="text-gray-400 mr-1 text-[20px]">😊</div>
+            <IoMdAttach className="text-blue-500 cursor-pointer mr-2" size={25} />
+            
             <input
               type="text"
               placeholder="Type a message..."
               className="flex-1 bg-gray-800 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:outline-none"
             />
-            <div className="text-blue-500 ml-3">➤</div> {/* Send icon placeholder */}
+            <LuSend className="text-blue-500 ml-3 cursor-pointer" size={25}/>
           </div>
-        </main>
-      </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

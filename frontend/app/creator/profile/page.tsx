@@ -25,8 +25,9 @@ import {
   Zap,
   Leaf,
   PlusCircle,
+  Star,
 } from "lucide-react";
-import { creatorApi, getAuthData } from "@/lib/api";
+import { creatorApi, getAuthData, brandReviewApi, brandApi } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
@@ -48,6 +49,7 @@ export default function CreatorProfilePage() {
   const [creatorData, setCreatorData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [authData, setAuthDataState] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
 
   useEffect(() => {
     const auth = getAuthData();
@@ -60,16 +62,40 @@ export default function CreatorProfilePage() {
     const loadCreatorProfile = async () => {
       try {
         setIsLoading(true);
-        const profile = await creatorApi.getCreatorByUserId(auth.user.userId);
+        const [profile, reviewsData] = await Promise.all([
+          creatorApi.getCreatorByUserId(auth.user.userId),
+          brandReviewApi.getBrandReviewsByCreator(auth.user.userId),
+        ]);
+
+        // Fetch company names for each review
+        const reviewsWithCompanyNames = await Promise.all(
+          reviewsData.map(async (review: any) => {
+            try {
+              const brand = await brandApi.getBrandById(review.brandId);
+              return {
+                ...review,
+                companyName: brand.companyName || "Unknown Brand",
+              };
+            } catch (error) {
+              console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
+              return {
+                ...review,
+                companyName: "Unknown Brand",
+              };
+            }
+          })
+        );
+
         setCreatorData(profile);
+        setReviews(reviewsWithCompanyNames || []);
       } catch (error: any) {
-        console.error("Failed to load creator profile:", error);
+        console.error("Failed to load creator profile or reviews:", error);
         if (error.status === 404) {
           router.push("/creator/profile/new");
         } else {
           toast({
             title: "Error",
-            description: "Failed to load profile",
+            description: "Failed to load profile or reviews",
             variant: "destructive",
           });
         }
@@ -390,6 +416,41 @@ export default function CreatorProfilePage() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+
+                  {reviews.length > 0 && (
+                    <div className="space-y-4">
+                      <h2 className="text-2xl md:text-3xl font-bold">
+                        My <span className="text-primary">Reviews</span>
+                      </h2>
+                      <div className="space-y-4">
+                        {reviews.map((review) => (
+                          <div
+                            key={review.id}
+                            className="rounded-lg p-4 bg-muted/50"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-5 w-5 ${
+                                    i < review.rating
+                                      ? "text-yellow-400 fill-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            {review.comment && (
+                              <p className="text-lg">{review.comment}</p>
+                            )}
+                            <p className="text-sm mt-2">
+                              Reviewed by: {review.companyName}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </TabsContent>
