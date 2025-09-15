@@ -8,6 +8,7 @@ import logger from "./middlewares/logger.js";
 import bodyParser from "body-parser";
 import globalRateLimiter from "./middlewares/rateLimit.js";
 import "./models/Associations.js";
+import JobScheduler from "./jobs/jobScheduler.js";
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import creatorRoute from "./routes/creatorRoute.js";
@@ -18,11 +19,12 @@ import contractRoute from "./routes/contractRoute.js";
 import creatorWorkRoute from "./routes/creatorWorkRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import brandReviewRoute from "./routes/brandReviewRoute.js";
+import recommendationRoute from "./routes/recommendationRoute.js";
 
 dotenv.config();
 
-// Initialize the database
-const initializeDatabase = async () => {
+// Initialize the database and start server
+const initializeServer = async () => {
   try {
     await sequelize.authenticate();
     console.log("Database connection has been established successfully.");
@@ -30,13 +32,26 @@ const initializeDatabase = async () => {
     // Sync the models with the database
     await sequelize.sync({ force: false });
     console.log("All models were synchronized successfully.");
+
+    // Initialize job scheduler after database sync
+    await JobScheduler.initialize();
+    console.log("Job scheduler initialized successfully.");
+
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
+      logger.info(`Server started on port ${PORT}`);
+    });
+
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Failed to initialize server:", error);
+    logger.error("Server initialization failed", { error: error.message });
+    process.exit(1);
   }
 };
 
 // Call the function to initialize the database
-initializeDatabase();
+initializeServer();
 
 const app = express();
 const PORT = process.env.PORT;
@@ -97,6 +112,7 @@ app.use("/api/contracts", contractRoute);
 app.use("/api/creator-works", creatorWorkRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/brand-reviews", brandReviewRoute);
+app.use("/api/recommendations", recommendationRoute);
 
 // Start the server
 app.listen(PORT, () => {

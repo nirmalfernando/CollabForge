@@ -2843,6 +2843,321 @@
 2025-09-10T15:43:46.225Z [CollabForge] info: Creator works retrieved successfully
 2025-09-10T15:44:03.516Z [CollabForge] info: Creator works retrieved successfully
 2025-09-10T15:44:03.649Z [CollabForge] info: Creator works retrieved successfully
+2025-09-11T06:27:12.646Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:27:12.819Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:27:12.824Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:27:12.914Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:27:13.014Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:27:13.267Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:27:13.270Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:27:13.357Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:27:13.362Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:27:13.466Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:27:13.469Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:27:13.553Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:27:13.554Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:27:13.650Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:27:13.651Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:27:13.738Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:27:13.739Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:27:13.826Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:27:13.828Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:27:13.916Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:27:13.918Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:27:14.010Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:27:14.010Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:27:14.096Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:27:14.098Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:27:14.186Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:27:14.187Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:27:14.253Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:27:14.257Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:27:14.337Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:27:14.338Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:27:14.434Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:27:14.435Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:27:14.522Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:27:14.601Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:27:14.602Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:27:14.603Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:27:14.754Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:27:14.756Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:27:14.756Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:27:14.760Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:27:26.161Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:27:26.292Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:27:26.293Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:27:26.373Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:27:26.471Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:27:26.655Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:27:26.661Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:27:26.738Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:27:26.742Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:27:26.835Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:27:26.840Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:27:26.914Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:27:26.918Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:27:27.007Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:27:27.009Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:27:27.075Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:27:27.081Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:27:27.153Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:27:27.154Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:27:27.250Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:27:27.250Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:27:27.338Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:27:27.344Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:27:27.426Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:27:27.428Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:27:27.514Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:27:27.515Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:27:27.602Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:27:27.608Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:27:27.681Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:27:27.682Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:27:27.754Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:27:27.755Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:27:27.841Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:27:27.915Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:27:27.921Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:27:27.923Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:27:28.016Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:27:28.016Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:27:28.017Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:27:28.018Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:29:58.241Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:29:58.388Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:29:58.394Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:29:58.478Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:29:58.575Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:29:58.767Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:29:58.768Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:29:58.854Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:29:58.855Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:29:58.945Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:29:58.948Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:29:59.013Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:29:59.014Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:29:59.095Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:29:59.098Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:29:59.173Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:29:59.175Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:29:59.253Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:29:59.257Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:29:59.350Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:29:59.351Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:29:59.434Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:29:59.434Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:29:59.514Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:29:59.515Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:29:59.600Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:29:59.600Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:29:59.683Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:29:59.687Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:29:59.753Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:29:59.753Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:29:59.836Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:29:59.837Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:29:59.914Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:29:59.994Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:29:59.995Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:29:59.996Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:30:00.114Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:30:00.114Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:30:00.114Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:30:00.116Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:32:48.915Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:32:49.019Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:32:49.025Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:32:49.113Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:32:49.215Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:32:49.456Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:32:49.459Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:32:49.538Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:32:49.546Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:32:49.646Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:32:49.652Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:32:49.735Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:32:49.736Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:32:49.834Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:32:49.837Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:32:49.923Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:32:49.928Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:32:50.025Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:32:50.026Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:32:50.093Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:32:50.095Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:32:50.174Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:32:50.175Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:32:50.267Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:32:50.269Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:32:50.353Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:32:50.354Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:32:50.441Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:32:50.441Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:32:50.527Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:32:50.527Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:32:50.617Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:32:50.617Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:32:50.709Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:32:50.797Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:32:50.800Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:32:50.801Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:32:50.913Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:32:50.914Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:32:50.914Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:32:50.916Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:33:12.976Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:33:13.156Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:33:13.158Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:33:13.241Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:33:13.351Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:33:13.605Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:33:13.608Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:33:13.691Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:33:13.692Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:33:13.784Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:33:13.791Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:33:13.882Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:33:13.883Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:33:13.959Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:33:13.965Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:33:14.047Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:33:14.048Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:33:14.137Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:33:14.138Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:33:14.230Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:33:14.231Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:33:14.317Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:33:14.318Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:33:14.407Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:33:14.408Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:33:14.498Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:33:14.498Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:33:14.587Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:33:14.588Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:33:14.681Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:33:14.681Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:33:14.767Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:33:14.768Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:33:14.857Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:33:14.948Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:33:14.951Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:33:14.952Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:33:15.070Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:33:15.071Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:33:15.071Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:33:15.073Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:34:31.242Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:34:31.364Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:34:31.365Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:34:31.454Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:34:31.606Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:34:31.970Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:34:31.973Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:34:32.051Z [CollabForge] error: Error processing category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:34:32.054Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:34:32.140Z [CollabForge] error: Error processing category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:34:32.147Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:34:32.234Z [CollabForge] error: Error processing category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:34:32.236Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:34:32.322Z [CollabForge] error: Error processing category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:34:32.325Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:34:32.407Z [CollabForge] error: Error processing category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:34:32.411Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:34:32.497Z [CollabForge] error: Error processing category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:34:32.500Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:34:32.587Z [CollabForge] error: Error processing category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:34:32.588Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:34:32.679Z [CollabForge] error: Error processing category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:34:32.682Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:34:32.771Z [CollabForge] error: Error processing category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:34:32.775Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:34:32.858Z [CollabForge] error: Error processing category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:34:32.868Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:34:32.953Z [CollabForge] error: Error processing category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:34:32.954Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:34:33.041Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:34:33.042Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:34:33.127Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:34:33.130Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:34:33.218Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:34:33.306Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:34:33.307Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:34:33.308Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:34:33.379Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:34:33.380Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:34:33.380Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:34:33.382Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:41:59.185Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:41:59.300Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-11T06:41:59.304Z [CollabForge] info: Running immediate top creators calculation
+2025-09-11T06:41:59.306Z [CollabForge] info: Starting top creators calculation job
+2025-09-11T06:41:59.476Z [CollabForge] info: Processing category: 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:41:59.816Z [CollabForge] info: Successfully processed 2 top creators for category 5db52280-7e37-4622-9923-bf48b66537c0
+2025-09-11T06:41:59.980Z [CollabForge] info: Processing category: 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:42:00.172Z [CollabForge] warn: No creators found for category 933f873a-9305-4ff4-8114-a50efcc748e2
+2025-09-11T06:42:00.341Z [CollabForge] info: Processing category: f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:42:00.530Z [CollabForge] warn: No creators found for category f278644e-8437-4628-a7a6-55b97cd8d933
+2025-09-11T06:42:00.699Z [CollabForge] info: Processing category: d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:42:00.885Z [CollabForge] warn: No creators found for category d47543f8-5c01-4bb3-817b-ea75e6811e0c
+2025-09-11T06:42:01.100Z [CollabForge] info: Processing category: 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:42:01.282Z [CollabForge] warn: No creators found for category 0f8f0bf7-6ad4-41e7-958e-c14dd0f56bbf
+2025-09-11T06:42:01.438Z [CollabForge] info: Processing category: 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:42:01.602Z [CollabForge] warn: No creators found for category 25091578-e086-44a8-97f8-f8d15c6b3db2
+2025-09-11T06:42:01.754Z [CollabForge] info: Processing category: 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:42:02.010Z [CollabForge] warn: No creators found for category 85f78105-60f0-4b64-bd28-608e96c34ebf
+2025-09-11T06:42:02.174Z [CollabForge] info: Processing category: 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:42:02.420Z [CollabForge] warn: No creators found for category 35bfc9d2-b435-4843-871f-900bc134703d
+2025-09-11T06:42:02.562Z [CollabForge] info: Processing category: 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:42:02.723Z [CollabForge] warn: No creators found for category 26b82285-2739-4c9d-9ac4-72bd2af3d821
+2025-09-11T06:42:02.865Z [CollabForge] info: Processing category: 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:42:03.036Z [CollabForge] warn: No creators found for category 7d804a1f-9033-4911-87bb-99dd6ba59821
+2025-09-11T06:42:03.199Z [CollabForge] info: Processing category: 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:42:03.449Z [CollabForge] warn: No creators found for category 55a1cc72-aa7b-436d-856c-3c5978f4a4a7
+2025-09-11T06:42:03.619Z [CollabForge] info: Processing category: 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:42:03.787Z [CollabForge] warn: No creators found for category 777c4ac5-ccdc-466b-8aec-1a2f95528869
+2025-09-11T06:42:03.935Z [CollabForge] info: Processing category: c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:42:04.269Z [CollabForge] warn: No creators found for category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
+2025-09-11T06:42:04.437Z [CollabForge] info: Processing category: caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:42:04.672Z [CollabForge] warn: No creators found for category caff65b5-3395-407d-99ee-24d4196a847e
+2025-09-11T06:42:04.843Z [CollabForge] info: Processing category: 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:42:05.082Z [CollabForge] warn: No creators found for category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-11T06:42:05.163Z [CollabForge] info: Top creators calculation job completed
+2025-09-11T06:42:05.167Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-11T06:42:05.168Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:42:05.271Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:42:05.272Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:42:05.272Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:42:05.274Z [CollabForge] info: Server started on port 8080
+2025-09-11T06:44:43.183Z [CollabForge] info: Initializing job scheduler
+2025-09-11T06:44:43.376Z [CollabForge] info: Starting all scheduled jobs
+2025-09-11T06:44:43.527Z [CollabForge] info: Top creators job scheduled
+2025-09-11T06:44:43.528Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-11T06:44:43.529Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-11T06:44:43.530Z [CollabForge] info: Server started on port 8080
+2025-09-15T08:15:10.088Z [CollabForge] info: Initializing job scheduler
+2025-09-15T08:15:10.270Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-15T08:15:10.277Z [CollabForge] info: Running immediate top creators calculation
+2025-09-15T08:15:10.285Z [CollabForge] info: Starting top creators calculation job
+2025-09-15T08:15:10.423Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-15T08:15:10.430Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-15T08:15:10.432Z [CollabForge] info: Starting all scheduled jobs
+2025-09-15T08:15:10.577Z [CollabForge] info: Top creators job scheduled
+2025-09-15T08:15:10.578Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-15T08:15:10.578Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-15T08:15:10.581Z [CollabForge] info: Server started on port 8080
+2025-09-15T08:15:19.917Z [CollabForge] info: Initializing job scheduler
+2025-09-15T08:15:20.001Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-15T08:15:20.006Z [CollabForge] info: Running immediate top creators calculation
+2025-09-15T08:15:20.009Z [CollabForge] info: Starting top creators calculation job
+2025-09-15T08:15:20.176Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-15T08:15:20.178Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-15T08:15:20.180Z [CollabForge] info: Starting all scheduled jobs
+2025-09-15T08:15:20.345Z [CollabForge] info: Top creators job scheduled
+2025-09-15T08:15:20.346Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-15T08:15:20.348Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-15T08:15:20.352Z [CollabForge] info: Server started on port 8080
 2025-09-12T15:55:23.472Z [CollabForge] info: User details retrieved successfully
 2025-09-12T15:55:23.582Z [CollabForge] info: Categories retrieved successfully
 2025-09-12T15:55:23.675Z [CollabForge] info: User details retrieved successfully

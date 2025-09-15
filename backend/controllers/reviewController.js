@@ -219,6 +219,37 @@ export const getReviewsByCreator = async (req, res) => {
   }
 };
 
+// Get reviews by the review visibility
+export const getReviewsByVisibility = async (req, res) => {
+  const isShown = req.query.isShown === 'true';
+
+  try {
+    const reviews = await Review.findAll({
+      where: { isShown },
+      order: [["createdAt", "DESC"]],
+    });
+
+    if (reviews.length === 0) {
+      logger.info("No reviews found for the specified visibility", { isShown });
+      return res
+        .status(404)
+        .json({ message: "No reviews found for the specified visibility" });
+    }
+
+    logger.info("Reviews retrieved successfully for the specified visibility", { isShown });
+    return res.status(200).json(reviews);
+  } catch (error) {
+    logger.error("Error during getting reviews by visibility", {
+      error: error.message,
+      isShown,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting reviews by visibility",
+      error: error.message,
+    });
+  }
+};
+
 // Update review
 export const updateReview = async (req, res) => {
   const reviewId = req.params.id;
@@ -283,6 +314,42 @@ export const updateReview = async (req, res) => {
 
     return res.status(500).json({
       message: "Internal server error during review update",
+      error: error.message,
+    });
+  }
+};
+
+//Update the visibility of the review
+export const updateReviewVisibility = async (req, res) => {
+  const reviewId = req.params.id;
+  const { isShown } = req.body;
+  
+  try {
+    const review = await Review.findByPk(reviewId);
+    if (!review) {
+      logger.warn("Review visibility update failed: Review not found", { reviewId });
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    // Update the visibility field if it is provided
+    if (isShown !== undefined) {
+      review.isShown = isShown;
+      await review.save();
+    }
+
+    logger.info("Review visibility updated successfully", { reviewId });
+    return res.status(200).json({
+      message: "Review visibility updated successfully",
+      review,
+    });
+  } catch (error) {
+    logger.error("Error during review visibility update", {
+      error: error.message,
+      reviewId,
+      reviewData: req.body,
+    });
+    return res.status(500).json({
+      message: "Internal server error during review visibility update",
       error: error.message,
     });
   }

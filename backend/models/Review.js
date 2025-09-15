@@ -72,6 +72,11 @@ const Review = sequelize.define(
         },
       },
     },
+    isShown: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   },
   {
     tableName: "creator_reviews",
