@@ -62,7 +62,9 @@ export default function CreatorProfilePage() {
     const loadCreatorProfile = async () => {
       try {
         setIsLoading(true);
-        const profileResponse = await creatorApi.getCreatorByUserId(auth.user.userId);
+        const profileResponse = await creatorApi.getCreatorByUserId(
+          auth.user.userId
+        );
 
         if (!profileResponse) {
           router.push("/creator/profile/new");
@@ -72,9 +74,16 @@ export default function CreatorProfilePage() {
         setCreatorData(profileResponse);
 
         try {
-          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(auth.user.userId);
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            auth.user.userId
+          );
+          // Filter to only show reviews with isShown = true
+          const shownReviews = reviewsData.filter(
+            (review: any) => review.isShown
+          );
+
           const reviewsWithCompanyNames = await Promise.all(
-            reviewsData.map(async (review: any) => {
+            shownReviews.map(async (review: any) => {
               try {
                 const brand = await brandApi.getBrandById(review.brandId);
                 return {
@@ -82,7 +91,10 @@ export default function CreatorProfilePage() {
                   companyName: brand.companyName || "Unknown Brand",
                 };
               } catch (error) {
-                console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
+                console.error(
+                  `Failed to fetch brand for ID ${review.brandId}:`,
+                  error
+                );
                 return {
                   ...review,
                   companyName: "Unknown Brand",
@@ -209,9 +221,7 @@ export default function CreatorProfilePage() {
                   <p className="text-4xl font-bold text-foreground">
                     {formatFollowerCount(totalFollowers)}
                   </p>
-                  <p className="text-lg text-muted-foreground">
-                    Followers
-                  </p>
+                  <p className="text-lg text-muted-foreground">Followers</p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
                   <Link href="/creator/profile/edit" prefetch={false}>
@@ -286,7 +296,8 @@ export default function CreatorProfilePage() {
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold">Details:</h3>
                       {creatorDetails.map((detail, index) => {
-                        const IconComponent = iconComponents[detail.icon] || Monitor;
+                        const IconComponent =
+                          iconComponents[detail.icon] || Monitor;
                         return (
                           <div key={index} className="flex items-center gap-3">
                             <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
@@ -297,35 +308,48 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {creatorData.socialMedia && creatorData.socialMedia.length > 0 && (
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold">Official Platforms:</h3>
-                      <ul className="space-y-2 list-inside">
-                        {creatorData.socialMedia.map((platform: any, index: number) => {
-                          const IconComponent = iconComponents[platform.icon] || Monitor;
-                          return (
-                            <li key={index} className="flex items-center gap-3">
-                              <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
-                              <Link
-                                href={platform.url || "#"}
-                                className="text-lg hover:underline"
-                                prefetch={false}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {platform.platform} - {platform.handle}
-                                {platform.followers && (
-                                  <span className="text-muted-foreground ml-2">
-                                    ({formatFollowerCount(platform.followers)} followers)
-                                  </span>
-                                )}
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
+                  {creatorData.socialMedia &&
+                    creatorData.socialMedia.length > 0 && (
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">
+                          Official Platforms:
+                        </h3>
+                        <ul className="space-y-2 list-inside">
+                          {creatorData.socialMedia.map(
+                            (platform: any, index: number) => {
+                              const IconComponent =
+                                iconComponents[platform.icon] || Monitor;
+                              return (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-3"
+                                >
+                                  <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                                  <Link
+                                    href={platform.url || "#"}
+                                    className="text-lg hover:underline"
+                                    prefetch={false}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {platform.platform} - {platform.handle}
+                                    {platform.followers && (
+                                      <span className="text-muted-foreground ml-2">
+                                        (
+                                        {formatFollowerCount(
+                                          platform.followers
+                                        )}{" "}
+                                        followers)
+                                      </span>
+                                    )}
+                                  </Link>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
                   {creatorData.whatIDo && creatorData.whatIDo.length > 0 && (
                     <div className="space-y-4">
@@ -353,78 +377,89 @@ export default function CreatorProfilePage() {
                         My <span className="text-primary">People</span>
                       </h2>
                       <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.myPeople.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.name}
-                            {item.role && (
-                              <span className="text-muted-foreground ml-2">
-                                - {item.role}
-                              </span>
-                            )}
-                            {item.contact && (
-                              <span className="text-muted-foreground ml-2">
-                                - {item.contact}
-                              </span>
-                            )}
-                          </li>
-                        ))}
+                        {creatorData.myPeople.map(
+                          (item: any, index: number) => (
+                            <li key={index}>
+                              {item.name}
+                              {item.role && (
+                                <span className="text-muted-foreground ml-2">
+                                  - {item.role}
+                                </span>
+                              )}
+                              {item.contact && (
+                                <span className="text-muted-foreground ml-2">
+                                  - {item.contact}
+                                </span>
+                              )}
+                            </li>
+                          )
+                        )}
                       </ul>
                     </div>
                   )}
 
-                  {creatorData.myContent && creatorData.myContent.length > 0 && (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        My <span className="text-primary">Content</span>
-                      </h2>
-                      <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.myContent.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.url ? (
-                              <Link
-                                href={item.url}
-                                className="hover:underline text-primary"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {item.title}
-                              </Link>
-                            ) : (
-                              item.title
-                            )}
-                            {item.views && (
-                              <span className="text-muted-foreground ml-2">
-                                ({item.views.toLocaleString()} views)
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {creatorData.myContent &&
+                    creatorData.myContent.length > 0 && (
+                      <div className="space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          My <span className="text-primary">Content</span>
+                        </h2>
+                        <ul className="list-disc list-inside space-y-2 text-lg">
+                          {creatorData.myContent.map(
+                            (item: any, index: number) => (
+                              <li key={index}>
+                                {item.url ? (
+                                  <Link
+                                    href={item.url}
+                                    className="hover:underline text-primary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {item.title}
+                                  </Link>
+                                ) : (
+                                  item.title
+                                )}
+                                {item.views && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({item.views.toLocaleString()} views)
+                                  </span>
+                                )}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
-                  {creatorData.pastCollaborations && creatorData.pastCollaborations.length > 0 && (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        I&apos;ve <span className="text-primary">Worked With</span>
-                      </h2>
-                      <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.pastCollaborations.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.brand}
-                            {item.campaign && (
-                              <span className="ml-2">- {item.campaign}</span>
-                            )}
-                            {item.date && (
-                              <span className="text-muted-foreground ml-2">
-                                ({item.date})
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {creatorData.pastCollaborations &&
+                    creatorData.pastCollaborations.length > 0 && (
+                      <div className="space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          I&apos;ve{" "}
+                          <span className="text-primary">Worked With</span>
+                        </h2>
+                        <ul className="list-disc list-inside space-y-2 text-lg">
+                          {creatorData.pastCollaborations.map(
+                            (item: any, index: number) => (
+                              <li key={index}>
+                                {item.brand}
+                                {item.campaign && (
+                                  <span className="ml-2">
+                                    - {item.campaign}
+                                  </span>
+                                )}
+                                {item.date && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({item.date})
+                                  </span>
+                                )}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
                   <div className="space-y-4">
                     <h2 className="text-2xl md:text-3xl font-bold">
