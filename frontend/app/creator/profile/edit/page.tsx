@@ -19,17 +19,20 @@ import {
 import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Pencil, Plus, Monitor, Users, MapPin, Sparkles, Instagram, Youtube, Mail, Globe, PlusCircle } from "lucide-react";
+import { Pencil, Plus, Monitor, Users, MapPin, Sparkles, Instagram, Youtube, Mail, Globe, PlusCircle, Star } from "lucide-react";
 import {
   creatorApi,
   categoryApi,
   getAuthData,
   imageUploadApi,
+  brandReviewApi,
+  brandApi,
 } from "@/lib/api";
 import UserDetailsTab from "@/components/creator/edit-tabs/user-details-tab";
 import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const MAX_FILE_SIZE_MB = 10;
 
@@ -84,6 +87,8 @@ export default function CreatorEditProfilePage() {
     pastCollaborations: [] as any[],
   });
 
+  const [reviews, setReviews] = useState<any[]>([]);
+
   useEffect(() => {
     const auth = getAuthData();
     if (!auth || auth.user.role !== "influencer") {
@@ -131,6 +136,32 @@ export default function CreatorEditProfilePage() {
 
         const categoriesData = await categoryApi.getAllCategories();
         setCategories(categoriesData);
+
+        // Fetch reviews
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(auth.user.userId);
+          const reviewsWithCompanyNames = await Promise.all(
+            reviewsData.map(async (review: any) => {
+              try {
+                const brand = await brandApi.getBrandById(review.brandId);
+                return {
+                  ...review,
+                  companyName: brand.companyName || "Unknown Brand",
+                };
+              } catch (error) {
+                console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
+                return {
+                  ...review,
+                  companyName: "Unknown Brand",
+                };
+              }
+            })
+          );
+          setReviews(reviewsWithCompanyNames || []);
+        } catch (error: any) {
+          console.error("Failed to load reviews:", error);
+          setReviews([]); 
+        }
       } catch (error: any) {
         console.error("Failed to load creator profile or categories:", error);
         toast({
@@ -155,6 +186,23 @@ export default function CreatorEditProfilePage() {
       if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
     };
   }, [bannerPreviewUrl, profilePicPreviewUrl]);
+
+  const handleToggle = (reviewId: string, checked: boolean) => {
+    setReviews((prevReviews) => {
+      const currentSelectedCount = prevReviews.filter((r) => r.isShown).length;
+      if (checked && currentSelectedCount >= 5) {
+        toast({
+          title: "Maximum Reached",
+          description: "You can select up to 5 reviews to feature.",
+          variant: "destructive",
+        });
+        return prevReviews;
+      }
+      return prevReviews.map((r) =>
+        r.reviewId === reviewId ? { ...r, isShown: checked } : r
+      );
+    });
+  };
 
   const handleUpdateSettings = async () => {
     if (!authData || !creatorId) return;
@@ -231,6 +279,17 @@ export default function CreatorEditProfilePage() {
       };
 
       await creatorApi.updateCreator(creatorId, apiData);
+
+      // Update review visibilities
+      await Promise.all(
+        reviews.map(async (review) => {
+          try {
+            await brandReviewApi.updateBrandReviewVisibility(review.reviewId, review.isShown);
+          } catch (error) {
+            console.error(`Failed to update visibility for review ${review.reviewId}:`, error);
+          }
+        })
+      );
 
       toast({
         title: "Profile Updated",
@@ -616,6 +675,51 @@ export default function CreatorEditProfilePage() {
                   selectedCreatorType={selectedCreatorType}
                   setSelectedCreatorType={setSelectedCreatorType}
                 />
+                <div className="space-y-4">
+                  <h2 className="text-2xl md:text-3xl font-bold">
+                    Select <span className="text-primary">Reviews</span> to Feature (up to 5)
+                  </h2>
+                  {reviews.length > 0 ? (
+                    <div className="space-y-4">
+                      {reviews.map((review) => (
+                        <div
+                          key={review.reviewId}
+                          className="flex items-start gap-4 rounded-lg p-4 bg-muted/50"
+                        >
+                          <Checkbox
+                            id={`review-${review.reviewId}`}
+                            checked={review.isShown}
+                            onCheckedChange={(checked) => handleToggle(review.reviewId, checked as boolean)}
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-5 w-5 ${
+                                    i < review.rating
+                                      ? "text-yellow-400 fill-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            {review.comment && (
+                              <p className="text-lg">{review.comment}</p>
+                            )}
+                            <p className="text-sm mt-2">
+                              Reviewed by: {review.companyName}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-lg text-muted-foreground">
+                      No reviews available.
+                    </p>
+                  )}
+                </div>
               </TabsContent>
 
               <TabsContent value="accounts-metrics" className="mt-6 space-y-8">
