@@ -31,6 +31,9 @@ router.get("/creator/:creatorId", verifyToken, getReviewsByCreator);
 // Update review route
 router.put("/:id", verifyToken, updateReview);
 
+// Update review visibility route
+router.patch("/:id/visibility", verifyToken, updateReview);
+
 // Delete review route
 router.delete("/:id", verifyToken, deleteReview);
 

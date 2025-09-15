@@ -31,6 +31,9 @@ router.get("/brand/:brandId", verifyToken, getBrandReviewsByBrand);
 // Update brand review route
 router.put("/:id", verifyToken, updateBrandReview);
 
+// Update brand review visibility route
+router.patch("/:id/visibility", verifyToken, updateBrandReview);
+
 // Delete brand review route
 router.delete("/:id", verifyToken, deleteBrandReview);
 

@@ -3136,3 +3136,25 @@
 2025-09-11T06:44:43.528Z [CollabForge] info: Started 1 scheduled jobs
 2025-09-11T06:44:43.529Z [CollabForge] info: Job scheduler initialized successfully
 2025-09-11T06:44:43.530Z [CollabForge] info: Server started on port 8080
+2025-09-15T08:15:10.088Z [CollabForge] info: Initializing job scheduler
+2025-09-15T08:15:10.270Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-15T08:15:10.277Z [CollabForge] info: Running immediate top creators calculation
+2025-09-15T08:15:10.285Z [CollabForge] info: Starting top creators calculation job
+2025-09-15T08:15:10.423Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-15T08:15:10.430Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-15T08:15:10.432Z [CollabForge] info: Starting all scheduled jobs
+2025-09-15T08:15:10.577Z [CollabForge] info: Top creators job scheduled
+2025-09-15T08:15:10.578Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-15T08:15:10.578Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-15T08:15:10.581Z [CollabForge] info: Server started on port 8080
+2025-09-15T08:15:19.917Z [CollabForge] info: Initializing job scheduler
+2025-09-15T08:15:20.001Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-15T08:15:20.006Z [CollabForge] info: Running immediate top creators calculation
+2025-09-15T08:15:20.009Z [CollabForge] info: Starting top creators calculation job
+2025-09-15T08:15:20.176Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-15T08:15:20.178Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-15T08:15:20.180Z [CollabForge] info: Starting all scheduled jobs
+2025-09-15T08:15:20.345Z [CollabForge] info: Top creators job scheduled
+2025-09-15T08:15:20.346Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-15T08:15:20.348Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-15T08:15:20.352Z [CollabForge] info: Server started on port 8080

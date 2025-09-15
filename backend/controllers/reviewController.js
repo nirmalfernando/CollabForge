@@ -288,6 +288,42 @@ export const updateReview = async (req, res) => {
   }
 };
 
+//Update the visibility of the review
+export const updateReviewVisibility = async (req, res) => {
+  const reviewId = req.params.id;
+  const { isShown } = req.body;
+  
+  try {
+    const review = await Review.findByPk(reviewId);
+    if (!review) {
+      logger.warn("Review visibility update failed: Review not found", { reviewId });
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    // Update the visibility field if it is provided
+    if (isShown !== undefined) {
+      review.isShown = isShown;
+      await review.save();
+    }
+
+    logger.info("Review visibility updated successfully", { reviewId });
+    return res.status(200).json({
+      message: "Review visibility updated successfully",
+      review,
+    });
+  } catch (error) {
+    logger.error("Error during review visibility update", {
+      error: error.message,
+      reviewId,
+      reviewData: req.body,
+    });
+    return res.status(500).json({
+      message: "Internal server error during review visibility update",
+      error: error.message,
+    });
+  }
+};
+
 // Delete review
 export const deleteReview = async (req, res) => {
   const reviewId = req.params.id;

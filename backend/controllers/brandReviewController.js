@@ -259,6 +259,50 @@ export const updateBrandReview = async (req, res) => {
   }
 };
 
+// Update the visibility of the review
+export const updateBrandReviewVisibility = async (req, res) => {
+  const reviewId = req.params.id;
+  const { isShown } = req.body;
+
+  try {
+    const brandReview = await BrandReview.findByPk(reviewId);
+
+    if (!brandReview) {
+      logger.warn("Brand review visibility update failed: Brand review not found", {
+        reviewId,
+      });
+      return res.status(404).json({ message: "Brand review not found" });
+    }
+
+    // Update the visibility field if it is provided
+    if (isShown !== undefined) {
+      brandReview.isShown = isShown;
+    } else {
+      return res
+        .status(400)
+        .json({ message: "isShown field is required" });
+    }
+
+    await brandReview.save();
+
+    logger.info("Brand review visibility updated successfully", { reviewId });
+    return res.status(200).json({
+      message: "Brand review visibility updated successfully",
+      brandReview,
+    });
+  } catch (error) {
+    logger.error("Error during brand review visibility update", {
+      error: error.message,
+      reviewId,
+      reviewData: req.body,
+    });
+    return res.status(500).json({
+      message: "Internal server error during brand review visibility update",
+      error: error.message,
+    });
+  }
+};
+
 // Delete brand review
 export const deleteBrandReview = async (req, res) => {
   const reviewId = req.params.id;
