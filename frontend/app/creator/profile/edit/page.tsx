@@ -675,51 +675,54 @@ export default function CreatorEditProfilePage() {
                   selectedCreatorType={selectedCreatorType}
                   setSelectedCreatorType={setSelectedCreatorType}
                 />
-                <div className="space-y-4">
-                  <h2 className="text-2xl md:text-3xl font-bold">
-                    Select <span className="text-primary">Reviews</span> to Feature (up to 5)
-                  </h2>
-                  {reviews.length > 0 ? (
-                    <div className="space-y-4">
-                      {reviews.map((review) => (
-                        <div
-                          key={review.reviewId}
-                          className="flex items-start gap-4 rounded-lg p-4 bg-muted/50"
-                        >
-                          <Checkbox
-                            id={`review-${review.reviewId}`}
-                            checked={review.isShown}
-                            onCheckedChange={(checked) => handleToggle(review.reviewId, checked as boolean)}
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`h-5 w-5 ${
-                                    i < review.rating
-                                      ? "text-yellow-400 fill-yellow-400"
-                                      : "text-gray-300"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            {review.comment && (
-                              <p className="text-lg">{review.comment}</p>
-                            )}
-                            <p className="text-sm mt-2">
-                              Reviewed by: {review.companyName}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-lg text-muted-foreground">
-                      No reviews available.
-                    </p>
-                  )}
-                </div>
+<details className="rounded-lg border p-4 bg-muted/30">
+  <summary className="cursor-pointer font-semibold text-lg">
+    Select Reviews to Feature (up to 5)
+  </summary>
+  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+    {reviews.map((review) => (
+      <div
+        key={review.reviewId}
+        className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg shadow-sm"
+      >
+        <Checkbox
+          id={`review-${review.reviewId}`}
+          checked={review.isShown}
+          onCheckedChange={(checked) =>
+            handleToggle(review.reviewId, checked as boolean)
+          }
+        />
+        <div className="flex-1">
+          {/* Rating Stars */}
+          <div className="flex items-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+                  i < review.rating
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Review Comment */}
+          {review.comment && (
+            <p className="text-sm text-foreground">{review.comment}</p>
+          )}
+
+          {/* Reviewer */}
+          <p className="text-xs text-muted-foreground mt-2">
+            Reviewed by: <span className="font-medium">{review.companyName}</span>
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</details>
+
+
               </TabsContent>
 
               <TabsContent value="accounts-metrics" className="mt-6 space-y-8">
