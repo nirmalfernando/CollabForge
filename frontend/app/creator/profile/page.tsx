@@ -62,40 +62,47 @@ export default function CreatorProfilePage() {
     const loadCreatorProfile = async () => {
       try {
         setIsLoading(true);
-        const [profile, reviewsData] = await Promise.all([
-          creatorApi.getCreatorByUserId(auth.user.userId),
-          brandReviewApi.getBrandReviewsByCreator(auth.user.userId),
-        ]);
+        const profileResponse = await creatorApi.getCreatorByUserId(auth.user.userId);
 
-        // Fetch company names for each review
-        const reviewsWithCompanyNames = await Promise.all(
-          reviewsData.map(async (review: any) => {
-            try {
-              const brand = await brandApi.getBrandById(review.brandId);
-              return {
-                ...review,
-                companyName: brand.companyName || "Unknown Brand",
-              };
-            } catch (error) {
-              console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
-              return {
-                ...review,
-                companyName: "Unknown Brand",
-              };
-            }
-          })
-        );
+        if (!profileResponse) {
+          router.push("/creator/profile/new");
+          return;
+        }
 
-        setCreatorData(profile);
-        setReviews(reviewsWithCompanyNames || []);
+        setCreatorData(profileResponse);
+
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(auth.user.userId);
+          const reviewsWithCompanyNames = await Promise.all(
+            reviewsData.map(async (review: any) => {
+              try {
+                const brand = await brandApi.getBrandById(review.brandId);
+                return {
+                  ...review,
+                  companyName: brand.companyName || "Unknown Brand",
+                };
+              } catch (error) {
+                console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
+                return {
+                  ...review,
+                  companyName: "Unknown Brand",
+                };
+              }
+            })
+          );
+          setReviews(reviewsWithCompanyNames || []);
+        } catch (error: any) {
+          console.error("Failed to load reviews:", error);
+          setReviews([]); // Set empty reviews array if fetching reviews fails
+        }
       } catch (error: any) {
-        console.error("Failed to load creator profile or reviews:", error);
+        console.error("Failed to load creator profile:", error);
         if (error.status === 404) {
           router.push("/creator/profile/new");
         } else {
           toast({
             title: "Error",
-            description: "Failed to load profile or reviews",
+            description: "Failed to load profile",
             variant: "destructive",
           });
         }
@@ -419,11 +426,11 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {reviews.length > 0 && (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        My <span className="text-primary">Reviews</span>
-                      </h2>
+                  <div className="space-y-4">
+                    <h2 className="text-2xl md:text-3xl font-bold">
+                      My <span className="text-primary">Reviews</span>
+                    </h2>
+                    {reviews.length > 0 ? (
                       <div className="space-y-4">
                         {reviews.map((review) => (
                           <div
@@ -451,8 +458,12 @@ export default function CreatorProfilePage() {
                           </div>
                         ))}
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <p className="text-lg text-muted-foreground">
+                        No reviews available.
+                      </p>
+                    )}
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="accounts-metrics">
