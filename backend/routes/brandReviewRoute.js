@@ -5,7 +5,9 @@ import {
   getAllBrandReviews,
   getBrandReviewsByCreator,
   getBrandReviewsByBrand,
+  getBrandReviewsByVisibility,
   updateBrandReview,
+  updateBrandReviewVisibility,
   deleteBrandReview,
   brandReviewValidation,
 } from "../controllers/brandReviewController.js";
@@ -28,11 +30,14 @@ router.get("/creator/:creatorId", verifyToken, getBrandReviewsByCreator);
 // Get brand reviews by brand ID route
 router.get("/brand/:brandId", verifyToken, getBrandReviewsByBrand);
 
+// Get brand reviews by visibility route
+router.get("/visibility", verifyToken, getBrandReviewsByVisibility);
+
 // Update brand review route
 router.put("/:id", verifyToken, updateBrandReview);
 
 // Update brand review visibility route
-router.patch("/:id/visibility", verifyToken, updateBrandReview);
+router.patch("/:id/visibility", verifyToken, updateBrandReviewVisibility);
 
 // Delete brand review route
 router.delete("/:id", verifyToken, deleteBrandReview);

@@ -205,6 +205,37 @@ export const getBrandReviewsByBrand = async (req, res) => {
   }
 };
 
+// Get brand reviews by the review visibility
+export const getBrandReviewsByVisibility = async (req, res) => {
+  const isShown = req.query.isShown === 'true';
+  
+  try {
+    const brandReviews = await BrandReview.findAll({
+      where: { isShown },
+      order: [["createdAt", "DESC"]],
+    });
+    
+    if (brandReviews.length === 0) {
+      logger.info("No brand reviews found for the specified visibility", { isShown });
+      return res
+        .status(404)
+        .json({ message: "No brand reviews found for the specified visibility" });
+    }
+    
+    logger.info("Brand reviews retrieved successfully for the specified visibility", { isShown });
+    return res.status(200).json(brandReviews);
+  } catch (error) {
+    logger.error("Error during getting brand reviews by visibility", {
+      error: error.message,
+      isShown,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting brand reviews by visibility",
+      error: error.message,
+    });
+  }
+};
+
 // Update brand review
 export const updateBrandReview = async (req, res) => {
   const reviewId = req.params.id;

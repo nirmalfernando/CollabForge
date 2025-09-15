@@ -219,6 +219,37 @@ export const getReviewsByCreator = async (req, res) => {
   }
 };
 
+// Get reviews by the review visibility
+export const getReviewsByVisibility = async (req, res) => {
+  const isShown = req.query.isShown === 'true';
+
+  try {
+    const reviews = await Review.findAll({
+      where: { isShown },
+      order: [["createdAt", "DESC"]],
+    });
+
+    if (reviews.length === 0) {
+      logger.info("No reviews found for the specified visibility", { isShown });
+      return res
+        .status(404)
+        .json({ message: "No reviews found for the specified visibility" });
+    }
+
+    logger.info("Reviews retrieved successfully for the specified visibility", { isShown });
+    return res.status(200).json(reviews);
+  } catch (error) {
+    logger.error("Error during getting reviews by visibility", {
+      error: error.message,
+      isShown,
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting reviews by visibility",
+      error: error.message,
+    });
+  }
+};
+
 // Update review
 export const updateReview = async (req, res) => {
   const reviewId = req.params.id;
