@@ -6,6 +6,8 @@ import {
   getTopCreatorsJobStatus,
   getTopCreatorsByCategoryValidation,
   getAllTopCreatorsValidation,
+  getBrandRecommendations,
+  getBrandRecommendationsValidation,
 } from "../controllers/recommendationController.js";
 import { verifyToken } from "../middlewares/authRole.js";
 
@@ -25,6 +27,14 @@ router.get(
   verifyToken,
   getAllTopCreatorsValidation,
   getAllTopCreators
+);
+
+// Get brand-specific creator recommendations
+router.get(
+  "/recommendations/brand/:brandId",
+  verifyToken,
+  getBrandRecommendationsValidation,
+  getBrandRecommendations
 );
 
 // Manually trigger top creators calculation (admin only)

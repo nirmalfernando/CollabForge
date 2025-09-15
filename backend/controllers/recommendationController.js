@@ -27,6 +27,31 @@ export const getAllTopCreatorsValidation = [
     .withMessage("Limit must be between 1 and 20")
 ];
 
+// Validation rules for brand-specific recommendations
+export const getBrandRecommendationsValidation = [
+  param("brandId")
+    .notEmpty()
+    .withMessage("Brand ID is required")
+    .isUUID(4)
+    .withMessage("Brand ID must be a valid UUID"),
+  query("limit")
+    .optional()
+    .isInt({ min: 1, max: 50 })
+    .withMessage("Limit must be between 1 and 50"),
+  query("includeAllCategories")
+    .optional()
+    .isBoolean()
+    .withMessage("includeAllCategories must be a boolean"),
+  query("minScore")
+    .optional()
+    .isFloat({ min: 0, max: 1 })
+    .withMessage("minScore must be between 0 and 1"),
+  query("categoryId")
+    .optional()
+    .isUUID(4)
+    .withMessage("categoryId must be a valid UUID")
+];
+
 // Get top creators for a specific category
 export const getTopCreatorsByCategory = async (req, res) => {
   const errors = validationResult(req);
@@ -266,6 +291,225 @@ export const getAllTopCreators = async (req, res) => {
     });
     return res.status(500).json({
       message: "Internal server error during getting all top creators",
+      error: error.message,
+    });
+  }
+};
+
+// Get brand-specific creator recommendations
+export const getBrandRecommendations = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    logger.error("Validation errors during get brand recommendations", {
+      errors: errors.array(),
+      brandId: req.params.brandId,
+      query: req.query,
+    });
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { brandId } = req.params;
+  const limit = parseInt(req.query.limit) || 20;
+  const includeAllCategories = req.query.includeAllCategories === 'true';
+  const minScore = parseFloat(req.query.minScore) || 0;
+  const specificCategoryId = req.query.categoryId;
+
+  try {
+    // Step 1: Get brand's campaign categories
+    let brandCategoryIds;
+    
+    if (specificCategoryId) {
+      // If specific category is requested, use only that
+      brandCategoryIds = [specificCategoryId];
+    } else if (includeAllCategories) {
+      // Get all active categories
+      const allCategories = await Category.findAll({
+        where: { status: true },
+        attributes: ['categoryId']
+      });
+      brandCategoryIds = allCategories.map(cat => cat.categoryId);
+    } else {
+      // Get brand's campaign categories (default behavior)
+      const brandCampaigns = await Campaign.findAll({
+        where: { 
+          brandId,
+          status: true // Only active campaigns
+        },
+        attributes: ['categoryId'],
+        group: ['categoryId'],
+        include: [
+          {
+            model: Category,
+            attributes: ['categoryId', 'categoryName'],
+            where: { status: true }
+          }
+        ]
+      });
+
+      if (brandCampaigns.length === 0) {
+        logger.info("No active campaigns found for brand", { brandId });
+        return res.status(404).json({ 
+          message: "No active campaigns found for this brand. Cannot generate recommendations.",
+          suggestion: "Create campaigns in specific categories to get targeted recommendations, or use includeAllCategories=true for general recommendations."
+        });
+      }
+
+      brandCategoryIds = brandCampaigns.map(campaign => campaign.categoryId);
+    }
+
+    logger.info("Brand categories for recommendations", {
+      brandId,
+      categoryIds: brandCategoryIds,
+      includeAllCategories,
+      specificCategory: specificCategoryId
+    });
+
+    // Step 2: Get top creators from those categories
+    const whereConditions = {
+      categoryId: {
+        [Op.in]: brandCategoryIds
+      }
+    };
+
+    // Add minimum score filter if provided
+    if (minScore > 0) {
+      whereConditions.score = {
+        [Op.gte]: minScore
+      };
+    }
+
+    const recommendedCreators = await TopCreator.findAll({
+      where: whereConditions,
+      include: [
+        {
+          model: Creator,
+          include: [
+            {
+              model: User,
+              attributes: ['userId', 'username'],
+              where: { status: true }
+            }
+          ],
+          where: { status: true }
+        },
+        {
+          model: Category,
+          attributes: ['categoryId', 'categoryName'],
+          where: { status: true }
+        }
+      ],
+      order: [
+        ['score', 'DESC'],
+        ['rankPosition', 'ASC']
+      ],
+      limit: limit
+    });
+
+    if (recommendedCreators.length === 0) {
+      logger.info("No recommended creators found for brand", { 
+        brandId, 
+        categoryIds: brandCategoryIds,
+        minScore 
+      });
+      
+      return res.status(404).json({ 
+        message: "No top creators found matching your brand's campaign categories and criteria.",
+        suggestion: "Try lowering the minimum score requirement or expanding to all categories."
+      });
+    }
+
+    // Step 3: Format response data
+    const responseData = recommendedCreators.map(topCreator => ({
+      rank: topCreator.rankPosition,
+      score: parseFloat(topCreator.score),
+      creator: {
+        creatorId: topCreator.Creator.creatorId,
+        firstName: topCreator.Creator.firstName,
+        lastName: topCreator.Creator.lastName,
+        nickName: topCreator.Creator.nickName,
+        bio: topCreator.Creator.bio,
+        profilePicUrl: topCreator.Creator.profilePicUrl,
+        type: topCreator.Creator.type,
+        username: topCreator.Creator.User.username,
+      },
+      metrics: {
+        followerCount: topCreator.followerCount,
+        avgReviewScore: parseFloat(topCreator.avgReviewScore),
+        collabCount: topCreator.collabCount,
+      },
+      category: {
+        categoryId: topCreator.Category.categoryId,
+        categoryName: topCreator.Category.categoryName,
+      },
+      lastUpdated: topCreator.lastUpdated,
+      recommendationReason: `Top performer in ${topCreator.Category.categoryName} category`
+    }));
+
+    // Step 4: Group by category for better presentation
+    const groupedByCategory = responseData.reduce((acc, creator) => {
+      const categoryId = creator.category.categoryId;
+      
+      if (!acc[categoryId]) {
+        acc[categoryId] = {
+          category: creator.category,
+          creators: [],
+          avgScore: 0,
+          totalCreators: 0
+        };
+      }
+
+      acc[categoryId].creators.push(creator);
+      acc[categoryId].totalCreators++;
+      acc[categoryId].avgScore += creator.score;
+      
+      return acc;
+    }, {});
+
+    // Calculate average scores per category
+    Object.keys(groupedByCategory).forEach(categoryId => {
+      groupedByCategory[categoryId].avgScore = 
+        (groupedByCategory[categoryId].avgScore / groupedByCategory[categoryId].totalCreators).toFixed(4);
+    });
+
+    const categorizedData = Object.values(groupedByCategory);
+
+    logger.info("Brand recommendations retrieved successfully", {
+      brandId,
+      categoriesMatched: brandCategoryIds.length,
+      creatorsFound: responseData.length,
+      categoriesWithCreators: categorizedData.length
+    });
+
+    return res.status(200).json({
+      message: "Brand-specific creator recommendations retrieved successfully",
+      brandId: brandId,
+      recommendations: {
+        creators: responseData,
+        byCategory: categorizedData
+      },
+      meta: {
+        totalRecommendations: responseData.length,
+        categoriesMatched: brandCategoryIds.length,
+        categoriesWithCreators: categorizedData.length,
+        filters: {
+          minScore: minScore,
+          includeAllCategories: includeAllCategories,
+          specificCategory: specificCategoryId || null
+        },
+        limit: limit,
+        lastUpdated: recommendedCreators[0]?.lastUpdated
+      }
+    });
+
+  } catch (error) {
+    logger.error("Error during getting brand recommendations", {
+      error: error.message,
+      brandId,
+      stack: error.stack
+    });
+    return res.status(500).json({
+      message: "Internal server error during getting brand recommendations",
       error: error.message,
     });
   }
