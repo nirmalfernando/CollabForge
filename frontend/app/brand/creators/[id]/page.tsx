@@ -1,18 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { toast } from "@/hooks/use-toast";
 import { creatorApi, categoryApi } from "@/lib/api";
-
-// Import the brand view components
-import BrandViewUserDetailsTab from "@/components/brand/creator-profile-tabs/BrandViewUserDetailsTab";
-import BrandViewAccountsMetricsTab from "@/components/brand/creator-profile-tabs/BrandViewAccountsMetricsTab";
-import BrandViewPastWorksTab from "@/components/brand/creator-profile-tabs/BrandViewPastWorksTab";
+import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
+import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
+import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
 
 export default function BrandViewCreatorProfile({
   params,
@@ -30,6 +28,11 @@ export default function BrandViewCreatorProfile({
       try {
         setLoading(true);
         setError(null);
+
+        // Ensure params.id is valid before making API calls
+        if (!params?.id) {
+          throw new Error("Creator ID is missing");
+        }
 
         const creatorData = await creatorApi.getCreatorById(params.id);
         setCreator(creatorData);
@@ -52,10 +55,8 @@ export default function BrandViewCreatorProfile({
       }
     };
 
-    if (params.id) {
-      fetchCreatorData();
-    }
-  }, [params.id]);
+    fetchCreatorData();
+  }, [params?.id]); // Use optional chaining to safely handle params
 
   const handleContact = () => {
     toast({
@@ -133,9 +134,7 @@ export default function BrandViewCreatorProfile({
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="brand-manager" />
-
       <main className="flex-1">
-        {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-gradient-to-r from-primary/20 to-primary/10">
           {creator.backgroundImgUrl && (
             <div
@@ -145,11 +144,9 @@ export default function BrandViewCreatorProfile({
           )}
         </section>
 
-        {/* Profile Header */}
         <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Profile Picture */}
               <div className="relative -mt-24 md:-mt-32 lg:-mt-36 flex-shrink-0">
                 <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg">
                   <AvatarImage
@@ -163,7 +160,6 @@ export default function BrandViewCreatorProfile({
                 </Avatar>
               </div>
 
-              {/* Follower Stats and Actions */}
               <div className="flex-1 flex flex-col md:flex-row items-start md:items-center gap-6 pt-4">
                 <div className="text-left">
                   <p className="text-4xl font-bold text-foreground">
@@ -203,7 +199,6 @@ export default function BrandViewCreatorProfile({
           </div>
         </div>
 
-        {/* Tabs Content */}
         <div className="container px-4 md:px-6 pb-12">
           <Tabs defaultValue="details" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3 bg-muted">
@@ -228,7 +223,7 @@ export default function BrandViewCreatorProfile({
             </TabsList>
 
             <TabsContent value="details" className="space-y-6">
-              <BrandViewUserDetailsTab
+              <ViewUserDetailsTab
                 creatorData={creator}
                 category={category}
                 onContact={handleContact}
@@ -238,16 +233,15 @@ export default function BrandViewCreatorProfile({
             </TabsContent>
 
             <TabsContent value="metrics" className="space-y-6">
-              <BrandViewAccountsMetricsTab creatorData={creator} />
+              <ViewAccountsMetricsTab creatorData={creator} />
             </TabsContent>
 
             <TabsContent value="works" className="space-y-6">
-              <BrandViewPastWorksTab creatorData={creator} />
+              <ViewPastWorksTab creatorData={creator} />
             </TabsContent>
           </Tabs>
         </div>
       </main>
-
       <Footer />
     </div>
   );

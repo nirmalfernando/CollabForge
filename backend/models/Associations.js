@@ -10,6 +10,7 @@ import Campaign from "./Campaign.js";
 import CreatorWork from "./CreatorWork.js";
 import Chat from "./Chat.js";
 import Conversation from "./Conversation.js";
+import TopCreator from "./TopCreator.js";
 
 // Define associations between models
 
@@ -226,10 +227,37 @@ Conversation.belongsTo(User, {
   as: "participant2",
 });
 
+// TopCreator to Creator (Many-to-One)
+// A TopCreator belongs to one Creator, and a Creator can have many TopCreator entries
+Creator.hasMany(TopCreator, {
+  foreignKey: "creatorId",
+  sourceKey: "creatorId",
+  as: "topCreatorEntries"
+});
+TopCreator.belongsTo(Creator, {
+  foreignKey: "creatorId",
+  targetKey: "creatorId",
+  as: "Creator"
+});
+
+// TopCreator to Category (Many-to-One)
+// A TopCreator belongs to one Category, and a Category can have many TopCreator entries
+Category.hasMany(TopCreator, {
+  foreignKey: "categoryId",
+  sourceKey: "categoryId",
+  as: "topCreators"
+});
+TopCreator.belongsTo(Category, {
+  foreignKey: "categoryId",
+  targetKey: "categoryId",
+  as: "Category"
+});
+
 export default {
   User,
   Category,
   Creator,
+  TopCreator,
   Brand,
   Campaign,
   Proposal,

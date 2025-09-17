@@ -18,7 +18,7 @@ import {
 import { creatorWorkApi } from "@/lib/api";
 import WorkDetailModal from "@/components/creator/work-detail-modal";
 
-interface BrandViewPastWorksTabProps {
+interface ViewPastWorksTabProps {
   creatorData: {
     creatorId: string;
     firstName: string;
@@ -48,9 +48,9 @@ interface CreatorWork {
   updatedAt: string;
 }
 
-export default function BrandViewPastWorksTab({
+export default function ViewPastWorksTab({
   creatorData,
-}: BrandViewPastWorksTabProps) {
+}: ViewPastWorksTabProps) {
   const [creatorWorks, setCreatorWorks] = useState<CreatorWork[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,8 +80,6 @@ export default function BrandViewPastWorksTab({
           setCreatorWorks([]);
         }
       } catch (err) {
-        console.error("Error fetching creator works:", err);
-        setError("Failed to load works. Please try again.");
         setCreatorWorks([]);
       } finally {
         setLoading(false);
@@ -182,7 +180,10 @@ export default function BrandViewPastWorksTab({
           >
             <List className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm">
+          <Button
+           variant="outline"
+            size="sm"
+            >
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </Button>
@@ -215,7 +216,9 @@ export default function BrandViewPastWorksTab({
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />
                 <div className="absolute top-2 left-2">
-                  <Badge variant="secondary" className="capitalize">
+                  <Badge
+                   variant="secondary"
+                    className="capitalize">
                     {work.contentType}
                   </Badge>
                 </div>
@@ -341,7 +344,9 @@ export default function BrandViewPastWorksTab({
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
                         {work.title}
                       </h3>
-                      <Badge variant="secondary" className="capitalize ml-2">
+                      <Badge 
+                      variant="secondary" 
+                      className="capitalize ml-2">
                         {work.contentType}
                       </Badge>
                     </div>

@@ -46,6 +46,11 @@ const BrandReview = sequelize.define(
         len: [0, 1000],
       },
     },
+    isShown: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   },
   {
     tableName: "brand_reviews",

@@ -908,6 +908,17 @@ export const reviewApi = {
       method: "DELETE",
     });
   },
+
+  getReviewsByVisibility: async (isShown: boolean) => {
+    return apiRequest(`/reviews/visibility?isShown=${isShown}`);
+  },
+
+  updateReviewVisibility: async (reviewId: string, isShown: boolean) => {
+    return apiRequest(`/reviews/${reviewId}/visibility`, {
+      method: "PATCH",
+      body: JSON.stringify({ isShown }),
+    });
+  },
 };
 
 // Brand Review API functions (Brand reviews Creator)
@@ -971,6 +982,17 @@ export const brandReviewApi = {
   deleteBrandReview: async (reviewId: string) => {
     return apiRequest(`/brand-reviews/${reviewId}`, {
       method: "DELETE",
+    });
+  },
+
+   getBrandReviewsByVisibility: async (isShown: boolean) => {
+    return apiRequest(`/brand-reviews/visibility?isShown=${isShown}`);
+  },
+
+  updateBrandReviewVisibility: async (reviewId: string, isShown: boolean) => {
+    return apiRequest(`/brand-reviews/${reviewId}/visibility`, {
+      method: "PATCH",
+      body: JSON.stringify({ isShown }),
     });
   },
 };

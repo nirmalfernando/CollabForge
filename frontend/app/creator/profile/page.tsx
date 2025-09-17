@@ -25,11 +25,12 @@ import {
   Zap,
   Leaf,
   PlusCircle,
+  Star,
 } from "lucide-react";
-import { creatorApi, getAuthData } from "@/lib/api";
+import { creatorApi, getAuthData, brandReviewApi, brandApi } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import AccountsMetricsTab from "@/components/creator/accounts-metrics-tab";
-import PastWorksTab from "@/components/creator/past-works-tab";
+import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
+import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
 
 const iconComponents: { [key: string]: any } = {
   Monitor,
@@ -48,6 +49,7 @@ export default function CreatorProfilePage() {
   const [creatorData, setCreatorData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [authData, setAuthDataState] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
 
   useEffect(() => {
     const auth = getAuthData();
@@ -60,8 +62,51 @@ export default function CreatorProfilePage() {
     const loadCreatorProfile = async () => {
       try {
         setIsLoading(true);
-        const profile = await creatorApi.getCreatorByUserId(auth.user.userId);
-        setCreatorData(profile);
+        const profileResponse = await creatorApi.getCreatorByUserId(
+          auth.user.userId
+        );
+
+        if (!profileResponse) {
+          router.push("/creator/profile/new");
+          return;
+        }
+
+        setCreatorData(profileResponse);
+
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            auth.user.userId
+          );
+          // Filter to only show reviews with isShown = true
+          const shownReviews = reviewsData.filter(
+            (review: any) => review.isShown
+          );
+
+          const reviewsWithCompanyNames = await Promise.all(
+            shownReviews.map(async (review: any) => {
+              try {
+                const brand = await brandApi.getBrandById(review.brandId);
+                return {
+                  ...review,
+                  companyName: brand.companyName || "Unknown Brand",
+                };
+              } catch (error) {
+                console.error(
+                  `Failed to fetch brand for ID ${review.brandId}:`,
+                  error
+                );
+                return {
+                  ...review,
+                  companyName: "Unknown Brand",
+                };
+              }
+            })
+          );
+          setReviews(reviewsWithCompanyNames || []);
+        } catch (error: any) {
+          console.error("Failed to load reviews:", error);
+          setReviews([]); // Set empty reviews array if fetching reviews fails
+        }
       } catch (error: any) {
         console.error("Failed to load creator profile:", error);
         if (error.status === 404) {
@@ -176,9 +221,7 @@ export default function CreatorProfilePage() {
                   <p className="text-4xl font-bold text-foreground">
                     {formatFollowerCount(totalFollowers)}
                   </p>
-                  <p className="text-lg text-muted-foreground">
-                    Followers
-                  </p>
+                  <p className="text-lg text-muted-foreground">Followers</p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
                   <Link href="/creator/profile/edit" prefetch={false}>
@@ -253,7 +296,8 @@ export default function CreatorProfilePage() {
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold">Details:</h3>
                       {creatorDetails.map((detail, index) => {
-                        const IconComponent = iconComponents[detail.icon] || Monitor;
+                        const IconComponent =
+                          iconComponents[detail.icon] || Monitor;
                         return (
                           <div key={index} className="flex items-center gap-3">
                             <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
@@ -264,35 +308,48 @@ export default function CreatorProfilePage() {
                     </div>
                   )}
 
-                  {creatorData.socialMedia && creatorData.socialMedia.length > 0 && (
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold">Official Platforms:</h3>
-                      <ul className="space-y-2 list-inside">
-                        {creatorData.socialMedia.map((platform: any, index: number) => {
-                          const IconComponent = iconComponents[platform.icon] || Monitor;
-                          return (
-                            <li key={index} className="flex items-center gap-3">
-                              <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
-                              <Link
-                                href={platform.url || "#"}
-                                className="text-lg hover:underline"
-                                prefetch={false}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {platform.platform} - {platform.handle}
-                                {platform.followers && (
-                                  <span className="text-muted-foreground ml-2">
-                                    ({formatFollowerCount(platform.followers)} followers)
-                                  </span>
-                                )}
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
+                  {creatorData.socialMedia &&
+                    creatorData.socialMedia.length > 0 && (
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">
+                          Official Platforms:
+                        </h3>
+                        <ul className="space-y-2 list-inside">
+                          {creatorData.socialMedia.map(
+                            (platform: any, index: number) => {
+                              const IconComponent =
+                                iconComponents[platform.icon] || Monitor;
+                              return (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-3"
+                                >
+                                  <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                                  <Link
+                                    href={platform.url || "#"}
+                                    className="text-lg hover:underline"
+                                    prefetch={false}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {platform.platform} - {platform.handle}
+                                    {platform.followers && (
+                                      <span className="text-muted-foreground ml-2">
+                                        (
+                                        {formatFollowerCount(
+                                          platform.followers
+                                        )}{" "}
+                                        followers)
+                                      </span>
+                                    )}
+                                  </Link>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
                   {creatorData.whatIDo && creatorData.whatIDo.length > 0 && (
                     <div className="space-y-4">
@@ -320,78 +377,128 @@ export default function CreatorProfilePage() {
                         My <span className="text-primary">People</span>
                       </h2>
                       <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.myPeople.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.name}
-                            {item.role && (
-                              <span className="text-muted-foreground ml-2">
-                                - {item.role}
-                              </span>
-                            )}
-                            {item.contact && (
-                              <span className="text-muted-foreground ml-2">
-                                - {item.contact}
-                              </span>
-                            )}
-                          </li>
-                        ))}
+                        {creatorData.myPeople.map(
+                          (item: any, index: number) => (
+                            <li key={index}>
+                              {item.name}
+                              {item.role && (
+                                <span className="text-muted-foreground ml-2">
+                                  - {item.role}
+                                </span>
+                              )}
+                              {item.contact && (
+                                <span className="text-muted-foreground ml-2">
+                                  - {item.contact}
+                                </span>
+                              )}
+                            </li>
+                          )
+                        )}
                       </ul>
                     </div>
                   )}
 
-                  {creatorData.myContent && creatorData.myContent.length > 0 && (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        My <span className="text-primary">Content</span>
-                      </h2>
-                      <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.myContent.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.url ? (
-                              <Link
-                                href={item.url}
-                                className="hover:underline text-primary"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {item.title}
-                              </Link>
-                            ) : (
-                              item.title
-                            )}
-                            {item.views && (
-                              <span className="text-muted-foreground ml-2">
-                                ({item.views.toLocaleString()} views)
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {creatorData.myContent &&
+                    creatorData.myContent.length > 0 && (
+                      <div className="space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          My <span className="text-primary">Content</span>
+                        </h2>
+                        <ul className="list-disc list-inside space-y-2 text-lg">
+                          {creatorData.myContent.map(
+                            (item: any, index: number) => (
+                              <li key={index}>
+                                {item.url ? (
+                                  <Link
+                                    href={item.url}
+                                    className="hover:underline text-primary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {item.title}
+                                  </Link>
+                                ) : (
+                                  item.title
+                                )}
+                                {item.views && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({item.views.toLocaleString()} views)
+                                  </span>
+                                )}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
-                  {creatorData.pastCollaborations && creatorData.pastCollaborations.length > 0 && (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        I&apos;ve <span className="text-primary">Worked With</span>
-                      </h2>
-                      <ul className="list-disc list-inside space-y-2 text-lg">
-                        {creatorData.pastCollaborations.map((item: any, index: number) => (
-                          <li key={index}>
-                            {item.brand}
-                            {item.campaign && (
-                              <span className="ml-2">- {item.campaign}</span>
+                  {creatorData.pastCollaborations &&
+                    creatorData.pastCollaborations.length > 0 && (
+                      <div className="space-y-4">
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          I&apos;ve{" "}
+                          <span className="text-primary">Worked With</span>
+                        </h2>
+                        <ul className="list-disc list-inside space-y-2 text-lg">
+                          {creatorData.pastCollaborations.map(
+                            (item: any, index: number) => (
+                              <li key={index}>
+                                {item.brand}
+                                {item.campaign && (
+                                  <span className="ml-2">
+                                    - {item.campaign}
+                                  </span>
+                                )}
+                                {item.date && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({item.date})
+                                  </span>
+                                )}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                  <div className="space-y-4">
+                    <h2 className="text-2xl md:text-3xl font-bold">
+                      My <span className="text-primary">Reviews</span>
+                    </h2>
+                    {reviews.length > 0 ? (
+                      <div className="space-y-4">
+                        {reviews.map((review) => (
+                          <div
+                            key={review.id}
+                            className="rounded-lg p-4 bg-muted/50"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-5 w-5 ${
+                                    i < review.rating
+                                      ? "text-yellow-400 fill-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            {review.comment && (
+                              <p className="text-lg">{review.comment}</p>
                             )}
-                            {item.date && (
-                              <span className="text-muted-foreground ml-2">
-                                ({item.date})
-                              </span>
-                            )}
-                          </li>
+                            <p className="text-sm mt-2">
+                              Reviewed by: {review.companyName}
+                            </p>
+                          </div>
                         ))}
-                      </ul>
-                    </div>
-                  )}
+                      </div>
+                    ) : (
+                      <p className="text-lg text-muted-foreground">
+                        No reviews available.
+                      </p>
+                    )}
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="accounts-metrics">
