@@ -7,10 +7,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { toast } from "@/hooks/use-toast";
-import { creatorApi, categoryApi } from "@/lib/api";
+import { creatorApi, categoryApi, brandReviewApi } from "@/lib/api";
 import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
 import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
 import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
+import { Loader2, Star } from "lucide-react";
 
 export default function BrandViewCreatorProfile({
   params,
@@ -19,6 +20,7 @@ export default function BrandViewCreatorProfile({
 }) {
   const [creator, setCreator] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -29,14 +31,15 @@ export default function BrandViewCreatorProfile({
         setLoading(true);
         setError(null);
 
-        // Ensure params.id is valid before making API calls
         if (!params?.id) {
           throw new Error("Creator ID is missing");
         }
 
+        // Fetch creator
         const creatorData = await creatorApi.getCreatorById(params.id);
         setCreator(creatorData);
 
+        // Fetch category
         if (creatorData.categoryId) {
           try {
             const categoryData = await categoryApi.getCategoryById(
@@ -47,6 +50,23 @@ export default function BrandViewCreatorProfile({
             console.error("Error fetching category:", categoryError);
           }
         }
+
+        // Fetch reviews
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            creatorData.creatorId
+          );
+          const shownReviews = reviewsData
+            .filter((review: any) => review.isShown)
+            .map((review: any) => ({
+              ...review,
+              companyName: review.brand?.companyName || "Unknown Brand",
+            }));
+          setReviews(shownReviews || []);
+        } catch (reviewError) {
+          console.error("Error fetching reviews:", reviewError);
+          setReviews([]);
+        }
       } catch (error) {
         console.error("Error fetching creator:", error);
         setError("Failed to load creator profile.");
@@ -56,7 +76,7 @@ export default function BrandViewCreatorProfile({
     };
 
     fetchCreatorData();
-  }, [params?.id]); // Use optional chaining to safely handle params
+  }, [params?.id]);
 
   const handleContact = () => {
     toast({
@@ -80,7 +100,7 @@ export default function BrandViewCreatorProfile({
       title: "Hire Creator",
       description: "Redirecting to collaboration request...",
     });
-    // Redirect to collaboration/campaign creation page
+    // TODO: redirect to collaboration page
   };
 
   const getTotalFollowers = () => {
@@ -108,7 +128,10 @@ export default function BrandViewCreatorProfile({
       <div className="flex flex-col min-h-screen bg-background text-foreground">
         <Header isLoggedIn={true} userRole="brand-manager" />
         <main className="flex-1 flex justify-center items-center">
-          <div className="text-lg">Loading creator profile...</div>
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="text-lg">Loading creator profile...</span>
+          </div>
         </main>
         <Footer />
       </div>
@@ -222,6 +245,7 @@ export default function BrandViewCreatorProfile({
               </TabsTrigger>
             </TabsList>
 
+            {/* Profile Tab + Reviews */}
             <TabsContent value="details" className="space-y-6">
               <ViewUserDetailsTab
                 creatorData={creator}
@@ -230,6 +254,45 @@ export default function BrandViewCreatorProfile({
                 onFollow={handleFollow}
                 onHire={handleHire}
               />
+
+              <div className="mt-8 space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  My <span className="text-primary">Reviews</span>
+                </h2>
+                {reviews.length > 0 ? (
+                  <div className="space-y-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.reviewId}
+                        className="rounded-lg p-4 bg-muted/50"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-5 w-5 ${
+                                i < review.rating
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        {review.comment && (
+                          <p className="text-lg">{review.comment}</p>
+                        )}
+                        <p className="text-sm mt-2">
+                          Reviewed by: {review.companyName}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-lg text-muted-foreground">
+                    No reviews available.
+                  </p>
+                )}
+              </div>
             </TabsContent>
 
             <TabsContent value="metrics" className="space-y-6">
