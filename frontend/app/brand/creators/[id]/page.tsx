@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { toast } from "@/hooks/use-toast";
-import { creatorApi, categoryApi } from "@/lib/api";
+import { creatorApi, categoryApi, getAuthData } from "@/lib/api";
 import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
 import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
 import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
@@ -22,6 +23,9 @@ export default function BrandViewCreatorProfile({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [contactingCreator, setContactingCreator] = useState(false);
+  
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCreatorData = async () => {
@@ -56,13 +60,53 @@ export default function BrandViewCreatorProfile({
     };
 
     fetchCreatorData();
-  }, [params?.id]); // Use optional chaining to safely handle params
+  }, [params?.id]);
 
-  const handleContact = () => {
-    toast({
-      title: "Contact Request",
-      description: "Contact feature will be available soon!",
-    });
+  const handleContact = async () => {
+    try {
+      setContactingCreator(true);
+      
+      const currentUser = getAuthData()?.user;
+      
+      if (!currentUser) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to start a conversation.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Check if creator has a user account
+      if (!creator.creatorId) {
+        toast({
+          title: "Contact Unavailable",
+          description: "This creator cannot be contacted at the moment.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Show success message
+      toast({
+        title: "Opening Chat",
+        description: `Starting conversation with ${creator.firstName}...`,
+      });
+
+      // Navigate to chat page with creator info
+      const creatorName = `${creator.firstName} ${creator.lastName}`;
+      router.push(`/brand/chat?contactUserId=${creator.creatorId}&contactName=${encodeURIComponent(creatorName)}&autoMessage=true`);
+      
+    } catch (error) {
+      console.error('Error starting conversation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to open chat. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setContactingCreator(false);
+    }
   };
 
   const handleFollow = () => {
@@ -80,7 +124,8 @@ export default function BrandViewCreatorProfile({
       title: "Hire Creator",
       description: "Redirecting to collaboration request...",
     });
-    // Redirect to collaboration/campaign creation page
+    // You can extend this to navigate to a campaign creation page
+    // router.push(`/brand/campaigns/create?creatorId=${creator.creatorId}`);
   };
 
   const getTotalFollowers = () => {
@@ -108,7 +153,10 @@ export default function BrandViewCreatorProfile({
       <div className="flex flex-col min-h-screen bg-background text-foreground">
         <Header isLoggedIn={true} userRole="brand-manager" />
         <main className="flex-1 flex justify-center items-center">
-          <div className="text-lg">Loading creator profile...</div>
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-lg">Loading creator profile...</p>
+          </div>
         </main>
         <Footer />
       </div>
@@ -174,10 +222,11 @@ export default function BrandViewCreatorProfile({
                   <div className="flex gap-2">
                     <Button
                       onClick={handleContact}
+                      disabled={contactingCreator}
                       variant="outline"
-                      className="flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      className="flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50"
                     >
-                      Contact
+                      {contactingCreator ? "Opening Chat..." : "Contact"}
                     </Button>
                     <Button
                       onClick={handleFollow}

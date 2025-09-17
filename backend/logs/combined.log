@@ -3597,3 +3597,412 @@
 2025-09-15T14:39:09.967Z [CollabForge] info: Creator retrieved successfully for user
 2025-09-15T14:39:10.007Z [CollabForge] info: Categories retrieved successfully
 2025-09-15T14:39:10.147Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-17T22:42:05.969Z [CollabForge] info: Initializing job scheduler
+2025-09-17T22:42:06.235Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T22:42:06.341Z [CollabForge] info: Top creators job scheduled
+2025-09-17T22:42:06.341Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T22:42:06.342Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T22:42:06.342Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T22:42:06.345Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T22:42:48.457Z [CollabForge] info: User logged in successfully
+2025-09-17T22:42:49.319Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:42:49.420Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:42:49.499Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:42:49.589Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:43:50.650Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:43:51.304Z [CollabForge] info: User connected to socket
+2025-09-17T22:44:20.488Z [CollabForge] info: User disconnected from socket
+2025-09-17T22:44:21.768Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:44:21.896Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:44:23.933Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:44:24.028Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:44:24.118Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:44:24.203Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:44:24.297Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:44:24.388Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:44:24.395Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:44:24.407Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:44:24.494Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:44:24.569Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:44:30.463Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:44:30.464Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:44:30.558Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:44:30.566Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:44:30.571Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:44:30.573Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:44:30.649Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:44:30.650Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:48:24.523Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:48:24.524Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:48:24.625Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:48:24.626Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:48:57.139Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:48:57.147Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:48:57.149Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:48:57.230Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:48:57.243Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:48:57.247Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:48:57.327Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:48:57.329Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:48:57.417Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:48:57.421Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:48:58.849Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:48:58.851Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:48:58.942Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:48:58.943Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:48:58.956Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:48:58.957Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:48:59.118Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:48:59.120Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:49:00.875Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:49:00.889Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:49:01.003Z [CollabForge] info: User connected to socket
+2025-09-17T22:54:15.431Z [CollabForge] info: User disconnected from socket
+2025-09-17T22:54:17.181Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:54:17.284Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:54:20.242Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:54:20.349Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:54:20.432Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:54:20.529Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:54:20.611Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:54:20.691Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:54:20.694Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:54:20.695Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:54:20.783Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:54:20.818Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:54:24.830Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:54:24.831Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:54:24.920Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:54:24.921Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:54:24.927Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:54:24.960Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:54:25.010Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:54:25.056Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:54:28.226Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:54:28.232Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:54:28.346Z [CollabForge] info: User connected to socket
+2025-09-17T22:56:44.854Z [CollabForge] info: User disconnected from socket
+2025-09-17T22:56:47.054Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:56:47.145Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:56:48.341Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:56:48.430Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:56:48.524Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:56:48.613Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:56:48.702Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:56:48.789Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T22:56:48.796Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T22:56:48.817Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:56:48.882Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:56:49.019Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T22:56:52.819Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:56:52.853Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:56:52.910Z [CollabForge] info: User details retrieved successfully
+2025-09-17T22:56:52.969Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T22:56:53.012Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:56:53.049Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:56:53.113Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T22:56:53.193Z [CollabForge] info: Category retrieved successfully
+2025-09-17T22:56:56.210Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:56:56.224Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:56:56.345Z [CollabForge] info: User connected to socket
+2025-09-17T23:04:00.782Z [CollabForge] info: Initializing job scheduler
+2025-09-17T23:04:00.998Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T23:04:01.052Z [CollabForge] info: Top creators job scheduled
+2025-09-17T23:04:01.052Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T23:04:01.052Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T23:04:01.053Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T23:04:01.056Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T23:04:04.217Z [CollabForge] info: User connected to socket
+2025-09-17T23:04:18.469Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:04:19.409Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:04:19.568Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:04:21.127Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:04:21.209Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:04:21.288Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:04:21.359Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:04:21.448Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:04:21.530Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:04:21.579Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:04:21.596Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:04:21.609Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:04:21.689Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:04:23.371Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:04:23.380Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:04:23.456Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:04:23.457Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:04:23.471Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:04:23.479Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:04:23.549Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:04:23.562Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:04:25.564Z [CollabForge] info: Getting user conversations
+2025-09-17T23:04:25.649Z [CollabForge] info: User connected to socket
+2025-09-17T23:04:25.668Z [CollabForge] info: User conversations retrieved successfully
+2025-09-17T23:04:25.672Z [CollabForge] info: Getting user conversations
+2025-09-17T23:04:25.772Z [CollabForge] info: User conversations retrieved successfully
+2025-09-17T23:10:33.913Z [CollabForge] info: User left conversation
+2025-09-17T23:10:58.888Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:11:01.165Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:01.288Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:11:02.392Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:02.464Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:11:02.536Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:11:02.620Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:02.710Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:11:02.783Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:11:02.826Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:11:02.838Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:11:02.876Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:11:02.992Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:11:06.015Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:06.022Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:11:06.096Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:06.125Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:11:06.126Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:11:06.128Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:11:06.198Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:11:06.215Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:11:07.989Z [CollabForge] info: Getting user conversations
+2025-09-17T23:11:08.076Z [CollabForge] info: User connected to socket
+2025-09-17T23:11:08.082Z [CollabForge] info: User conversations retrieved successfully
+2025-09-17T23:11:08.088Z [CollabForge] info: Getting user conversations
+2025-09-17T23:11:08.140Z [CollabForge] info: User left conversation
+2025-09-17T23:11:08.149Z [CollabForge] info: User left conversation
+2025-09-17T23:11:08.188Z [CollabForge] info: User conversations retrieved successfully
+2025-09-17T23:11:08.259Z [CollabForge] info: User left conversation
+2025-09-17T23:11:08.266Z [CollabForge] info: User left conversation
+2025-09-17T23:11:09.288Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.insert (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:308:21)
+    at async model.save (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:2490:35)
+    at async Conversation.create (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1362:12)
+    at async sendMessage (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/chatController.js:73:22)
+2025-09-17T23:11:09.586Z [CollabForge] info: Message sent successfully
+2025-09-17T23:11:09.592Z [CollabForge] info: Message sent successfully
+2025-09-17T23:11:09.626Z [CollabForge] info: User left conversation
+2025-09-17T23:11:09.636Z [CollabForge] info: User left conversation
+2025-09-17T23:11:09.679Z [CollabForge] info: User joined conversation
+2025-09-17T23:11:09.681Z [CollabForge] info: Message sent successfully
+2025-09-17T23:11:09.689Z [CollabForge] info: User left conversation
+2025-09-17T23:11:09.767Z [CollabForge] info: User joined conversation
+2025-09-17T23:11:35.445Z [CollabForge] info: User logged in successfully
+2025-09-17T23:11:36.273Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:36.356Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:11:36.445Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-17T23:11:36.536Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-17T23:11:43.112Z [CollabForge] info: Getting user conversations
+2025-09-17T23:11:43.293Z [CollabForge] info: User connected to socket
+2025-09-17T23:11:43.301Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:13:07.678Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:13:08.949Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:13:09.039Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:13:10.839Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:13:10.930Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:13:11.023Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:13:11.117Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:13:11.201Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:13:11.289Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:13:11.317Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:13:11.380Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:13:11.386Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:13:11.419Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:13:13.733Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:13:13.734Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:13:13.813Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:13:13.814Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:13:13.838Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:13:13.840Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:13:13.908Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:13:13.928Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:13:16.000Z [CollabForge] info: Getting user conversations
+2025-09-17T23:13:16.158Z [CollabForge] info: User connected to socket
+2025-09-17T23:13:16.177Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:13:16.182Z [CollabForge] info: Getting user conversations
+2025-09-17T23:13:16.356Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:13:17.512Z [CollabForge] info: Message sent successfully
+2025-09-17T23:13:17.518Z [CollabForge] info: Message sent successfully
+2025-09-17T23:13:17.548Z [CollabForge] info: User left conversation
+2025-09-17T23:13:17.572Z [CollabForge] info: User left conversation
+2025-09-17T23:15:55.675Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:15:56.248Z [CollabForge] info: Getting user conversations
+2025-09-17T23:15:56.861Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:15:56.894Z [CollabForge] info: User connected to socket
+2025-09-17T23:15:56.990Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:34.085Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:24:34.130Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:24:36.231Z [CollabForge] info: Getting user conversations
+2025-09-17T23:24:36.425Z [CollabForge] info: Getting user conversations
+2025-09-17T23:24:37.049Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:24:37.071Z [CollabForge] info: User connected to socket
+2025-09-17T23:24:37.075Z [CollabForge] info: User connected to socket
+2025-09-17T23:24:37.129Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:37.161Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:49.012Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:24:49.510Z [CollabForge] info: Getting user conversations
+2025-09-17T23:24:50.020Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:24:50.047Z [CollabForge] info: User connected to socket
+2025-09-17T23:24:50.123Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:56.845Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:24:57.432Z [CollabForge] info: Getting user conversations
+2025-09-17T23:24:57.575Z [CollabForge] info: User connected to socket
+2025-09-17T23:24:57.654Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:08.582Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:25:08.584Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:25:10.533Z [CollabForge] info: Getting user conversations
+2025-09-17T23:25:10.592Z [CollabForge] info: Getting user conversations
+2025-09-17T23:25:11.068Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:11.156Z [CollabForge] info: User connected to socket
+2025-09-17T23:25:11.161Z [CollabForge] info: User connected to socket
+2025-09-17T23:25:11.163Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:11.245Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:32.878Z [CollabForge] info: User disconnected from socket
+2025-09-17T23:25:33.236Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:33.326Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:25:35.339Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:35.430Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:25:35.524Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:25:35.614Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:35.700Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:25:35.790Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-17T23:25:35.826Z [CollabForge] info: Categories retrieved successfully
+2025-09-17T23:25:35.832Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:25:35.880Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:25:35.967Z [CollabForge] info: All active creators retrieved successfully
+2025-09-17T23:25:38.637Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:38.643Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:25:38.734Z [CollabForge] info: User details retrieved successfully
+2025-09-17T23:25:38.735Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:25:38.745Z [CollabForge] info: Creator details retrieved successfully
+2025-09-17T23:25:38.746Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:25:38.825Z [CollabForge] info: Category retrieved successfully
+2025-09-17T23:25:38.828Z [CollabForge] info: Brand retrieved successfully for user
+2025-09-17T23:25:40.804Z [CollabForge] info: Getting user conversations
+2025-09-17T23:25:40.944Z [CollabForge] info: User connected to socket
+2025-09-17T23:25:41.018Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:41.021Z [CollabForge] info: Getting user conversations
+2025-09-17T23:25:41.192Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:42.256Z [CollabForge] info: Message sent successfully
+2025-09-17T23:25:42.259Z [CollabForge] info: Message sent successfully
+2025-09-17T23:25:42.316Z [CollabForge] info: User left conversation
+2025-09-17T23:25:42.380Z [CollabForge] info: User left conversation

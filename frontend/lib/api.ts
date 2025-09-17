@@ -996,3 +996,103 @@ export const brandReviewApi = {
     });
   },
 };
+
+export const chatApi = {
+  // Send a message - maps to sendMessage controller function
+  sendMessage: async (messageData: {
+    receiverId: string;
+    message: string;
+    messageType?: "text" | "image" | "file" | "audio" | "video";
+  }) => {
+    console.log("Chat API: Sending message:", messageData);
+    return apiRequest("/chat/send", {
+      method: "POST",
+      body: JSON.stringify(messageData),
+    });
+  },
+
+  // Get user conversations - maps to getUserConversations controller function
+  getUserConversations: async (page: number = 1, limit: number = 20) => {
+    console.log("Chat API: Getting user conversations");
+    return apiRequest(`/chat/conversations?page=${page}&limit=${limit}`);
+  },
+
+  // Get conversation messages - maps to getConversationMessages controller function  
+  getConversationMessages: async (
+    conversationId: string,
+    page: number = 1,
+    limit: number = 50
+  ) => {
+    console.log("Chat API: Getting conversation messages for:", conversationId);
+    return apiRequest(
+      `/chat/conversation/${conversationId}/messages?page=${page}&limit=${limit}`
+    );
+  },
+
+  // Mark messages as read - maps to markMessagesAsRead controller function
+  markMessagesAsRead: async (conversationId: string) => {
+    console.log("Chat API: Marking messages as read for:", conversationId);
+    return apiRequest(`/chat/conversation/${conversationId}/read`, {
+      method: "PUT",
+    });
+  },
+
+  // Delete a message - maps to deleteMessage controller function
+  deleteMessage: async (messageId: string) => {
+    console.log("Chat API: Deleting message:", messageId);
+    return apiRequest(`/chat/message/${messageId}`, {
+      method: "DELETE",
+    });
+  },
+
+  // Edit a message - maps to editMessage controller function
+  editMessage: async (messageId: string, message: string) => {
+    console.log("Chat API: Editing message:", messageId);
+    return apiRequest(`/chat/message/${messageId}`, {
+      method: "PUT",
+      body: JSON.stringify({ message }),
+    });
+  },
+};
+
+// DEBUG: Let's also add a test function to check if the chat routes are working
+export const debugChatApi = {
+  testConnection: async () => {
+    try {
+      console.log("Testing chat API connection...");
+      const response = await apiRequest("/chat/test", {
+        method: "GET",
+      });
+      console.log("Chat API test response:", response);
+      return response;
+    } catch (error) {
+      console.error("Chat API test failed:", error);
+      throw error;
+    }
+  },
+};
+
+// TEMPORARY: Let's create a version that tries different endpoint patterns
+export const experimentalChatApi = {
+  getUserConversations: async (page: number = 1, limit: number = 20) => {
+    const possibleEndpoints = [
+      `/chat/conversations?page=${page}&limit=${limit}`,
+      `/chats/conversations?page=${page}&limit=${limit}`,
+      `/chat/user/conversations?page=${page}&limit=${limit}`,
+    ];
+    
+    for (const endpoint of possibleEndpoints) {
+      try {
+        console.log(`Trying endpoint: ${endpoint}`);
+        const response = await apiRequest(endpoint);
+        console.log(`Success with endpoint: ${endpoint}`, response);
+        return response;
+      } catch (error) {
+        console.log(`Failed with endpoint: ${endpoint}`, error);
+        if (endpoint === possibleEndpoints[possibleEndpoints.length - 1]) {
+          throw error; // Throw error on last attempt
+        }
+      }
+    }
+  },
+};

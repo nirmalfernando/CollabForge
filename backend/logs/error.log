@@ -226,3 +226,150 @@
 2025-09-11T06:34:33.127Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
 2025-09-11T06:34:33.218Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
 2025-09-15T14:35:38.646Z [CollabForge] error: Validation errors during creator creation
+2025-09-17T22:43:50.650Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:49:00.875Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:49:00.889Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:54:28.226Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:54:28.232Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:56:56.210Z [CollabForge] error: Error during getting user conversations
+2025-09-17T22:56:56.224Z [CollabForge] error: Error during getting user conversations
+2025-09-17T23:11:09.288Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.insert (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:308:21)
+    at async model.save (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:2490:35)
+    at async Conversation.create (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1362:12)
+    at async sendMessage (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/chatController.js:73:22)
+2025-09-17T23:11:43.301Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:13:16.177Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:13:16.356Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:15:56.990Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:37.129Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:37.161Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:50.123Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:24:57.654Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:11.163Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:11.245Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:41.018Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)
+2025-09-17T23:25:41.192Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Chat.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async HasMany.get (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/associations/has-many.js:170:21)
+    at async /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1202:19
+    at async Promise.all (index 2)
+    at async Model._findSeparate (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1186:5)
+    at async Conversation.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1153:12)

@@ -121,11 +121,12 @@ export const sendMessage = async (req, res) => {
   } catch (error) {
     logger.error("Error during message sending", {
       error: error.message,
+      stack: error.stack,
       userData: req.body,
     });
     return res.status(500).json({
       message: "Internal server error during message sending",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
@@ -194,22 +195,25 @@ export const getConversationMessages = async (req, res) => {
   } catch (error) {
     logger.error("Error during getting conversation messages", {
       error: error.message,
+      stack: error.stack,
       conversationId,
       userId,
     });
     return res.status(500).json({
       message: "Internal server error during getting messages",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
 
-// Get user conversations
+// Get user conversations - FIXED VERSION
 export const getUserConversations = async (req, res) => {
   const userId = req.user.userId;
   const { page = 1, limit = 20 } = req.query;
 
   try {
+    logger.info("Getting user conversations", { userId, page, limit });
+
     const offset = (parseInt(page) - 1) * parseInt(limit);
 
     const conversations = await Conversation.findAndCountAll({
@@ -225,14 +229,21 @@ export const getUserConversations = async (req, res) => {
         },
         {
           model: User,
-          as: "participant2",
+          as: "participant2", 
           attributes: ["userId", "name", "username"],
         },
+        // Note: You might need to adjust this based on your association setup
         {
           model: Chat,
-          as: "lastMessage",
+          as: "messages", // or whatever your association alias is
           attributes: ["chatId", "message", "messageType", "createdAt"],
           required: false,
+          where: {
+            chatId: {
+              [Op.col]: 'Conversation.lastMessageId'
+            }
+          },
+          limit: 1,
         },
       ],
       order: [["lastMessageTime", "DESC"]],
@@ -248,7 +259,7 @@ export const getUserConversations = async (req, res) => {
       return {
         conversationId: conv.conversationId,
         otherParticipant,
-        lastMessage: conv.lastMessage,
+        lastMessage: conv.messages && conv.messages.length > 0 ? conv.messages[0] : null,
         lastMessageTime: conv.lastMessageTime,
         unreadCount: 0, // You can calculate this based on lastRead timestamps
         isActive: conv.isActive,
@@ -273,11 +284,12 @@ export const getUserConversations = async (req, res) => {
   } catch (error) {
     logger.error("Error during getting user conversations", {
       error: error.message,
+      stack: error.stack,
       userId,
     });
     return res.status(500).json({
       message: "Internal server error during getting conversations",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
@@ -339,12 +351,13 @@ export const markMessagesAsRead = async (req, res) => {
   } catch (error) {
     logger.error("Error during marking messages as read", {
       error: error.message,
+      stack: error.stack,
       conversationId,
       userId,
     });
     return res.status(500).json({
       message: "Internal server error during marking messages as read",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
@@ -384,12 +397,13 @@ export const deleteMessage = async (req, res) => {
   } catch (error) {
     logger.error("Error during message deletion", {
       error: error.message,
+      stack: error.stack,
       messageId,
       userId,
     });
     return res.status(500).json({
       message: "Internal server error during message deletion",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
@@ -437,12 +451,13 @@ export const editMessage = async (req, res) => {
   } catch (error) {
     logger.error("Error during message editing", {
       error: error.message,
+      stack: error.stack,
       messageId,
       userId,
     });
     return res.status(500).json({
       message: "Internal server error during message editing",
-      error: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
     });
   }
 };
