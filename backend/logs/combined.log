@@ -3597,3 +3597,118 @@
 2025-09-15T14:39:09.967Z [CollabForge] info: Creator retrieved successfully for user
 2025-09-15T14:39:10.007Z [CollabForge] info: Categories retrieved successfully
 2025-09-15T14:39:10.147Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-17T02:41:51.805Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:41:51.866Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:41:51.867Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:41:51.868Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:41:51.922Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-17T02:41:51.923Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:41:51.923Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:41:51.998Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:41:51.999Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:41:52.000Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:41:52.001Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:41:52.003Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:42:05.452Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:42:05.520Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:42:05.521Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:42:05.522Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:42:05.568Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-17T02:42:05.569Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:42:05.570Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:42:05.600Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:42:05.600Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:42:05.601Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:42:05.602Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:42:05.605Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:53:02.960Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:53:03.023Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:53:03.024Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:53:03.025Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:53:03.134Z [CollabForge] info: Processing category: 8c95c146-552a-4a8c-9ca2-26b5774229c0
+2025-09-17T02:53:03.330Z [CollabForge] info: Successfully processed 2 top creators for category 8c95c146-552a-4a8c-9ca2-26b5774229c0
+2025-09-17T02:53:03.435Z [CollabForge] info: Processing category: a91f4919-49c3-455e-881b-49def7efe9e0
+2025-09-17T02:53:03.541Z [CollabForge] warn: No creators found for category a91f4919-49c3-455e-881b-49def7efe9e0
+2025-09-17T02:53:03.644Z [CollabForge] info: Processing category: b76be661-2990-4522-a47c-cd58ef5f9d7b
+2025-09-17T02:53:03.749Z [CollabForge] warn: No creators found for category b76be661-2990-4522-a47c-cd58ef5f9d7b
+2025-09-17T02:53:03.801Z [CollabForge] info: Top creators calculation job completed
+2025-09-17T02:53:03.803Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:53:03.804Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:53:03.833Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:53:03.834Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:53:03.834Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:53:03.835Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:53:03.838Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:02:49.173Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:02:49.296Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:02:49.329Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:02:49.329Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:02:49.330Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:02:49.331Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:02:49.334Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:10:01.165Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:10:01.291Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:10:01.323Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:10:01.324Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:10:01.324Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:10:01.325Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:10:01.328Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:16:12.985Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:16:13.098Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:16:13.129Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:16:13.130Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:16:13.130Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:16:13.131Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:16:13.134Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:20:21.231Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:20:21.342Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:20:21.375Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:20:21.376Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:20:21.376Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:20:21.378Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:20:21.381Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:20:59.991Z [CollabForge] info: User logged in successfully
+2025-09-17T03:21:10.827Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:22:00.840Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:22:00.954Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:22:00.988Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:22:00.989Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:22:00.989Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:22:00.990Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:22:00.993Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:22:01.286Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:22:47.505Z [CollabForge] error: Error during getting all brand reviews
+2025-09-17T03:24:42.621Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:24:42.731Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:24:42.762Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:24:42.762Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:24:42.763Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:24:42.764Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:24:42.767Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:24:44.454Z [CollabForge] info: All brand reviews retrieved successfully
+2025-09-17T03:25:05.504Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:25:05.604Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:25:05.635Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:25:05.635Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:25:05.636Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:25:05.637Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:25:05.641Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:25:06.883Z [CollabForge] error: Error during getting all reviews
+2025-09-17T03:25:34.340Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:25:34.440Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:25:34.470Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:25:34.471Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:25:34.471Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:25:34.473Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:25:34.475Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:25:34.661Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:26:02.457Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:26:02.559Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:26:02.593Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:26:02.593Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:26:02.594Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:26:02.595Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:26:02.598Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:26:56.388Z [CollabForge] info: User logged in successfully
+2025-09-17T03:27:00.930Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:27:14.641Z [CollabForge] info: All brand reviews retrieved successfully
