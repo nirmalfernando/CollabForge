@@ -1,4 +1,7 @@
 import Review from "../models/Review.js";
+import Campaign from "../models/Campaign.js";
+import Creator from "../models/Creator.js";
+import Brand from "../models/Brand.js";
 import { body, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 import logger from "../middlewares/logger.js";
@@ -24,6 +27,24 @@ const reviewValidation = [
     .optional()
     .isLength({ max: 1000 })
     .withMessage("Comment must be up to 1000 characters long"),
+];
+
+// Helper function to define common includes
+const getReviewIncludes = () => [
+  {
+    model: Campaign,
+    attributes: ["campaignId", "campaignTitle", "brandId"], // Include campaign title and brandId
+    include: [
+      {
+        model: Brand,
+        attributes: ["brandId", "companyName"], // Include brand's company name
+      },
+    ],
+  },
+  {
+    model: Creator,
+    attributes: ["creatorId", "firstName", "lastName"], // Include creator's first and last name
+  },
 ];
 
 // Create a new review
@@ -69,6 +90,11 @@ export const createReview = async (req, res) => {
       comment: comment || null,
     });
 
+    // Fetch the created review with includes
+    const reviewWithDetails = await Review.findByPk(newReview.reviewId, {
+      include: getReviewIncludes(),
+    });
+
     logger.info("Review created successfully", {
       reviewId: newReview.reviewId,
       campaignId,
@@ -77,7 +103,7 @@ export const createReview = async (req, res) => {
 
     return res.status(201).json({
       message: "Review created successfully",
-      review: newReview,
+      review: reviewWithDetails,
     });
   } catch (error) {
     logger.error("Error during review creation", {
@@ -119,7 +145,9 @@ export const getReviewById = async (req, res) => {
   const reviewId = req.params.id;
 
   try {
-    const review = await Review.findByPk(reviewId);
+    const review = await Review.findByPk(reviewId, {
+      include: getReviewIncludes(),
+    });
 
     if (!review) {
       logger.warn("Get review failed: Review not found", { reviewId });
@@ -144,6 +172,7 @@ export const getReviewById = async (req, res) => {
 export const getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.findAll({
+      include: getReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -170,6 +199,7 @@ export const getReviewsByCampaign = async (req, res) => {
   try {
     const reviews = await Review.findAll({
       where: { campaignId },
+      include: getReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -198,6 +228,7 @@ export const getReviewsByCreator = async (req, res) => {
   try {
     const reviews = await Review.findAll({
       where: { creatorId },
+      include: getReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -221,11 +252,12 @@ export const getReviewsByCreator = async (req, res) => {
 
 // Get reviews by the review visibility
 export const getReviewsByVisibility = async (req, res) => {
-  const isShown = req.query.isShown === 'true';
+  const isShown = req.query.isShown === "true";
 
   try {
     const reviews = await Review.findAll({
       where: { isShown },
+      include: getReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -236,7 +268,9 @@ export const getReviewsByVisibility = async (req, res) => {
         .json({ message: "No reviews found for the specified visibility" });
     }
 
-    logger.info("Reviews retrieved successfully for the specified visibility", { isShown });
+    logger.info("Reviews retrieved successfully for the specified visibility", {
+      isShown,
+    });
     return res.status(200).json(reviews);
   } catch (error) {
     logger.error("Error during getting reviews by visibility", {
@@ -286,10 +320,15 @@ export const updateReview = async (req, res) => {
     // Update the review
     await review.update(updateData);
 
+    // Fetch updated review with includes
+    const updatedReview = await Review.findByPk(reviewId, {
+      include: getReviewIncludes(),
+    });
+
     logger.info("Review updated successfully", { reviewId });
     return res.status(200).json({
       message: "Review updated successfully",
-      review,
+      review: updatedReview,
     });
   } catch (error) {
     logger.error("Error during review update", {
@@ -323,11 +362,13 @@ export const updateReview = async (req, res) => {
 export const updateReviewVisibility = async (req, res) => {
   const reviewId = req.params.id;
   const { isShown } = req.body;
-  
+
   try {
     const review = await Review.findByPk(reviewId);
     if (!review) {
-      logger.warn("Review visibility update failed: Review not found", { reviewId });
+      logger.warn("Review visibility update failed: Review not found", {
+        reviewId,
+      });
       return res.status(404).json({ message: "Review not found" });
     }
 
@@ -337,10 +378,15 @@ export const updateReviewVisibility = async (req, res) => {
       await review.save();
     }
 
+    // Fetch updated review with includes
+    const updatedReview = await Review.findByPk(reviewId, {
+      include: getReviewIncludes(),
+    });
+
     logger.info("Review visibility updated successfully", { reviewId });
     return res.status(200).json({
       message: "Review visibility updated successfully",
-      review,
+      review: updatedReview,
     });
   } catch (error) {
     logger.error("Error during review visibility update", {

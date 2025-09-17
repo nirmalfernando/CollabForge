@@ -131,6 +131,8 @@
 2025-08-20T07:31:29.713Z [CollabForge] error: Error during brand review creation
 2025-08-20T08:38:06.489Z [CollabForge] error: Validation errors during creator work creation
 2025-08-20T08:39:13.594Z [CollabForge] error: Validation errors during creator work creation
+2025-09-17T02:22:20.512Z [CollabForge] error: Server initialization failed
+2025-09-17T02:23:38.441Z [CollabForge] error: Server initialization failed
 2025-09-10T14:49:25.966Z [CollabForge] error: Error during getting creator works
 2025-09-10T14:49:37.184Z [CollabForge] error: Error during getting creator works
 2025-09-11T06:27:13.267Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0
@@ -223,6 +225,9 @@
 2025-09-11T06:34:33.041Z [CollabForge] error: Error processing category c767fad3-b44b-4c9f-bb38-9cd08a6cfd66
 2025-09-11T06:34:33.127Z [CollabForge] error: Error processing category caff65b5-3395-407d-99ee-24d4196a847e
 2025-09-11T06:34:33.218Z [CollabForge] error: Error processing category 474ad7ec-33fe-4717-926a-e99400853ab6
+2025-09-15T14:35:38.646Z [CollabForge] error: Validation errors during creator creation
+2025-09-17T03:22:47.505Z [CollabForge] error: Error during getting all brand reviews
+2025-09-17T03:25:06.883Z [CollabForge] error: Error during getting all reviews
 2025-09-17T07:19:20.744Z [CollabForge] error: Error
     at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
     at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28

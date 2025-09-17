@@ -2026,6 +2026,12 @@
 2025-08-21T04:28:08.514Z [CollabForge] info: Creator works retrieved successfully
 2025-08-21T04:28:11.308Z [CollabForge] info: Creator work retrieved successfully
 2025-08-21T04:28:11.543Z [CollabForge] info: Creator work retrieved successfully
+2025-09-17T02:22:20.512Z [CollabForge] error: Server initialization failed
+2025-09-17T02:23:38.441Z [CollabForge] error: Server initialization failed
+2025-09-17T02:27:08.432Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:27:08.449Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:27:14.315Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:27:14.324Z [CollabForge] info: Server started on port 8080 with Socket.IO support
 2025-09-10T12:06:17.912Z [CollabForge] warn: User login failed: Incorrect password
 2025-09-10T12:06:25.666Z [CollabForge] warn: User login failed: Incorrect password
 2025-09-10T12:06:32.570Z [CollabForge] warn: User login failed: Incorrect password
@@ -3438,6 +3444,274 @@
 2025-09-12T17:21:29.787Z [CollabForge] info: Brand details retrieved successfully
 2025-09-12T17:21:32.050Z [CollabForge] info: No works found for creator
 2025-09-12T17:21:32.211Z [CollabForge] info: No works found for creator
+2025-09-15T13:36:26.354Z [CollabForge] info: Initializing job scheduler
+2025-09-15T13:36:26.492Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-15T13:36:26.495Z [CollabForge] info: Running immediate top creators calculation
+2025-09-15T13:36:26.497Z [CollabForge] info: Starting top creators calculation job
+2025-09-15T13:36:26.607Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-15T13:36:26.610Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-15T13:36:26.612Z [CollabForge] info: Starting all scheduled jobs
+2025-09-15T13:36:26.704Z [CollabForge] info: Top creators job scheduled
+2025-09-15T13:36:26.704Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-15T13:36:26.705Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-15T13:36:26.707Z [CollabForge] info: Server started on port 8080
+2025-09-15T14:24:39.592Z [CollabForge] info: User registered successfully
+2025-09-15T14:25:53.615Z [CollabForge] info: User logged in successfully
+2025-09-15T14:25:53.916Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:25:54.085Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:25:54.163Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:25:54.297Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:23.379Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:27:23.457Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:23.497Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:27:23.595Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:23.715Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:23.820Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:46.060Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:27:46.102Z [CollabForge] info: No active creators found
+2025-09-15T14:27:46.143Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:27:46.181Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:27:46.221Z [CollabForge] info: No active creators found
+2025-09-15T14:27:46.265Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:27:46.366Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:46.397Z [CollabForge] info: No active creators found
+2025-09-15T14:27:46.492Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:46.524Z [CollabForge] info: No active creators found
+2025-09-15T14:27:52.789Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:27:52.791Z [CollabForge] info: No active creators found
+2025-09-15T14:27:52.809Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:27:52.889Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:27:52.970Z [CollabForge] info: No active creators found
+2025-09-15T14:28:35.968Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:28:36.095Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:28:36.188Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:28:36.310Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:28:43.088Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:28:43.155Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:28:43.230Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:28:43.302Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:28:43.315Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:28:43.368Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:28:43.488Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:28:43.610Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:30:24.216Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:30:24.252Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:30:24.345Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:30:24.432Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:30:24.795Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:30:24.815Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:30:24.930Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:30:24.934Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:30:24.936Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:30:25.073Z [CollabForge] warn: Get creator failed: Creator not found or inactive
+2025-09-15T14:32:52.190Z [CollabForge] info: Creator created successfully
+2025-09-15T14:32:52.466Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:32:52.548Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:32:52.723Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:32:52.813Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:32:52.907Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:32:52.982Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:32:53.002Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:32:53.042Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:32:53.096Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:32:53.103Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:32:53.208Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:32:53.212Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:32:53.221Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:32:53.322Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.001Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:09.030Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.081Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:33:09.121Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:09.142Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.221Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:33:09.237Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.331Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.471Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:09.474Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:33:09.572Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:09.580Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:09.593Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:33:09.732Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.052Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:19.069Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.089Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:33:19.211Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:19.216Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.230Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:33:19.321Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.361Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:33:19.365Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:19.426Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.501Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:33:19.504Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:33:19.541Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:33:19.641Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:49.048Z [CollabForge] info: User logged in successfully
+2025-09-15T14:34:50.663Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:50.789Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:50.865Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:50.984Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:55.699Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:55.705Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:55.795Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:34:55.845Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:55.893Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:55.955Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:34:56.013Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:56.113Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:56.317Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:34:56.333Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:56.453Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:34:56.455Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:34:56.534Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:34:56.845Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:35:38.646Z [CollabForge] error: Validation errors during creator creation
+2025-09-15T14:37:48.372Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:37:48.375Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:37:48.636Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:37:48.945Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:37:48.954Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:37:49.358Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:37:49.673Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:37:49.690Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:37:49.788Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:37:49.926Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:37:49.930Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:37:50.042Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:37:50.124Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:37:50.323Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:38:06.817Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:38:06.857Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:38:06.859Z [CollabForge] info: No brand reviews found for creator
+2025-09-15T14:38:07.257Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:38:08.449Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:38:08.488Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:38:08.647Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:38:08.669Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:38:08.671Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:38:08.782Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:39:09.808Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:39:09.873Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:39:09.931Z [CollabForge] info: User details retrieved successfully
+2025-09-15T14:39:09.967Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-15T14:39:10.007Z [CollabForge] info: Categories retrieved successfully
+2025-09-15T14:39:10.147Z [CollabForge] info: Creator retrieved successfully for user
+2025-09-17T02:41:51.805Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:41:51.866Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:41:51.867Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:41:51.868Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:41:51.922Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-17T02:41:51.923Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:41:51.923Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:41:51.998Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:41:51.999Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:41:52.000Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:41:52.001Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:41:52.003Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:42:05.452Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:42:05.520Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:42:05.521Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:42:05.522Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:42:05.568Z [CollabForge] warn: No active categories found for top creators calculation
+2025-09-17T02:42:05.569Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:42:05.570Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:42:05.600Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:42:05.600Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:42:05.601Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:42:05.602Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:42:05.605Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:53:02.960Z [CollabForge] info: Initializing job scheduler
+2025-09-17T02:53:03.023Z [CollabForge] info: No existing top creators data found, running initial calculation
+2025-09-17T02:53:03.024Z [CollabForge] info: Running immediate top creators calculation
+2025-09-17T02:53:03.025Z [CollabForge] info: Starting top creators calculation job
+2025-09-17T02:53:03.134Z [CollabForge] info: Processing category: 8c95c146-552a-4a8c-9ca2-26b5774229c0
+2025-09-17T02:53:03.330Z [CollabForge] info: Successfully processed 2 top creators for category 8c95c146-552a-4a8c-9ca2-26b5774229c0
+2025-09-17T02:53:03.435Z [CollabForge] info: Processing category: a91f4919-49c3-455e-881b-49def7efe9e0
+2025-09-17T02:53:03.541Z [CollabForge] warn: No creators found for category a91f4919-49c3-455e-881b-49def7efe9e0
+2025-09-17T02:53:03.644Z [CollabForge] info: Processing category: b76be661-2990-4522-a47c-cd58ef5f9d7b
+2025-09-17T02:53:03.749Z [CollabForge] warn: No creators found for category b76be661-2990-4522-a47c-cd58ef5f9d7b
+2025-09-17T02:53:03.801Z [CollabForge] info: Top creators calculation job completed
+2025-09-17T02:53:03.803Z [CollabForge] info: Immediate top creators calculation completed
+2025-09-17T02:53:03.804Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T02:53:03.833Z [CollabForge] info: Top creators job scheduled
+2025-09-17T02:53:03.834Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T02:53:03.834Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T02:53:03.835Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:53:03.838Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:02:49.173Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:02:49.296Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:02:49.329Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:02:49.329Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:02:49.330Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:02:49.331Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:02:49.334Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:10:01.165Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:10:01.291Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:10:01.323Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:10:01.324Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:10:01.324Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:10:01.325Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:10:01.328Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:16:12.985Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:16:13.098Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:16:13.129Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:16:13.130Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:16:13.130Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:16:13.131Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:16:13.134Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:20:21.231Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:20:21.342Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:20:21.375Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:20:21.376Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:20:21.376Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:20:21.378Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:20:21.381Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:20:59.991Z [CollabForge] info: User logged in successfully
+2025-09-17T03:21:10.827Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:22:00.840Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:22:00.954Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:22:00.988Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:22:00.989Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:22:00.989Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:22:00.990Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:22:00.993Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:22:01.286Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:22:47.505Z [CollabForge] error: Error during getting all brand reviews
+2025-09-17T03:24:42.621Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:24:42.731Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:24:42.762Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:24:42.762Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:24:42.763Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:24:42.764Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:24:42.767Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:24:44.454Z [CollabForge] info: All brand reviews retrieved successfully
+2025-09-17T03:25:05.504Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:25:05.604Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:25:05.635Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:25:05.635Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:25:05.636Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:25:05.637Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:25:05.641Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:25:06.883Z [CollabForge] error: Error during getting all reviews
+2025-09-17T03:25:34.340Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:25:34.440Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:25:34.470Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:25:34.471Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:25:34.471Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:25:34.473Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:25:34.475Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:25:34.661Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:26:02.457Z [CollabForge] info: Initializing job scheduler
+2025-09-17T03:26:02.559Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T03:26:02.593Z [CollabForge] info: Top creators job scheduled
+2025-09-17T03:26:02.593Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T03:26:02.594Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T03:26:02.595Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T03:26:02.598Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T03:26:56.388Z [CollabForge] info: User logged in successfully
+2025-09-17T03:27:00.930Z [CollabForge] info: All reviews retrieved successfully
+2025-09-17T03:27:14.641Z [CollabForge] info: All brand reviews retrieved successfully
 2025-09-17T07:18:03.792Z [CollabForge] info: Initializing job scheduler
 2025-09-17T07:18:03.944Z [CollabForge] info: Starting all scheduled jobs
 2025-09-17T07:18:04.032Z [CollabForge] info: Top creators job scheduled

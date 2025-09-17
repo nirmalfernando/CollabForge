@@ -1,4 +1,6 @@
 import BrandReview from "../models/BrandReview.js";
+import Brand from "../models/Brand.js";
+import Creator from "../models/Creator.js";
 import { body, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 import logger from "../middlewares/logger.js";
@@ -24,6 +26,20 @@ const brandReviewValidation = [
     .optional()
     .isLength({ max: 1000 })
     .withMessage("Comment must be up to 1000 characters long"),
+];
+
+// Helper function to define common includes for brand reviews
+const getBrandReviewIncludes = () => [
+  {
+    model: Brand,
+    as: "brand",
+    attributes: ["brandId", "companyName"], // Get brand's company name
+  },
+  {
+    model: Creator,
+    as: "creator",
+    attributes: ["creatorId", "firstName", "lastName"], // Get creator's first and last name
+  },
 ];
 
 // Create a new brand review
@@ -66,6 +82,14 @@ export const createBrandReview = async (req, res) => {
       comment: comment || null,
     });
 
+    // Fetch the created review with includes
+    const brandReviewWithDetails = await BrandReview.findByPk(
+      newBrandReview.reviewId,
+      {
+        include: getBrandReviewIncludes(),
+      }
+    );
+
     logger.info("Brand review created successfully", {
       reviewId: newBrandReview.reviewId,
       creatorId,
@@ -74,7 +98,7 @@ export const createBrandReview = async (req, res) => {
 
     return res.status(201).json({
       message: "Brand review created successfully",
-      brandReview: newBrandReview,
+      brandReview: brandReviewWithDetails,
     });
   } catch (error) {
     logger.error("Error during brand review creation", {
@@ -93,7 +117,9 @@ export const getBrandReviewById = async (req, res) => {
   const reviewId = req.params.id;
 
   try {
-    const brandReview = await BrandReview.findByPk(reviewId);
+    const brandReview = await BrandReview.findByPk(reviewId, {
+      include: getBrandReviewIncludes(),
+    });
 
     if (!brandReview) {
       logger.warn("Get brand review failed: Brand review not found", {
@@ -120,6 +146,7 @@ export const getBrandReviewById = async (req, res) => {
 export const getAllBrandReviews = async (req, res) => {
   try {
     const brandReviews = await BrandReview.findAll({
+      include: getBrandReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -148,6 +175,7 @@ export const getBrandReviewsByCreator = async (req, res) => {
   try {
     const brandReviews = await BrandReview.findAll({
       where: { creatorId },
+      include: getBrandReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -181,6 +209,7 @@ export const getBrandReviewsByBrand = async (req, res) => {
   try {
     const brandReviews = await BrandReview.findAll({
       where: { brandId },
+      include: getBrandReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -207,22 +236,28 @@ export const getBrandReviewsByBrand = async (req, res) => {
 
 // Get brand reviews by the review visibility
 export const getBrandReviewsByVisibility = async (req, res) => {
-  const isShown = req.query.isShown === 'true';
-  
+  const isShown = req.query.isShown === "true";
+
   try {
     const brandReviews = await BrandReview.findAll({
       where: { isShown },
+      include: getBrandReviewIncludes(),
       order: [["createdAt", "DESC"]],
     });
-    
+
     if (brandReviews.length === 0) {
-      logger.info("No brand reviews found for the specified visibility", { isShown });
-      return res
-        .status(404)
-        .json({ message: "No brand reviews found for the specified visibility" });
+      logger.info("No brand reviews found for the specified visibility", {
+        isShown,
+      });
+      return res.status(404).json({
+        message: "No brand reviews found for the specified visibility",
+      });
     }
-    
-    logger.info("Brand reviews retrieved successfully for the specified visibility", { isShown });
+
+    logger.info(
+      "Brand reviews retrieved successfully for the specified visibility",
+      { isShown }
+    );
     return res.status(200).json(brandReviews);
   } catch (error) {
     logger.error("Error during getting brand reviews by visibility", {
@@ -230,7 +265,8 @@ export const getBrandReviewsByVisibility = async (req, res) => {
       isShown,
     });
     return res.status(500).json({
-      message: "Internal server error during getting brand reviews by visibility",
+      message:
+        "Internal server error during getting brand reviews by visibility",
       error: error.message,
     });
   }
@@ -272,10 +308,15 @@ export const updateBrandReview = async (req, res) => {
 
     await brandReview.save();
 
+    // Fetch updated review with includes
+    const updatedBrandReview = await BrandReview.findByPk(reviewId, {
+      include: getBrandReviewIncludes(),
+    });
+
     logger.info("Brand review updated successfully", { reviewId });
     return res.status(200).json({
       message: "Brand review updated successfully",
-      brandReview,
+      brandReview: updatedBrandReview,
     });
   } catch (error) {
     logger.error("Error during brand review update", {
@@ -299,9 +340,12 @@ export const updateBrandReviewVisibility = async (req, res) => {
     const brandReview = await BrandReview.findByPk(reviewId);
 
     if (!brandReview) {
-      logger.warn("Brand review visibility update failed: Brand review not found", {
-        reviewId,
-      });
+      logger.warn(
+        "Brand review visibility update failed: Brand review not found",
+        {
+          reviewId,
+        }
+      );
       return res.status(404).json({ message: "Brand review not found" });
     }
 
@@ -309,17 +353,20 @@ export const updateBrandReviewVisibility = async (req, res) => {
     if (isShown !== undefined) {
       brandReview.isShown = isShown;
     } else {
-      return res
-        .status(400)
-        .json({ message: "isShown field is required" });
+      return res.status(400).json({ message: "isShown field is required" });
     }
 
     await brandReview.save();
 
+    // Fetch updated review with includes
+    const updatedBrandReview = await BrandReview.findByPk(reviewId, {
+      include: getBrandReviewIncludes(),
+    });
+
     logger.info("Brand review visibility updated successfully", { reviewId });
     return res.status(200).json({
       message: "Brand review visibility updated successfully",
-      brandReview,
+      brandReview: updatedBrandReview,
     });
   } catch (error) {
     logger.error("Error during brand review visibility update", {
@@ -375,6 +422,8 @@ export default {
   getAllBrandReviews,
   getBrandReviewsByCreator,
   getBrandReviewsByBrand,
+  getBrandReviewsByVisibility,
   updateBrandReview,
+  updateBrandReviewVisibility,
   deleteBrandReview,
 };
