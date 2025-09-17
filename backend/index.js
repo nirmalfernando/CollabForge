@@ -8,6 +8,7 @@ import logger from "./middlewares/logger.js";
 import bodyParser from "body-parser";
 import globalRateLimiter from "./middlewares/rateLimit.js";
 import "./models/Associations.js";
+import JobScheduler from "./jobs/jobScheduler.js";
 import { createServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { initializeSocket } from "./socket/socketHandler.js";
@@ -23,7 +24,9 @@ import contractRoute from "./routes/contractRoute.js";
 import creatorWorkRoute from "./routes/creatorWorkRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import brandReviewRoute from "./routes/brandReviewRoute.js";
-import chatRoute from "./routes/chatRoute.js";
+import recommendationRoute from "./routes/recommendationRoute.js";
+import chatRoute from "./routes/chatRoute.js"; 
+
 dotenv.config();
 
 const app = express();
@@ -59,6 +62,10 @@ const initializeServer = async () => {
     // Sync the models with the database
     await sequelize.sync({ force: false });
     console.log("All models were synchronized successfully.");
+
+    // Initialize job scheduler after database sync
+    await JobScheduler.initialize();
+    console.log("Job scheduler initialized successfully.");
 
     // Initialize Socket.IO handlers
     initializeSocket(io);
@@ -149,7 +156,8 @@ app.use("/api/contracts", contractRoute);
 app.use("/api/creator-works", creatorWorkRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/brand-reviews", brandReviewRoute);
-app.use("/api/chat", chatRoute); 
+app.use("/api/recommendations", recommendationRoute);
+app.use("/api/chat", chatRoute);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
