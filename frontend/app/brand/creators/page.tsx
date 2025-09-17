@@ -12,9 +12,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Menu, Users, TrendingUp, Loader2 } from "lucide-react";
+import { Menu, Users, TrendingUp, Loader2, Star } from "lucide-react";
 import Link from "next/link";
-import { creatorApi, categoryApi, ApiError } from "@/lib/api";
+import { creatorApi, categoryApi, ApiError, brandApi, getAuthData } from "@/lib/api";
 
 // Define types for the creator data
 interface Creator {
@@ -43,62 +43,88 @@ interface Category {
 
 export default function BrandCreatorsPage() {
   const [activeCreatorType, setActiveCreatorType] = useState<
-    "Content Creator" | "Model" | "Live Streamer"
-  >("Content Creator");
+    "Recommended" | "Content Creator" | "Model" | "Live Streamer"
+  >("Recommended");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [creators, setCreators] = useState<Creator[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const creatorTypes: Array<"Content Creator" | "Model" | "Live Streamer"> = [
+  const creatorTypes: Array<"Recommended" | "Content Creator" | "Model" | "Live Streamer"> = [
+    "Recommended",
     "Content Creator",
     "Model",
     "Live Streamer",
   ];
 
-  // Fetch categories on component mount
+  // ✅ Get user ID
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const authData = getAuthData();
+        if (authData?.user?.userId) {
+          setUserId(authData.user.userId);
+        } else {
+          setError("Please log in to view creators");
+        }
+      } catch (err) {
+        console.error("Error getting auth data:", err);
+        setError("Failed to retrieve user information");
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const categoriesData = await categoryApi.getAllCategories();
-        setCategories(categoriesData);
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        // Don't show error for categories as it's not critical
       }
     };
 
     fetchCategories();
   }, []);
 
-  // Fetch creators when component mounts or when activeCreatorType changes
+  // Fetch creators
   useEffect(() => {
     const fetchCreators = async () => {
+      if (!userId) return;
+
       setLoading(true);
       setError(null);
 
       try {
-        // First try to get creators by type
         let creatorsData: Creator[] = [];
 
-        try {
-          creatorsData = await creatorApi.getCreatorsByType(activeCreatorType);
-        } catch (typeError) {
-          // If no creators found for this type, try getting all creators
-          console.log(
-            `No creators found for type ${activeCreatorType}, fetching all creators`
-          );
+        if (activeCreatorType === "Recommended") {
+          const response = await brandApi.getRecommendedCreators(userId);
+          // Ensure it's always an array
+          creatorsData = Array.isArray(response) ? response : [];
+        } else {
           try {
-            const allCreators = await creatorApi.getAllCreators();
-            // Filter by type on the frontend
-            creatorsData = allCreators.filter(
-              (creator: Creator) => creator.type === activeCreatorType
+            const response = await creatorApi.getCreatorsByType(activeCreatorType);
+            creatorsData = Array.isArray(response) ? response : [];
+          } catch (typeError) {
+            console.log(
+              `No creators found for type ${activeCreatorType}, fetching all creators`
             );
-          } catch (allError) {
-            console.error("Error fetching all creators:", allError);
-            creatorsData = [];
+            try {
+              const allCreators = await creatorApi.getAllCreators();
+              creatorsData = Array.isArray(allCreators)
+                ? allCreators.filter((c: Creator) => c.type === activeCreatorType)
+                : [];
+            } catch (allError) {
+              console.error("Error fetching all creators:", allError);
+              creatorsData = [];
+            }
           }
         }
 
@@ -117,15 +143,14 @@ export default function BrandCreatorsPage() {
     };
 
     fetchCreators();
-  }, [activeCreatorType]);
+  }, [activeCreatorType, userId]);
 
-  // Helper function to get category name by ID
+  // Helper functions
   const getCategoryName = (categoryId: string) => {
     const category = categories.find((cat) => cat.categoryId === categoryId);
     return category?.categoryName || "Unknown";
   };
 
-  // Helper function to get primary social media handle
   const getPrimarySocialHandle = (creator: Creator) => {
     if (creator.socialMedia && creator.socialMedia.length > 0) {
       return `@${creator.socialMedia[0].handle}`;
@@ -133,7 +158,6 @@ export default function BrandCreatorsPage() {
     return `@${creator.firstName.toLowerCase()}${creator.lastName.toLowerCase()}`;
   };
 
-  // Helper function to get follower count
   const getFollowerCount = (creator: Creator) => {
     if (creator.socialMedia && creator.socialMedia.length > 0) {
       const totalFollowers = creator.socialMedia.reduce(
@@ -152,7 +176,6 @@ export default function BrandCreatorsPage() {
     return "N/A";
   };
 
-  // Helper function to get platforms
   const getPlatforms = (creator: Creator) => {
     if (creator.socialMedia && creator.socialMedia.length > 0) {
       return creator.socialMedia.map((social) => social.platform);
@@ -160,8 +183,10 @@ export default function BrandCreatorsPage() {
     return [];
   };
 
-  // Filter creators based on selected category and search query
-  const filteredCreators = creators.filter((creator) => {
+  // ✅ Protect against non-array creators
+  const safeCreators = Array.isArray(creators) ? creators : [];
+
+  const filteredCreators = safeCreators.filter((creator) => {
     const matchesCategory =
       selectedCategory === "All" ||
       getCategoryName(creator.categoryId) === selectedCategory;
@@ -178,7 +203,6 @@ export default function BrandCreatorsPage() {
     return matchesCategory && matchesSearch;
   });
 
-  // Get unique category names for dropdown
   const categoryOptions = [
     "All",
     ...Array.from(new Set(categories.map((cat) => cat.categoryName))),
@@ -249,12 +273,16 @@ export default function BrandCreatorsPage() {
                 }`}
                 onClick={() => setActiveCreatorType(type)}
               >
-                {type}s
+                {type === "Recommended" ? (
+                  <Star className="h-5 w-5 mr-2" />
+                ) : null}
+                {type}
+                {type === "Recommended" ? "" : "s"}
               </Button>
             ))}
           </div>
 
-          {/* Loading State */}
+          {/* Loading */}
           {loading && (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -262,7 +290,7 @@ export default function BrandCreatorsPage() {
             </div>
           )}
 
-          {/* Error State */}
+          {/* Error */}
           {error && !loading && (
             <div className="text-center py-12">
               <p className="text-red-500 text-lg mb-4">{error}</p>
@@ -307,7 +335,7 @@ export default function BrandCreatorsPage() {
                     </div>
                   </div>
 
-                  {/* Creator Stats */}
+                  {/* Stats */}
                   <div className="flex justify-between text-sm">
                     <div className="flex items-center gap-1">
                       <Users className="h-4 w-4 text-primary" />
@@ -317,12 +345,11 @@ export default function BrandCreatorsPage() {
                     </div>
                     <div className="flex items-center gap-1">
                       <TrendingUp className="h-4 w-4 text-primary" />
-                      <span className="text-foreground">N/A</span>{" "}
-                      {/* Engagement rate not available in API */}
+                      <span className="text-foreground">N/A</span>
                     </div>
                   </div>
 
-                  {/* Creator Description */}
+                  {/* Bio */}
                   <p className="text-foreground text-sm leading-relaxed">
                     {creator.bio || "No bio available"}
                   </p>
@@ -350,7 +377,7 @@ export default function BrandCreatorsPage() {
                     Category: {getCategoryName(creator.categoryId)}
                   </div>
 
-                  {/* View Profile Button */}
+                  {/* View Profile */}
                   <Link
                     href={`/brand/creators/${creator.creatorId}`}
                     prefetch={false}
@@ -368,11 +395,11 @@ export default function BrandCreatorsPage() {
             </div>
           )}
 
-          {/* No Results Message */}
+          {/* No Results */}
           {!loading &&
             !error &&
             filteredCreators.length === 0 &&
-            creators.length > 0 && (
+            safeCreators.length > 0 && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg">
                   No creators found matching your criteria. Try adjusting your
@@ -381,11 +408,13 @@ export default function BrandCreatorsPage() {
               </div>
             )}
 
-          {/* No Creators Available Message */}
-          {!loading && !error && creators.length === 0 && (
+          {/* No Creators */}
+          {!loading && !error && safeCreators.length === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">
-                No {activeCreatorType.toLowerCase()}s are currently available.
+                {activeCreatorType === "Recommended"
+                  ? "No recommendations available at this time."
+                  : `No ${activeCreatorType.toLowerCase()}s are currently available.`}
               </p>
             </div>
           )}
