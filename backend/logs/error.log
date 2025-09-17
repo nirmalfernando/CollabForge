@@ -316,3 +316,17 @@
     at Array.map (<anonymous>)
     at getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:414:46)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-17T13:12:46.506Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:13:00.174Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:20:37.973Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:20:47.780Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:28:06.398Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:28:10.424Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:28:40.007Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:28:45.243Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:28:56.896Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:30:38.995Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:31:52.573Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:31:56.978Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:32:47.759Z [CollabForge] error: Validation errors during get brand recommendations
+2025-09-17T13:40:30.055Z [CollabForge] error: Validation errors during get brand recommendations
