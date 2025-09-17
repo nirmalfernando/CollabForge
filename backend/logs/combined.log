@@ -2026,3 +2026,9 @@
 2025-08-21T04:28:08.514Z [CollabForge] info: Creator works retrieved successfully
 2025-08-21T04:28:11.308Z [CollabForge] info: Creator work retrieved successfully
 2025-08-21T04:28:11.543Z [CollabForge] info: Creator work retrieved successfully
+2025-09-17T02:22:20.512Z [CollabForge] error: Server initialization failed
+2025-09-17T02:23:38.441Z [CollabForge] error: Server initialization failed
+2025-09-17T02:27:08.432Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:27:08.449Z [CollabForge] info: Server started on port 8080 with Socket.IO support
+2025-09-17T02:27:14.315Z [CollabForge] info: Socket.IO server initialized successfully
+2025-09-17T02:27:14.324Z [CollabForge] info: Server started on port 8080 with Socket.IO support

@@ -7,11 +7,12 @@ import cors from "cors";
 import logger from "./middlewares/logger.js";
 import bodyParser from "body-parser";
 import globalRateLimiter from "./middlewares/rateLimit.js";
-import { createServer } from "http";
-import { Server } from "socket.io";
 import "./models/Associations.js";
+import { createServer } from "http";
+import { Server as SocketIOServer } from "socket.io";
+import { initializeSocket } from "./socket/socketHandler.js";
 
-// Import routes
+// Route imports
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import creatorRoute from "./routes/creatorRoute.js";
@@ -23,14 +24,34 @@ import creatorWorkRoute from "./routes/creatorWorkRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import brandReviewRoute from "./routes/brandReviewRoute.js";
 import chatRoute from "./routes/chatRoute.js";
-
-// Import socket handler
-import { initializeSocket } from "./socket/socketHandler.js";
-
 dotenv.config();
 
-// Initialize the database
-const initializeDatabase = async () => {
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Create HTTP server
+const server = createServer(app);
+
+// Initialize Socket.IO server
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: [
+      "https://helpful-begonia-22aec6.netlify.app",
+      "https://*.netlify.app",
+      "http://localhost:3000",
+      "https://www.collabforge.xyz",
+      "https://collabforge.xyz",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"],
+  pingTimeout: 60000,
+  pingInterval: 25000,
+});
+
+// Initialize the database and start server
+const initializeServer = async () => {
   try {
     await sequelize.authenticate();
     console.log("Database connection has been established successfully.");
@@ -38,42 +59,23 @@ const initializeDatabase = async () => {
     // Sync the models with the database
     await sequelize.sync({ force: false });
     console.log("All models were synchronized successfully.");
+
+    // Initialize Socket.IO handlers
+    initializeSocket(io);
+    console.log("Socket.IO initialized successfully.");
+
+    // Start the server
+    server.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
+      logger.info(`Server started on port ${PORT} with Socket.IO support`);
+    });
+
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Failed to initialize server:", error);
+    logger.error("Server initialization failed", { error: error.message });
+    process.exit(1);
   }
 };
-
-// Call the function to initialize the database
-initializeDatabase();
-
-const app = express();
-const PORT = process.env.PORT;
-
-// Create HTTP server
-const server = createServer(app);
-
-// Initialize Socket.IO with CORS configuration
-const io = new Server(server, {
-  cors: {
-    origin: [
-      "https://helpful-begonia-22aec6.netlify.app",
-      "https://*.netlify.app", // For Netlify deploy previews
-      "http://localhost:3000", // For local development
-      "https://www.collabforge.xyz",
-      "https://collabforge.xyz",
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-  transports: ["websocket", "polling"], // Enable both transports
-  allowEIO3: true, // Enable compatibility with older clients
-});
-
-// Initialize socket handlers
-initializeSocket(io);
-
-// Make io available to routes if needed
-app.set("io", io);
 
 // Middleware to log errors
 app.use((err, req, res, next) => {
@@ -83,19 +85,21 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Middlware to rate limit requests globally
+// Middleware to rate limit requests globally
 app.use(globalRateLimiter);
 
 // Middleware to handle JSON and cookie parsing
-const MAX_REQUEST_SIZE = process.env.MAX_REQUEST_SIZE;
+const MAX_REQUEST_SIZE = process.env.MAX_REQUEST_SIZE || "50mb";
 
 app.use(bodyParser.json({ limit: MAX_REQUEST_SIZE }));
 app.use(bodyParser.urlencoded({ limit: MAX_REQUEST_SIZE, extended: true }));
 app.use(bodyParser.raw({ limit: MAX_REQUEST_SIZE }));
 app.use(cookieParser());
 
-// Middlware to secure the app by setting various HTTP headers
-app.use(helmet());
+// Middleware to secure the app by setting various HTTP headers
+app.use(helmet({
+  crossOriginEmbedderPolicy: false, // Allow Socket.IO to work properly
+}));
 
 // Middleware to enable CORS
 const allowedOrigins = [
@@ -111,7 +115,15 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (e.g., mobile apps or curl)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+      
+      // Check for exact matches or wildcard Netlify domains
+      const isAllowed = allowedOrigins.some(allowedOrigin => {
+        if (allowedOrigin === origin) return true;
+        if (allowedOrigin.includes("*") && origin && origin.includes("netlify.app")) return true;
+        return false;
+      });
+      
+      if (isAllowed) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"), false);
@@ -120,14 +132,10 @@ app.use(
   })
 );
 
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "OK",
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-    socketConnections: io.engine.clientsCount,
-  });
+// Make io accessible to routes via middleware
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
 
 // Setup the routes
@@ -141,45 +149,63 @@ app.use("/api/contracts", contractRoute);
 app.use("/api/creator-works", creatorWorkRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/brand-reviews", brandReviewRoute);
-app.use("/api/chat", chatRoute);
+app.use("/api/chat", chatRoute); 
 
-// Socket.IO connection info endpoint (for debugging)
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    socketConnections: io.engine.clientsCount,
+  });
+});
+
+// Socket.IO connection info endpoint
 app.get("/api/socket/info", (req, res) => {
-  res.json({
+  res.status(200).json({
     connectedClients: io.engine.clientsCount,
     rooms: Array.from(io.sockets.adapter.rooms.keys()),
   });
 });
 
-// Global error handler for unhandled routes
-app.use("*", (req, res) => {
+// Handle 404 for undefined routes
+app.use((req, res) => {
   res.status(404).json({
     message: "Route not found",
-    path: req.originalUrl,
   });
 });
 
-// Start the server
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Socket.IO server is ready for connections`);
+// Global error handler
+app.use((error, req, res, next) => {
+  logger.error("Global error handler", { 
+    error: error.message, 
+    stack: error.stack,
+    url: req.url,
+    method: req.method 
+  });
+  
+  res.status(error.status || 500).json({
+    message: error.message || "Internal server error",
+    ...(process.env.NODE_ENV === "development" && { stack: error.stack }),
+  });
 });
 
-// Handle graceful shutdown
+// Graceful shutdown
 process.on("SIGTERM", () => {
-  console.log("SIGTERM received, shutting down gracefully");
+  console.log("SIGTERM received. Shutting down gracefully...");
   server.close(() => {
-    console.log("Process terminated");
+    console.log("Server closed.");
     process.exit(0);
   });
 });
 
 process.on("SIGINT", () => {
-  console.log("SIGINT received, shutting down gracefully");
+  console.log("SIGINT received. Shutting down gracefully...");
   server.close(() => {
-    console.log("Process terminated");
+    console.log("Server closed.");
     process.exit(0);
   });
 });
 
-export default app;
+// Call the function to initialize the database and server
+initializeServer();

@@ -226,16 +226,6 @@ Conversation.belongsTo(User, {
   as: "participant2",
 });
 
-// Optional: Association for last message in conversation
-Chat.hasMany(Conversation, {
-  foreignKey: "lastMessageId",
-  as: "conversationsAsLastMessage",
-});
-Conversation.belongsTo(Chat, {
-  foreignKey: "lastMessageId",
-  as: "lastMessage",
-});
-
 export default {
   User,
   Category,
