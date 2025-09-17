@@ -8,10 +8,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { toast } from "@/hooks/use-toast";
-import { creatorApi, categoryApi, getAuthData } from "@/lib/api";
+import { creatorApi, categoryApi, brandReviewApi, getAuthData } from "@/lib/api";
 import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
 import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
 import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
+import { Loader2, Star } from "lucide-react";
 
 export default function BrandViewCreatorProfile({
   params,
@@ -20,6 +21,7 @@ export default function BrandViewCreatorProfile({
 }) {
   const [creator, setCreator] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -33,14 +35,15 @@ export default function BrandViewCreatorProfile({
         setLoading(true);
         setError(null);
 
-        // Ensure params.id is valid before making API calls
         if (!params?.id) {
           throw new Error("Creator ID is missing");
         }
 
+        // Fetch creator
         const creatorData = await creatorApi.getCreatorById(params.id);
         setCreator(creatorData);
 
+        // Fetch category
         if (creatorData.categoryId) {
           try {
             const categoryData = await categoryApi.getCategoryById(
@@ -50,6 +53,23 @@ export default function BrandViewCreatorProfile({
           } catch (categoryError) {
             console.error("Error fetching category:", categoryError);
           }
+        }
+
+        // Fetch reviews
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            creatorData.creatorId
+          );
+          const shownReviews = reviewsData
+            .filter((review: any) => review.isShown)
+            .map((review: any) => ({
+              ...review,
+              companyName: review.brand?.companyName || "Unknown Brand",
+            }));
+          setReviews(shownReviews || []);
+        } catch (reviewError) {
+          console.error("Error fetching reviews:", reviewError);
+          setReviews([]);
         }
       } catch (error) {
         console.error("Error fetching creator:", error);
@@ -62,51 +82,11 @@ export default function BrandViewCreatorProfile({
     fetchCreatorData();
   }, [params?.id]);
 
-  const handleContact = async () => {
-    try {
-      setContactingCreator(true);
-      
-      const currentUser = getAuthData()?.user;
-      
-      if (!currentUser) {
-        toast({
-          title: "Authentication Required",
-          description: "Please log in to start a conversation.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Check if creator has a user account
-      if (!creator.creatorId) {
-        toast({
-          title: "Contact Unavailable",
-          description: "This creator cannot be contacted at the moment.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Show success message
-      toast({
-        title: "Opening Chat",
-        description: `Starting conversation with ${creator.firstName}...`,
-      });
-
-      // Navigate to chat page with creator info
-      const creatorName = `${creator.firstName} ${creator.lastName}`;
-      router.push(`/brand/chat?contactUserId=${creator.creatorId}&contactName=${encodeURIComponent(creatorName)}&autoMessage=true`);
-      
-    } catch (error) {
-      console.error('Error starting conversation:', error);
-      toast({
-        title: "Error",
-        description: "Failed to open chat. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setContactingCreator(false);
-    }
+  const handleContact = () => {
+    toast({
+      title: "Contact Request",
+      description: "Contact feature will be available soon!",
+    });
   };
 
   const handleFollow = () => {
@@ -124,8 +104,7 @@ export default function BrandViewCreatorProfile({
       title: "Hire Creator",
       description: "Redirecting to collaboration request...",
     });
-    // You can extend this to navigate to a campaign creation page
-    // router.push(`/brand/campaigns/create?creatorId=${creator.creatorId}`);
+    // TODO: redirect to collaboration page
   };
 
   const getTotalFollowers = () => {
@@ -153,9 +132,9 @@ export default function BrandViewCreatorProfile({
       <div className="flex flex-col min-h-screen bg-background text-foreground">
         <Header isLoggedIn={true} userRole="brand-manager" />
         <main className="flex-1 flex justify-center items-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-lg">Loading creator profile...</p>
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="text-lg">Loading creator profile...</span>
           </div>
         </main>
         <Footer />
@@ -271,6 +250,7 @@ export default function BrandViewCreatorProfile({
               </TabsTrigger>
             </TabsList>
 
+            {/* Profile Tab + Reviews */}
             <TabsContent value="details" className="space-y-6">
               <ViewUserDetailsTab
                 creatorData={creator}
@@ -279,6 +259,45 @@ export default function BrandViewCreatorProfile({
                 onFollow={handleFollow}
                 onHire={handleHire}
               />
+
+              <div className="mt-8 space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  My <span className="text-primary">Reviews</span>
+                </h2>
+                {reviews.length > 0 ? (
+                  <div className="space-y-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.reviewId}
+                        className="rounded-lg p-4 bg-muted/50"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-5 w-5 ${
+                                i < review.rating
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        {review.comment && (
+                          <p className="text-lg">{review.comment}</p>
+                        )}
+                        <p className="text-sm mt-2">
+                          Reviewed by: {review.companyName}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-lg text-muted-foreground">
+                    No reviews available.
+                  </p>
+                )}
+              </div>
             </TabsContent>
 
             <TabsContent value="metrics" className="space-y-6">

@@ -272,6 +272,10 @@ export const brandApi = {
       method: "DELETE",
     });
   },
+
+  getRecommendedCreators: async (userId: string) => {
+    return apiRequest(`/recommendations/brand/${userId}`);
+  },
 };
 
 // Campaign API functions

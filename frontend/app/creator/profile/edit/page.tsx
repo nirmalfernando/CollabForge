@@ -19,7 +19,20 @@ import {
 import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Pencil, Plus, Monitor, Users, MapPin, Sparkles, Instagram, Youtube, Mail, Globe, PlusCircle, Star } from "lucide-react";
+import {
+  Pencil,
+  Plus,
+  Monitor,
+  Users,
+  MapPin,
+  Sparkles,
+  Instagram,
+  Youtube,
+  Mail,
+  Globe,
+  PlusCircle,
+  Star,
+} from "lucide-react";
 import {
   creatorApi,
   categoryApi,
@@ -46,10 +59,15 @@ export default function CreatorEditProfilePage() {
   const [isEditingBanner, setIsEditingBanner] = useState(false);
   const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
 
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(
+    null
+  );
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
-  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] =
+    useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<
+    string | null
+  >(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCreatorType, setSelectedCreatorType] = useState("");
@@ -77,7 +95,13 @@ export default function CreatorEditProfilePage() {
     followerInfo: "",
     bio: "",
     details: [] as { type: string; value: string; icon: string }[],
-    platforms: [] as { icon: string; name: string; handle: string; link: string; followers: number }[],
+    platforms: [] as {
+      icon: string;
+      name: string;
+      handle: string;
+      link: string;
+      followers: number;
+    }[],
     whatIDo: [] as string[],
     myPeople: [] as string[],
     myContent: [] as string[],
@@ -111,22 +135,26 @@ export default function CreatorEditProfilePage() {
             ? `${profile.socialMedia[0].followers} Followers (${profile.socialMedia[0].platform})`
             : "",
           bio: profile.bio || "",
-          details: profile.details?.map((d: any) => ({
-            type: d.label,
-            value: d.value,
-            icon: d.icon || detailsIconMap[d.label] || "PlusCircle",
-          })) || [],
-          platforms: profile.socialMedia?.map((p: any) => ({
-            icon: p.icon || platformIconMap[p.platform] || "Monitor",
-            name: p.platform,
-            handle: p.handle,
-            link: p.url,
-            followers: p.followers || 0,
-          })) || [],
+          details:
+            profile.details?.map((d: any) => ({
+              type: d.label,
+              value: d.value,
+              icon: d.icon || detailsIconMap[d.label] || "PlusCircle",
+            })) || [],
+          platforms:
+            profile.socialMedia?.map((p: any) => ({
+              icon: p.icon || platformIconMap[p.platform] || "Monitor",
+              name: p.platform,
+              handle: p.handle,
+              link: p.url,
+              followers: p.followers || 0,
+            })) || [],
           whatIDo: profile.whatIDo?.map((item: any) => item.activity) || [""],
           myPeople: profile.myPeople?.map((item: any) => item.name) || [""],
           myContent: profile.myContent?.map((item: any) => item.title) || [""],
-          workedWith: profile.pastCollaborations?.map((item: any) => item.brand) || [""],
+          workedWith: profile.pastCollaborations?.map(
+            (item: any) => item.brand
+          ) || [""],
           bannerImageUrl: profile.backgroundImgUrl || null,
           profilePicUrl: profile.profilePicUrl || null,
           pastCollaborations: profile.pastCollaborations || [],
@@ -138,29 +166,22 @@ export default function CreatorEditProfilePage() {
         setCategories(categoriesData);
 
         // Fetch reviews
+        // Fetch reviews
         try {
-          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(auth.user.userId);
-          const reviewsWithCompanyNames = await Promise.all(
-            reviewsData.map(async (review: any) => {
-              try {
-                const brand = await brandApi.getBrandById(review.brandId);
-                return {
-                  ...review,
-                  companyName: brand.companyName || "Unknown Brand",
-                };
-              } catch (error) {
-                console.error(`Failed to fetch brand for ID ${review.brandId}:`, error);
-                return {
-                  ...review,
-                  companyName: "Unknown Brand",
-                };
-              }
-            })
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            auth.user.userId
           );
+
+          // Directly use brand.companyName from the review object
+          const reviewsWithCompanyNames = reviewsData.map((review: any) => ({
+            ...review,
+            companyName: review.brand?.companyName || "Unknown Brand",
+          }));
+
           setReviews(reviewsWithCompanyNames || []);
         } catch (error: any) {
           console.error("Failed to load reviews:", error);
-          setReviews([]); 
+          setReviews([]);
         }
       } catch (error: any) {
         console.error("Failed to load creator profile or categories:", error);
@@ -284,9 +305,15 @@ export default function CreatorEditProfilePage() {
       await Promise.all(
         reviews.map(async (review) => {
           try {
-            await brandReviewApi.updateBrandReviewVisibility(review.reviewId, review.isShown);
+            await brandReviewApi.updateBrandReviewVisibility(
+              review.reviewId,
+              review.isShown
+            );
           } catch (error) {
-            console.error(`Failed to update visibility for review ${review.reviewId}:`, error);
+            console.error(
+              `Failed to update visibility for review ${review.reviewId}:`,
+              error
+            );
           }
         })
       );
@@ -675,54 +702,57 @@ export default function CreatorEditProfilePage() {
                   selectedCreatorType={selectedCreatorType}
                   setSelectedCreatorType={setSelectedCreatorType}
                 />
-<details className="rounded-lg border p-4 bg-muted/30">
-  <summary className="cursor-pointer font-semibold text-lg">
-    Select Reviews to Feature (up to 5)
-  </summary>
-  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-    {reviews.map((review) => (
-      <div
-        key={review.reviewId}
-        className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg shadow-sm"
-      >
-        <Checkbox
-          id={`review-${review.reviewId}`}
-          checked={review.isShown}
-          onCheckedChange={(checked) =>
-            handleToggle(review.reviewId, checked as boolean)
-          }
-        />
-        <div className="flex-1">
-          {/* Rating Stars */}
-          <div className="flex items-center gap-1 mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`h-4 w-4 ${
-                  i < review.rating
-                    ? "text-yellow-400 fill-yellow-400"
-                    : "text-gray-300"
-                }`}
-              />
-            ))}
-          </div>
+                <details className="rounded-lg border p-4 bg-muted/30">
+                  <summary className="cursor-pointer font-semibold text-lg">
+                    Select Reviews to Feature (up to 5)
+                  </summary>
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.reviewId}
+                        className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg shadow-sm"
+                      >
+                        <Checkbox
+                          id={`review-${review.reviewId}`}
+                          checked={review.isShown}
+                          onCheckedChange={(checked) =>
+                            handleToggle(review.reviewId, checked as boolean)
+                          }
+                        />
+                        <div className="flex-1">
+                          {/* Rating Stars */}
+                          <div className="flex items-center gap-1 mb-2">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < review.rating
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
 
-          {/* Review Comment */}
-          {review.comment && (
-            <p className="text-sm text-foreground">{review.comment}</p>
-          )}
+                          {/* Review Comment */}
+                          {review.comment && (
+                            <p className="text-sm text-foreground">
+                              {review.comment}
+                            </p>
+                          )}
 
-          {/* Reviewer */}
-          <p className="text-xs text-muted-foreground mt-2">
-            Reviewed by: <span className="font-medium">{review.companyName}</span>
-          </p>
-        </div>
-      </div>
-    ))}
-  </div>
-</details>
-
-
+                          {/* Reviewer */}
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Reviewed by:{" "}
+                            <span className="font-medium">
+                              {review.companyName}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
               </TabsContent>
 
               <TabsContent value="accounts-metrics" className="mt-6 space-y-8">
