@@ -1,17 +1,15 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import Image from "next/image"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -20,32 +18,29 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { toast } from "@/hooks/use-toast"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Pencil, Plus } from "lucide-react"
-import { brandApi, getAuthData, imageUploadApi } from "@/lib/api" // Import imageUploadApi
+} from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Pencil, Plus, Star } from "lucide-react";
+import { brandApi, getAuthData, imageUploadApi, brandReviewApi, reviewApi } from "@/lib/api";
+import { Checkbox } from "@/components/ui/checkbox";
 
-const MAX_FILE_SIZE_MB = 10 // Max file size for image uploads
+const MAX_FILE_SIZE_MB = 10;
 
 export default function BrandEditProfilePage() {
-  const router = useRouter()
-  const [authData, setAuthDataState] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true) // Start as loading to fetch existing data
-  const [brandId, setBrandId] = useState<string | null>(null)
+  const router = useRouter();
+  const [authData, setAuthDataState] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [brandId, setBrandId] = useState<string | null>(null);
+  const [isEditingBanner, setIsEditingBanner] = useState(false);
+  const [isEditingProfilePic, setIsEditingProfilePic] = useState(false);
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
+  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null);
+  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
 
-  // State for managing forms
-  const [isEditingBanner, setIsEditingBanner] = useState(false)
-  const [isEditingProfilePic, setIsEditingProfilePic] = useState(false)
-
-  // States for image uploads
-  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
-  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null)
-  const [selectedProfilePicFile, setSelectedProfilePicFile] = useState<File | null>(null)
-  const [profilePicPreviewUrl, setProfilePicPreviewUrl] = useState<string | null>(null)
-
-  // Initial brand data state
   const [brandData, setBrandData] = useState({
     companyName: "",
     bio: "",
@@ -53,26 +48,24 @@ export default function BrandEditProfilePage() {
     vision: "",
     targetAudience: "",
     collaborationType: "",
-    profilePicUrl: null as string | null, // Changed to null
-    bannerImageUrl: null as string | null, // Changed to null
-  })
+    profilePicUrl: null as string | null,
+    bannerImageUrl: null as string | null,
+  });
 
   useEffect(() => {
-    const auth = getAuthData()
+    const auth = getAuthData();
     if (!auth || auth.user.role !== "brand") {
-      router.push("/login")
-      return
+      router.push("/login");
+      return;
     }
-    setAuthDataState(auth)
+    setAuthDataState(auth);
 
     const loadProfile = async () => {
       try {
-        setIsLoading(true)
-        // Fetch brand profile
-        const profile = await brandApi.getBrandByUserId(auth.user.userId)
-        setBrandId(profile._id) // Store brand ID for updates
+        setIsLoading(true);
+        const profile = await brandApi.getBrandByUserId(auth.user.userId);
+        setBrandId(profile._id);
 
-        // Populate form fields with existing data
         setBrandData({
           companyName: profile.companyName || "",
           bio: profile.bio || "",
@@ -80,52 +73,64 @@ export default function BrandEditProfilePage() {
           vision: profile.description?.vision || "",
           targetAudience: profile.whatWeLookFor?.targetAudience || "",
           collaborationType: profile.whatWeLookFor?.collaborationType || "",
-          profilePicUrl: profile.profilePicUrl || null, // Set to null if backend returns null/undefined
-          bannerImageUrl: profile.backgroundImageUrl || null, // Set to null if backend returns null/undefined
-        })
+          profilePicUrl: profile.profilePicUrl || null,
+          bannerImageUrl: profile.backgroundImageUrl || null,
+        });
+
+        // Fetch reviews
+        try {
+          const reviewsData = await reviewApi.getReviewsByCreator(auth.user.userId);
+          const reviewsWithCreatorNames = reviewsData.map((review: any) => ({
+            ...review,
+            creatorName: review.Creator
+              ? `${review.Creator.firstName} ${review.Creator.lastName || ""}`
+              : "Unknown Creator",
+          }));
+          setReviews(reviewsWithCreatorNames || []);
+        } catch (error: any) {
+          console.error("Failed to load reviews:", error);
+          setReviews([]);
+        }
       } catch (error: any) {
-        console.error("Failed to load brand profile:", error)
+        console.error("Failed to load brand profile:", error);
         toast({
           title: "Error",
           description: error.message || "Failed to load profile data.",
           variant: "destructive",
-        })
-        // If profile not found, redirect to new profile creation
+        });
         if (error.status === 404) {
-          router.push("/brand/profile/new")
+          router.push("/brand/profile/new");
         }
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadProfile()
-  }, [router])
+    loadProfile();
+  }, [router]);
 
-  // Cleanup object URLs when component unmounts or image changes
   useEffect(() => {
     return () => {
-      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl)
-      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl)
-    }
-  }, [bannerPreviewUrl, profilePicPreviewUrl])
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
+    };
+  }, [bannerPreviewUrl, profilePicPreviewUrl]);
 
   const handleUpdateSettings = async () => {
-    if (!authData || !brandId) return
+    if (!authData || !brandId) return;
 
     if (!brandData.companyName.trim()) {
       toast({
         title: "Missing Information",
         description: "Please fill in the Company Name.",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
-      // Transform data to match API format
       const apiData = {
         companyName: brandData.companyName,
         bio: brandData.bio || undefined,
@@ -137,158 +142,191 @@ export default function BrandEditProfilePage() {
           targetAudience: brandData.targetAudience || undefined,
           collaborationType: brandData.collaborationType || undefined,
         },
-        profilePicUrl: brandData.profilePicUrl || undefined, // Send null/undefined if not set
-        backgroundImageUrl: brandData.bannerImageUrl || undefined, // Send null/undefined if not set
-      }
+        profilePicUrl: brandData.profilePicUrl || undefined,
+        backgroundImageUrl: brandData.bannerImageUrl || undefined,
+      };
 
-      await brandApi.updateBrand(brandId, apiData)
+      await brandApi.updateBrand(brandId, apiData);
+
+      // Update review visibilities
+      await Promise.all(
+        reviews.map(async (review) => {
+          try {
+            await brandReviewApi.updateBrandReviewVisibility(
+              review.reviewId,
+              review.isShown
+            );
+          } catch (error) {
+            console.error(
+              `Failed to update visibility for review ${review.reviewId}:`,
+              error
+            );
+          }
+        })
+      );
 
       toast({
         title: "Profile Updated",
         description: "Your brand profile has been updated successfully!",
-      })
+      });
 
-      // Redirect to profile page
-      router.push("/brand/profile")
+      router.push("/brand/profile");
     } catch (error: any) {
-      console.error("Failed to update brand profile:", error)
+      console.error("Failed to update brand profile:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to update brand profile. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleBannerFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid File Type",
           description: "Please select an image file (e.g., JPG, PNG, GIF).",
           variant: "destructive",
-        })
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
-        return
+        });
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
+        return;
       }
       if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         toast({
           title: "File Too Large",
           description: `Please select an image smaller than ${MAX_FILE_SIZE_MB}MB.`,
           variant: "destructive",
-        })
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
-        return
+        });
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
+        return;
       }
-      setSelectedBannerFile(file)
-      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl)
-      setBannerPreviewUrl(URL.createObjectURL(file))
+      setSelectedBannerFile(file);
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+      setBannerPreviewUrl(URL.createObjectURL(file));
     } else {
-      setSelectedBannerFile(null)
-      setBannerPreviewUrl(null)
+      setSelectedBannerFile(null);
+      setBannerPreviewUrl(null);
     }
-  }
+  };
 
   const handleSaveBannerImage = async () => {
     if (selectedBannerFile) {
       try {
-        setIsLoading(true)
-        const uploadedImage = await imageUploadApi.uploadImage(selectedBannerFile)
-        setBrandData((prev) => ({ ...prev, bannerImageUrl: uploadedImage.url }))
-        setIsEditingBanner(false)
-        setSelectedBannerFile(null)
-        setBannerPreviewUrl(null)
+        setIsLoading(true);
+        const uploadedImage = await imageUploadApi.uploadImage(selectedBannerFile);
+        setBrandData((prev) => ({ ...prev, bannerImageUrl: uploadedImage.url }));
+        setIsEditingBanner(false);
+        setSelectedBannerFile(null);
+        setBannerPreviewUrl(null);
         toast({
           title: "Banner Updated",
           description: "Your brand banner has been updated.",
-        })
+        });
       } catch (error: any) {
-        console.error("Failed to upload banner image:", error)
+        console.error("Failed to upload banner image:", error);
         toast({
           title: "Upload Error",
           description: error.message || "Failed to upload banner image. Please try again.",
           variant: "destructive",
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
       toast({
         title: "Error",
         description: "Please select an image file for the banner.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleProfilePicFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid File Type",
           description: "Please select an image file (e.g., JPG, PNG, GIF).",
           variant: "destructive",
-        })
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
-        return
+        });
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
+        return;
       }
       if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         toast({
           title: "File Too Large",
           description: `Please select an image smaller than ${MAX_FILE_SIZE_MB}MB.`,
           variant: "destructive",
-        })
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
-        return
+        });
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
+        return;
       }
-      setSelectedProfilePicFile(file)
-      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl)
-      setProfilePicPreviewUrl(URL.createObjectURL(file))
+      setSelectedProfilePicFile(file);
+      if (profilePicPreviewUrl) URL.revokeObjectURL(profilePicPreviewUrl);
+      setProfilePicPreviewUrl(URL.createObjectURL(file));
     } else {
-      setSelectedProfilePicFile(null)
-      setProfilePicPreviewUrl(null)
+      setSelectedProfilePicFile(null);
+      setProfilePicPreviewUrl(null);
     }
-  }
+  };
 
   const handleSaveProfilePic = async () => {
     if (selectedProfilePicFile) {
       try {
-        setIsLoading(true)
-        const uploadedImage = await imageUploadApi.uploadImage(selectedProfilePicFile)
-        setBrandData((prev) => ({ ...prev, profilePicUrl: uploadedImage.url }))
-        setIsEditingProfilePic(false)
-        setSelectedProfilePicFile(null)
-        setProfilePicPreviewUrl(null)
+        setIsLoading(true);
+        const uploadedImage = await imageUploadApi.uploadImage(selectedProfilePicFile);
+        setBrandData((prev) => ({ ...prev, profilePicUrl: uploadedImage.url }));
+        setIsEditingProfilePic(false);
+        setSelectedProfilePicFile(null);
+        setProfilePicPreviewUrl(null);
         toast({
           title: "Profile Picture Updated",
           description: "Your profile picture has been updated.",
-        })
+        });
       } catch (error: any) {
-        console.error("Failed to upload profile picture:", error)
+        console.error("Failed to upload profile picture:", error);
         toast({
           title: "Upload Error",
           description: error.message || "Failed to upload profile picture. Please try again.",
           variant: "destructive",
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
       toast({
         title: "Error",
         description: "Please select an image file for the profile picture.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
+
+  const handleToggle = (reviewId: string, checked: boolean) => {
+    setReviews((prevReviews) => {
+      const currentSelectedCount = prevReviews.filter((r) => r.isShown).length;
+      if (checked && currentSelectedCount >= 5) {
+        toast({
+          title: "Maximum Reached",
+          description: "You can select up to 5 reviews to feature.",
+          variant: "destructive",
+        });
+        return prevReviews;
+      }
+      return prevReviews.map((r) =>
+        r.reviewId === reviewId ? { ...r, isShown: checked } : r
+      );
+    });
+  };
 
   if (isLoading) {
     return (
@@ -299,7 +337,7 @@ export default function BrandEditProfilePage() {
         </main>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -310,7 +348,9 @@ export default function BrandEditProfilePage() {
         {/* Banner Section */}
         <section className="relative w-full h-64 md:h-80 lg:h-96 bg-[#f5f5f5]">
           <Image
-            src={brandData.bannerImageUrl || "/placeholder.svg?height=400&width=1200"}
+            src={
+              brandData.bannerImageUrl || "/placeholder.svg?height=400&width=1200"
+            }
             alt="Brand banner"
             layout="fill"
             objectFit="cover"
@@ -336,7 +376,12 @@ export default function BrandEditProfilePage() {
                 <Label htmlFor="banner-image-upload" className="text-right">
                   Upload Image
                 </Label>
-                <Input id="banner-image-upload" type="file" accept="image/*" onChange={handleBannerFileChange} />
+                <Input
+                  id="banner-image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerFileChange}
+                />
                 {bannerPreviewUrl && (
                   <div className="mt-4">
                     <p className="text-sm text-muted-foreground mb-2">Preview:</p>
@@ -352,10 +397,18 @@ export default function BrandEditProfilePage() {
                 )}
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsEditingBanner(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditingBanner(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="button" onClick={handleSaveBannerImage} disabled={!selectedBannerFile || isLoading}>
+                <Button
+                  type="button"
+                  onClick={handleSaveBannerImage}
+                  disabled={!selectedBannerFile || isLoading}
+                >
                   {isLoading ? "Uploading..." : "Save Changes"}
                 </Button>
               </DialogFooter>
@@ -415,7 +468,11 @@ export default function BrandEditProfilePage() {
                       )}
                     </div>
                     <DialogFooter>
-                      <Button type="button" variant="outline" onClick={() => setIsEditingProfilePic(false)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsEditingProfilePic(false)}
+                      >
                         Cancel
                       </Button>
                       <Button
@@ -435,7 +492,9 @@ export default function BrandEditProfilePage() {
                   <Input
                     type="text"
                     value={brandData.companyName}
-                    onChange={(e) => setBrandData((prev) => ({ ...prev, companyName: e.target.value }))}
+                    onChange={(e) =>
+                      setBrandData((prev) => ({ ...prev, companyName: e.target.value }))
+                    }
                     placeholder="Company Name"
                     className="flex-1 max-w-xs bg-muted border-none text-foreground text-2xl font-semibold"
                   />
@@ -538,6 +597,51 @@ export default function BrandEditProfilePage() {
                     <Switch id="notifications-toggle" defaultChecked />
                   </div>
                 </div>
+
+                {/* Reviews Section */}
+                <details className="rounded-lg border p-4 bg-muted/30">
+                  <summary className="cursor-pointer font-semibold text-lg">
+                    Select Reviews to Feature (up to 5)
+                  </summary>
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.reviewId}
+                        className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg shadow-sm"
+                      >
+                        <Checkbox
+                          id={`review-${review.reviewId}`}
+                          checked={review.isShown}
+                          onCheckedChange={(checked) =>
+                            handleToggle(review.reviewId, checked as boolean)
+                          }
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-1 mb-2">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < review.rating
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          {review.comment && (
+                            <p className="text-sm text-foreground">
+                              {review.comment}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Reviewed by: <span className="font-medium">{review.creatorName}</span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
               </TabsContent>
 
               <TabsContent value="what-we-look-for" className="mt-6 space-y-8">
@@ -550,7 +654,9 @@ export default function BrandEditProfilePage() {
                     id="target-audience"
                     placeholder="Describe your ideal target audience..."
                     value={brandData.targetAudience}
-                    onChange={(e) => setBrandData((prev) => ({ ...prev, targetAudience: e.target.value }))}
+                    onChange={(e) =>
+                      setBrandData((prev) => ({ ...prev, targetAudience: e.target.value }))
+                    }
                     className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
                   />
                 </div>
@@ -564,7 +670,9 @@ export default function BrandEditProfilePage() {
                     id="collaboration-type"
                     placeholder="Describe the types of collaborations you are looking for..."
                     value={brandData.collaborationType}
-                    onChange={(e) => setBrandData((prev) => ({ ...prev, collaborationType: e.target.value }))}
+                    onChange={(e) =>
+                      setBrandData((prev) => ({ ...prev, collaborationType: e.target.value }))
+                    }
                     className="w-full bg-muted border-none text-foreground placeholder:text-muted-foreground rounded-lg p-3 min-h-[120px]"
                   />
                 </div>
@@ -576,5 +684,5 @@ export default function BrandEditProfilePage() {
 
       <Footer />
     </div>
-  )
+  );
 }

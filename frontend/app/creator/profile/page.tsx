@@ -27,7 +27,7 @@ import {
   PlusCircle,
   Star,
 } from "lucide-react";
-import { creatorApi, getAuthData, brandReviewApi, brandApi } from "@/lib/api";
+import { creatorApi, getAuthData, brandReviewApi } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import AccountsMetricsTab from "@/components/creator/edit-tabs/accounts-metrics-tab";
 import PastWorksTab from "@/components/creator/edit-tabs/past-works-tab";
@@ -77,31 +77,18 @@ export default function CreatorProfilePage() {
           const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
             auth.user.userId
           );
+
           // Filter to only show reviews with isShown = true
           const shownReviews = reviewsData.filter(
             (review: any) => review.isShown
           );
 
-          const reviewsWithCompanyNames = await Promise.all(
-            shownReviews.map(async (review: any) => {
-              try {
-                const brand = await brandApi.getBrandById(review.brandId);
-                return {
-                  ...review,
-                  companyName: brand.companyName || "Unknown Brand",
-                };
-              } catch (error) {
-                console.error(
-                  `Failed to fetch brand for ID ${review.brandId}:`,
-                  error
-                );
-                return {
-                  ...review,
-                  companyName: "Unknown Brand",
-                };
-              }
-            })
-          );
+          // Directly use brand.companyName from response
+          const reviewsWithCompanyNames = shownReviews.map((review: any) => ({
+            ...review,
+            companyName: review.brand?.companyName || "Unknown Brand",
+          }));
+
           setReviews(reviewsWithCompanyNames || []);
         } catch (error: any) {
           console.error("Failed to load reviews:", error);
@@ -469,7 +456,7 @@ export default function CreatorProfilePage() {
                       <div className="space-y-4">
                         {reviews.map((review) => (
                           <div
-                            key={review.id}
+                            key={review.reviewId}
                             className="rounded-lg p-4 bg-muted/50"
                           >
                             <div className="flex items-center gap-2 mb-2">

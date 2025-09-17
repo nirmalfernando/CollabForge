@@ -8,30 +8,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import {
-  Monitor,
-  Users,
-  MapPin,
-  Sparkles,
-  Instagram,
-  Youtube,
-  Mail,
-  Globe,
   Atom,
   FlaskConical,
   Beaker,
   Wind,
   Flame,
   Loader2,
-  Twitter,
-  Facebook,
-  Linkedin,
+  Star,
 } from "lucide-react";
-import { creatorApi, categoryApi } from "@/lib/api";
+import { creatorApi, categoryApi, brandReviewApi } from "@/lib/api";
 import ViewUserDetailsTab from "@/components/creator/view-tabs/ViewUserDetailsTab";
 import ViewAccountsMetricsTab from "@/components/creator/view-tabs/ViewAccountsMetricsTab";
 import ViewPastWorksTab from "@/components/creator/view-tabs/ViewPastWorksTab";
 
-// Define interfaces for type safety
+// Interfaces
 interface Creator {
   creatorId: string;
   firstName: string;
@@ -72,9 +62,22 @@ interface Category {
   description?: string;
 }
 
-export default function CreatorProfileViewPage({ params }: { params: { id: string } }) {
+interface Review {
+  reviewId: string;
+  rating: number;
+  comment?: string;
+  companyName?: string;
+  isShown: boolean;
+}
+
+export default function CreatorProfileViewPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [creator, setCreator] = useState<Creator | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -94,7 +97,7 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
         const creatorResponse = await creatorApi.getCreatorById(params.id);
         setCreator(creatorResponse);
 
-        // Fetch category data if creator has categoryId
+        // Fetch category data
         if (creatorResponse.categoryId) {
           try {
             const categoryResponse = await categoryApi.getCategoryById(
@@ -104,6 +107,25 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
           } catch (categoryError) {
             console.error("Error fetching category:", categoryError);
           }
+        }
+
+        // Fetch reviews
+        try {
+          const reviewsData = await brandReviewApi.getBrandReviewsByCreator(
+            creatorResponse.creatorId
+          );
+
+          const shownReviews = reviewsData
+            .filter((review: any) => review.isShown)
+            .map((review: any) => ({
+              ...review,
+              companyName: review.brand?.companyName || "Unknown Brand",
+            }));
+
+          setReviews(shownReviews || []);
+        } catch (reviewError) {
+          console.error("Error fetching reviews:", reviewError);
+          setReviews([]);
         }
       } catch (error) {
         console.error("Error fetching creator:", error);
@@ -152,35 +174,24 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
     );
   }
 
-  // Calculate total followers
+  // Total followers
   const totalFollowers =
     creator.socialMedia?.reduce(
       (sum, social) => sum + (social.followers || 0),
       0
     ) || 0;
 
-  // Handlers for action buttons
-  const handleContact = () => {
-    // Implement contact functionality
-    console.log("Contact button clicked");
-  };
-
-  const handleFollow = () => {
-    // Implement follow functionality
-    console.log("Follow button clicked");
-  };
-
-  const handleHire = () => {
-    // Implement hire functionality
-    console.log("Hire button clicked");
-  };
+  // Action handlers
+  const handleContact = () => console.log("Contact button clicked");
+  const handleFollow = () => console.log("Follow button clicked");
+  const handleHire = () => console.log("Hire button clicked");
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header isLoggedIn={true} userRole="influencer" />
 
       <main className="flex-1">
-        {/* Banner Section */}
+        {/* Banner */}
         <section className="relative w-full h-64 md:h-80 lg:h-96">
           <Image
             src={creator.backgroundImgUrl || "/placeholder.svg"}
@@ -192,12 +203,10 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
           />
         </section>
 
-        {/* Main content area */}
         <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
-            {/* Top section with Avatar, Stats, and Buttons */}
+            {/* Avatar + Stats */}
             <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Profile Picture - Overlapping */}
               <div className="relative -mt-24 md:-mt-32 lg:-mt-36 flex-shrink-0">
                 <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg">
                   <AvatarImage
@@ -211,7 +220,6 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
                 </Avatar>
               </div>
 
-              {/* Follower Count and Action Buttons */}
               <div className="flex-1 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-4 w-full">
                 <div className="text-left">
                   <p className="text-4xl font-bold text-foreground">
@@ -221,9 +229,7 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
                       ? `${(totalFollowers / 1000).toFixed(0)}K`
                       : totalFollowers.toString()}
                   </p>
-                  <p className="text-lg text-muted-foreground">
-                    Followers
-                  </p>
+                  <p className="text-lg text-muted-foreground">Followers</p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
                   <Button
@@ -244,7 +250,7 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
               </div>
             </div>
 
-            {/* Tabs Section */}
+            {/* Tabs */}
             <div className="mt-8">
               <Tabs defaultValue="user-details" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 bg-muted text-foreground mb-8">
@@ -276,6 +282,46 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
                     onFollow={handleFollow}
                     onHire={handleHire}
                   />
+
+                  {/* Reviews inside User Details */}
+                  <div className="mt-8 space-y-4">
+                    <h2 className="text-2xl md:text-3xl font-bold">
+                      My <span className="text-primary">Reviews</span>
+                    </h2>
+                    {reviews.length > 0 ? (
+                      <div className="space-y-4">
+                        {reviews.map((review) => (
+                          <div
+                            key={review.reviewId}
+                            className="rounded-lg p-4 bg-muted/50"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-5 w-5 ${
+                                    i < review.rating
+                                      ? "text-yellow-400 fill-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            {review.comment && (
+                              <p className="text-lg">{review.comment}</p>
+                            )}
+                            <p className="text-sm mt-2">
+                              Reviewed by: {review.companyName}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-lg text-muted-foreground">
+                        No reviews available.
+                      </p>
+                    )}
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="accounts-metrics">
@@ -290,7 +336,7 @@ export default function CreatorProfileViewPage({ params }: { params: { id: strin
           </div>
         </div>
 
-        {/* Collabs Through Us Section */}
+        {/* Collabs Section */}
         <section className="w-full py-12 md:py-24 bg-muted">
           <div className="container px-4 md:px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8">
