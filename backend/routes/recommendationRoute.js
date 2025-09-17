@@ -31,7 +31,7 @@ router.get(
 
 // Get brand-specific creator recommendations
 router.get(
-  "/recommendations/brand/:brandId",
+  "/brand/:brandId",
   verifyToken,
   getBrandRecommendationsValidation,
   getBrandRecommendations

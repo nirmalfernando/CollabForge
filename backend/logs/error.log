@@ -228,3 +228,91 @@
 2025-09-15T14:35:38.646Z [CollabForge] error: Validation errors during creator creation
 2025-09-17T03:22:47.505Z [CollabForge] error: Error during getting all brand reviews
 2025-09-17T03:25:06.883Z [CollabForge] error: Error during getting all reviews
+2025-09-17T07:19:20.744Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Campaign.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:336:30)
+2025-09-17T07:23:34.695Z [CollabForge] error: ReferenceError: sequelize is not defined
+    at getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:341:17)
+    at Layer.handleRequest (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/router/lib/route.js:157:13)
+    at middleware (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/express-validator/lib/middlewares/check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-17T07:25:02.199Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Campaign.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:337:30)
+2025-09-17T07:25:52.539Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:27:52.899Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:30:49.812Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:378:33)
+2025-09-17T07:34:23.367Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:35:09.218Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:36:56.122Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:37:17.759Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:38:05.825Z [CollabForge] error: TypeError: Cannot read properties of undefined (reading 'username')
+    at file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:425:43
+    at Array.map (<anonymous>)
+    at getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:414:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)

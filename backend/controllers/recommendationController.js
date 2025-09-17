@@ -2,8 +2,10 @@ import TopCreator from "../models/TopCreator.js";
 import Creator from "../models/Creator.js";
 import User from "../models/User.js";
 import Category from "../models/Category.js";
+import Campaign from "../models/Campaign.js";
 import TopCreatorJob from "../jobs/topCreatorJob.js";
 import { param, query, validationResult } from "express-validator";
+import { Op } from "sequelize";
 import logger from "../middlewares/logger.js";
 
 // Validation rules for getting top creators by category
@@ -332,30 +334,23 @@ export const getBrandRecommendations = async (req, res) => {
     } else {
       // Get brand's campaign categories (default behavior)
       const brandCampaigns = await Campaign.findAll({
-        where: { 
-          brandId,
-          status: true // Only active campaigns
-        },
-        attributes: ['categoryId'],
-        group: ['categoryId'],
-        include: [
-          {
-            model: Category,
-            attributes: ['categoryId', 'categoryName'],
-            where: { status: true }
-          }
-        ]
-      });
+  where: { 
+    brandId,
+    status: true
+  },
+  attributes: ['categoryId']
+});
 
-      if (brandCampaigns.length === 0) {
-        logger.info("No active campaigns found for brand", { brandId });
-        return res.status(404).json({ 
-          message: "No active campaigns found for this brand. Cannot generate recommendations.",
-          suggestion: "Create campaigns in specific categories to get targeted recommendations, or use includeAllCategories=true for general recommendations."
-        });
-      }
+if (brandCampaigns.length === 0) {
+  logger.info("No active campaigns found for brand", { brandId });
+  return res.status(404).json({ 
+    message: "No active campaigns found for this brand. Cannot generate recommendations.",
+    suggestion: "Create campaigns in specific categories to get targeted recommendations, or use includeAllCategories=true for general recommendations."
+  });
+}
 
-      brandCategoryIds = brandCampaigns.map(campaign => campaign.categoryId);
+// Get unique category IDs
+brandCategoryIds = [...new Set(brandCampaigns.map(campaign => campaign.categoryId))];
     }
 
     logger.info("Brand categories for recommendations", {
@@ -384,9 +379,11 @@ export const getBrandRecommendations = async (req, res) => {
       include: [
         {
           model: Creator,
+          as: "Creator",
           include: [
             {
               model: User,
+              as: "User",
               attributes: ['userId', 'username'],
               where: { status: true }
             }
@@ -395,6 +392,7 @@ export const getBrandRecommendations = async (req, res) => {
         },
         {
           model: Category,
+          as: "Category",
           attributes: ['categoryId', 'categoryName'],
           where: { status: true }
         }
