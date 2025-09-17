@@ -131,6 +131,8 @@
 2025-08-20T07:31:29.713Z [CollabForge] error: Error during brand review creation
 2025-08-20T08:38:06.489Z [CollabForge] error: Validation errors during creator work creation
 2025-08-20T08:39:13.594Z [CollabForge] error: Validation errors during creator work creation
+2025-09-17T02:22:20.512Z [CollabForge] error: Server initialization failed
+2025-09-17T02:23:38.441Z [CollabForge] error: Server initialization failed
 2025-09-10T14:49:25.966Z [CollabForge] error: Error during getting creator works
 2025-09-10T14:49:37.184Z [CollabForge] error: Error during getting creator works
 2025-09-11T06:27:13.267Z [CollabForge] error: Error processing category 5db52280-7e37-4622-9923-bf48b66537c0

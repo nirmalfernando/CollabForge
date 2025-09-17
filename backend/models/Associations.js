@@ -8,6 +8,8 @@ import Review from "./Review.js";
 import BrandReview from "./BrandReview.js";
 import Campaign from "./Campaign.js";
 import CreatorWork from "./CreatorWork.js";
+import Chat from "./Chat.js";
+import Conversation from "./Conversation.js";
 import TopCreator from "./TopCreator.js";
 
 // Define associations between models
@@ -193,6 +195,38 @@ CreatorWork.belongsTo(Creator, {
   as: "creator",
 });
 
+// Chat associations
+User.hasMany(Chat, { foreignKey: "senderId", as: "sentMessages" });
+Chat.belongsTo(User, { foreignKey: "senderId", as: "sender" });
+
+User.hasMany(Chat, { foreignKey: "receiverId", as: "receivedMessages" });
+Chat.belongsTo(User, { foreignKey: "receiverId", as: "receiver" });
+
+Conversation.hasMany(Chat, { foreignKey: "conversationId", as: "messages" });
+Chat.belongsTo(Conversation, {
+  foreignKey: "conversationId",
+  as: "conversation",
+});
+
+// Conversation associations
+User.hasMany(Conversation, {
+  foreignKey: "participant1Id",
+  as: "conversationsAsParticipant1",
+});
+Conversation.belongsTo(User, {
+  foreignKey: "participant1Id",
+  as: "participant1",
+});
+
+User.hasMany(Conversation, {
+  foreignKey: "participant2Id",
+  as: "conversationsAsParticipant2",
+});
+Conversation.belongsTo(User, {
+  foreignKey: "participant2Id",
+  as: "participant2",
+});
+
 // TopCreator to Creator (Many-to-One)
 // A TopCreator belongs to one Creator, and a Creator can have many TopCreator entries
 Creator.hasMany(TopCreator, {
@@ -231,4 +265,6 @@ export default {
   Review,
   BrandReview,
   CreatorWork,
+  Chat,
+  Conversation,
 };
