@@ -3438,3 +3438,188 @@
 2025-09-12T17:21:29.787Z [CollabForge] info: Brand details retrieved successfully
 2025-09-12T17:21:32.050Z [CollabForge] info: No works found for creator
 2025-09-12T17:21:32.211Z [CollabForge] info: No works found for creator
+2025-09-17T07:18:03.792Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:18:03.944Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:18:04.032Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:18:04.033Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:18:04.034Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:18:04.037Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:19:15.033Z [CollabForge] info: User logged in successfully
+2025-09-17T07:19:20.744Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Campaign.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:336:30)
+2025-09-17T07:23:30.708Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:23:30.833Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:23:30.910Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:23:30.911Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:23:30.912Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:23:30.915Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:23:34.695Z [CollabForge] error: ReferenceError: sequelize is not defined
+    at getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:341:17)
+    at Layer.handleRequest (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/router/lib/route.js:157:13)
+    at middleware (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/express-validator/lib/middlewares/check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-17T07:24:58.520Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:24:58.653Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:24:58.729Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:24:58.730Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:24:58.730Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:24:58.732Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:25:02.199Z [CollabForge] error: Error
+    at Query.run (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/postgres/query.js:50:25)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async PostgresQueryInterface.select (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Campaign.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:337:30)
+2025-09-17T07:25:48.440Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:25:48.576Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:25:48.657Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:25:48.659Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:25:48.659Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:25:48.663Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:25:52.532Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:25:52.539Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:27:50.836Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:27:50.952Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:27:51.031Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:27:51.032Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:27:51.033Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:27:51.036Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:27:52.893Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:27:52.899Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:30:45.673Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:30:45.811Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:30:45.883Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:30:45.884Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:30:45.885Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:30:45.887Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:30:49.806Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:30:49.812Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:378:33)
+2025-09-17T07:34:20.777Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:34:21.872Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:34:21.948Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:34:21.950Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:34:21.951Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:34:21.955Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:34:23.361Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:34:23.367Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:35:02.777Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:35:03.036Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:35:03.192Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:35:03.195Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:35:03.195Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:35:03.198Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:35:09.206Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:35:09.218Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:36:50.905Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:36:51.037Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:36:51.114Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:36:51.116Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:36:51.117Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:36:51.120Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:36:56.116Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:36:56.122Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You must use the 'as' keyword to specify the alias within your include statement.
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:576:13)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:37:14.357Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:37:14.487Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:37:14.564Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:37:14.566Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:37:14.567Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:37:14.570Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:37:17.754Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:37:17.759Z [CollabForge] error: SequelizeEagerLoadingError: Creator is associated to TopCreator using an alias. You've included an alias (creator), but it does not match the alias(es) defined in your association (Creator).
+    at TopCreator._getIncludedAssociation (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:574:15)
+    at TopCreator._validateIncludedElement (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:502:53)
+    at /home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:421:37
+    at Array.map (<anonymous>)
+    at TopCreator._validateIncludedElements (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:417:39)
+    at TopCreator.findAll (/home/wolfy/Documents/playground/CollabForge/backend/node_modules/sequelize/lib/model.js:1124:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:377:33)
+2025-09-17T07:37:39.614Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:37:39.751Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:37:39.835Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:37:39.836Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:37:39.836Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:37:39.838Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:38:03.709Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:38:03.844Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:38:03.914Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:38:03.915Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:38:03.916Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:38:03.918Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:38:05.720Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:38:05.825Z [CollabForge] error: TypeError: Cannot read properties of undefined (reading 'username')
+    at file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:425:43
+    at Array.map (<anonymous>)
+    at getBrandRecommendations (file:///home/wolfy/Documents/playground/CollabForge/backend/controllers/recommendationController.js:414:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2025-09-17T07:38:47.260Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:38:47.437Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:38:47.607Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:38:47.610Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:38:47.611Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:38:47.614Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:38:49.311Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:38:49.603Z [CollabForge] info: Brand recommendations retrieved successfully
+2025-09-17T07:39:11.287Z [CollabForge] info: Initializing job scheduler
+2025-09-17T07:39:11.407Z [CollabForge] info: Starting all scheduled jobs
+2025-09-17T07:39:11.507Z [CollabForge] info: Top creators job scheduled
+2025-09-17T07:39:11.509Z [CollabForge] info: Started 1 scheduled jobs
+2025-09-17T07:39:11.510Z [CollabForge] info: Job scheduler initialized successfully
+2025-09-17T07:39:11.513Z [CollabForge] info: Server started on port 8080
+2025-09-17T07:39:16.246Z [CollabForge] info: Brand categories for recommendations
+2025-09-17T07:39:16.343Z [CollabForge] info: Brand recommendations retrieved successfully
