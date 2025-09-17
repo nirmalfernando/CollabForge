@@ -23,7 +23,7 @@ import { toast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Pencil, Plus, Star } from "lucide-react";
-import { brandApi, getAuthData, imageUploadApi, brandReviewApi, reviewApi } from "@/lib/api";
+import { brandApi, getAuthData, imageUploadApi, brandReviewApi, reviewApi, campaignApi } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const MAX_FILE_SIZE_MB = 10;
@@ -64,7 +64,7 @@ export default function BrandEditProfilePage() {
       try {
         setIsLoading(true);
         const profile = await brandApi.getBrandByUserId(auth.user.userId);
-        setBrandId(profile._id);
+        setBrandId(profile.brandId);
 
         setBrandData({
           companyName: profile.companyName || "",
@@ -77,16 +77,24 @@ export default function BrandEditProfilePage() {
           bannerImageUrl: profile.backgroundImageUrl || null,
         });
 
-        // Fetch reviews
+        // Fetch reviews by campaigns
         try {
-          const reviewsData = await reviewApi.getReviewsByCreator(auth.user.userId);
-          const reviewsWithCreatorNames = reviewsData.map((review: any) => ({
-            ...review,
-            creatorName: review.Creator
-              ? `${review.Creator.firstName} ${review.Creator.lastName || ""}`
-              : "Unknown Creator",
-          }));
-          setReviews(reviewsWithCreatorNames || []);
+          // Step 1: Get all campaigns for the brand
+          const campaigns = await campaignApi.getCampaignsByBrand(auth.user.userId);
+          // Step 2: Fetch reviews for each campaign
+          const reviewsPromises = campaigns.map(async (campaign: any) => {
+            const campaignReviews = await reviewApi.getReviewsByCampaign(campaign.campaignId);
+            // Map reviews to include creator name
+            return campaignReviews.map((review: any) => ({
+              ...review,
+              creatorName: review.Creator
+                ? `${review.Creator.firstName} ${review.Creator.lastName || ""}`
+                : "Unknown Creator",
+            }));
+          });
+          // Step 3: Combine all reviews
+          const allReviews = (await Promise.all(reviewsPromises)).flat();
+          setReviews(allReviews || []);
         } catch (error: any) {
           console.error("Failed to load reviews:", error);
           setReviews([]);
@@ -152,7 +160,7 @@ export default function BrandEditProfilePage() {
       await Promise.all(
         reviews.map(async (review) => {
           try {
-            await brandReviewApi.updateBrandReviewVisibility(
+            await reviewApi.updateReviewVisibility(
               review.reviewId,
               review.isShown
             );

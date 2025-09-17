@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { brandApi, getAuthData, reviewApi } from "@/lib/api";
+import { brandApi, getAuthData, reviewApi, campaignApi } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Star } from "lucide-react";
 
@@ -34,23 +34,24 @@ export default function BrandProfilePage() {
         const profile = await brandApi.getBrandByUserId(auth.user.userId);
         setBrandData(profile);
 
-        // Fetch reviews
+        // Fetch reviews by campaigns and filter only visible ones
         try {
-          const reviewsData = await reviewApi.getReviewsByCreator(
-            profile._id
-          );
-          // Filter to only show reviews with isShown = true
-          const shownReviews = reviewsData.filter(
-            (review: any) => review.isShown
-          );
-          // Map reviews to include creator's name
-          const reviewsWithCreatorNames = shownReviews.map((review: any) => ({
-            ...review,
-            creatorName: review.Creator
-              ? `${review.Creator.firstName} ${review.Creator.lastName || ""}`
-              : "Unknown Creator",
-          }));
-          setReviews(reviewsWithCreatorNames || []);
+          const campaigns = await campaignApi.getCampaignsByBrand(auth.user.userId);
+          const reviewsPromises = campaigns.map(async (campaign: any) => {
+            const campaignReviews = await reviewApi.getReviewsByCampaign(campaign.campaignId);
+            // Only include visible reviews
+            return campaignReviews
+              .filter((review: any) => review.isShown)
+              .map((review: any) => ({
+                ...review,
+                creatorName: review.Creator
+                  ? `${review.Creator.firstName} ${review.Creator.lastName || ""}`
+                  : "Unknown Creator",
+              }));
+          });
+
+          const allVisibleReviews = (await Promise.all(reviewsPromises)).flat();
+          setReviews(allVisibleReviews || []);
         } catch (error: any) {
           console.error("Failed to load reviews:", error);
           setReviews([]);
@@ -117,11 +118,11 @@ export default function BrandProfilePage() {
           />
         </section>
 
-        {/* Main content area with dark background */}
+        {/* Main content */}
         <div className="relative bg-background pt-8 pb-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Profile Picture/Logo Container - positioned to overlap */}
+              {/* Profile Picture */}
               <div className="relative -mt-20 md:-mt-24 lg:-mt-28 flex-shrink-0">
                 <Avatar className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 border-4 border-primary shadow-lg bg-black flex items-center justify-center">
                   <AvatarImage
@@ -136,7 +137,6 @@ export default function BrandProfilePage() {
 
               {/* Brand Info */}
               <div className="flex-1 w-full pt-4 md:pt-0">
-                {/* Horizontal Buttons */}
                 <div className="flex items-center justify-end w-full space-x-4 mb-4">
                   <Link href="/brand/profile/edit" prefetch={false}>
                     <Button
@@ -156,7 +156,7 @@ export default function BrandProfilePage() {
                   </Link>
                 </div>
 
-                {/* Tabs for profile sections */}
+                {/* Tabs */}
                 <Tabs defaultValue="brand-details" className="w-full mt-8">
                   <TabsList className="grid w-full grid-cols-2 bg-muted text-foreground">
                     <TabsTrigger
@@ -184,7 +184,7 @@ export default function BrandProfilePage() {
                       </p>
                     </div>
 
-                    {/* Description Section */}
+                    {/* Mission & Vision */}
                     {brandData.description && (
                       <div className="space-y-2">
                         <h3 className="text-3xl font-bold">
@@ -193,21 +193,19 @@ export default function BrandProfilePage() {
                         <div className="text-lg space-y-2 text-muted-foreground">
                           {brandData.description.mission && (
                             <p>
-                              <strong>Mission:</strong>{" "}
-                              {brandData.description.mission}
+                              <strong>Mission:</strong> {brandData.description.mission}
                             </p>
                           )}
                           {brandData.description.vision && (
                             <p>
-                              <strong>Vision:</strong>{" "}
-                              {brandData.description.vision}
+                              <strong>Vision:</strong> {brandData.description.vision}
                             </p>
                           )}
                         </div>
                       </div>
                     )}
 
-                    {/* Reviews Section */}
+                    {/* Reviews */}
                     <div className="space-y-4">
                       <h2 className="text-2xl md:text-3xl font-bold">
                         Our <span className="text-primary">Reviews</span>
@@ -249,11 +247,9 @@ export default function BrandProfilePage() {
                   </TabsContent>
 
                   <TabsContent value="what-we-look-for" className="mt-6 space-y-8">
-                    {/* What We Look For Section */}
                     <div className="space-y-2">
                       <h3 className="text-3xl font-bold">
-                        What We Look For in{" "}
-                        <span className="text-primary">Collaborators</span>
+                        What We Look For in <span className="text-primary">Collaborators</span>
                       </h3>
                       <div className="text-lg space-y-1 text-muted-foreground">
                         <p>Target Audience: {brandData.whatWeLookFor?.targetAudience}</p>
