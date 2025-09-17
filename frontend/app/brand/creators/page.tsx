@@ -32,7 +32,7 @@ interface Creator {
     followers?: number;
   }>;
   categoryId: string;
-  status: boolean;
+  status?: boolean;
 }
 
 interface Category {
@@ -60,7 +60,7 @@ export default function BrandCreatorsPage() {
     "Live Streamer",
   ];
 
-  // ✅ Get user ID
+  // Get user ID
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -106,8 +106,25 @@ export default function BrandCreatorsPage() {
 
         if (activeCreatorType === "Recommended") {
           const response = await brandApi.getRecommendedCreators(userId);
-          // Ensure it's always an array
-          creatorsData = Array.isArray(response) ? response : [];
+
+          // response.recommendations.creators should be an array
+          const recommendedCreators = response?.recommendations?.creators || [];
+
+          // Fetch full creator details by ID
+          creatorsData = await Promise.all(
+            recommendedCreators.map(async (rec: any) => {
+              try {
+                const creatorDetails = await creatorApi.getCreatorById(rec.creator.creatorId);
+                return creatorDetails;
+              } catch (err) {
+                console.error("Error fetching creator by ID:", err);
+                return null;
+              }
+            })
+          );
+
+          // Filter out any nulls
+          creatorsData = creatorsData.filter((c): c is Creator => c !== null);
         } else {
           try {
             const response = await creatorApi.getCreatorsByType(activeCreatorType);
@@ -183,7 +200,7 @@ export default function BrandCreatorsPage() {
     return [];
   };
 
-  // ✅ Protect against non-array creators
+  // Protect against non-array creators
   const safeCreators = Array.isArray(creators) ? creators : [];
 
   const filteredCreators = safeCreators.filter((creator) => {
